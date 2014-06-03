@@ -7,60 +7,16 @@
     "node": "0.10.x",
     "npm": "1.2.x"
   },
-  "scripts": {
-    "start": "node node_modules/grunt-cli/bin/grunt",
-    "test": "node node_modules/grunt-cli/bin/grunt test"
-  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bravi-software/website.git"
+    "url": "https://github.com/wellgrisa/shareledge.git"
   },
-  "keywords": [
-    "bravi",
-    "software",
-    "website"
-  ],
-  "contributors": [
-    "Max Nunes",
-    "Danillo Corvalan",
-    "Wellington Grisa",
-    "Mateus Barragana",
-    "Diego Vissini",
-    "Rodrigo Wirth"
-  ],
-  "license": "BSD-2-Clause",
-  "bugs": {
-    "url": "https://github.com/bravi-software/website/issues"
-  },
-  "private": true,
   "dependencies": {
     "express": "*",
     "mongoose": "latest",
     "connect-mongo": "~0.3.3",
-    "underscore": "*",
-    "swig": "~1.0.0-rc3",
-    "nodemailer": "~0.5.2",
-    "cli-color": "~0.2.3",
-    "connect-flash": "~0.1.1",
-    "i18next": "~1.7.1",
-    "passport": "~0.2.0",
-    "passport-local": "~0.1.6",
+    "underscore": "*",    
     "view-helpers": "~0.1.4",
     "async": "~0.2.10"
-  },
-  "devDependencies": {
-    "supertest": "latest",
-    "should": "latest",
-    "grunt-contrib-watch": "latest",
-    "grunt-contrib-jshint": "latest",
-    "grunt-nodemon": "~0.2.0",
-    "grunt-concurrent": "latest",
-    "grunt-mocha-test": "latest",
-    "grunt-env": "~0.4.0",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-uglify": "~0.2.4",
-    "grunt-contrib-cssmin": "~0.6.2",
-    "grunt-contrib-copy": "~0.4.1",
-    "grunt-contrib-clean": "~0.5.0"    
   }
 }
