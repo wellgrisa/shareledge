@@ -1,0 +1,48 @@
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1010px;
+    }
+}
+
+*[class*=col-] {
+ padding: 0px;  
+}
+
+body {
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;  
+}
+
+.list-group-item:first-child {
+  border-top-right-radius: 0px;
+  border-top-left-radius: 0px;
+}
+.list-group-item:last-child {
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+.bravi-font {
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif; 
+  font-weight: bold;
+}
+
+h2,
+.h2 {
+  font-size: 31.5px;
+}
+
+.thumbnail {
+  border-radius: 0px;
+}

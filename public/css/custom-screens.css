@@ -1,0 +1,242 @@
+/* max-width-400px
+---------------------*/
+@media (max-width: 400px) {   
+  .center-text-in-image-two-squre{        
+    padding-top: 30px;    
+    padding-left: 20px;
+  }
+
+  .center-text-in-image-two-square-right{
+    padding-left: 100px;  
+    padding-top: 10px;
+  }
+
+  .center-text-in-image-one-squre{
+    padding-left: 10px;
+    padding-top: 10px;
+  }
+
+  .umdenos .frase02 {
+    font-weight: 300;
+    font-size: 45px !important;
+    color: #fff;  
+  }
+
+  /*Horario Atendimento*/
+  #office-hours-lg {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+  }
+
+  .vacancy-arrows div{
+    width: 50%;
+    float: left;
+  }
+}
+
+/* max-width-768px
+---------------------*/
+@media (max-width: 768px) {   
+  .center-text-in-image-one-squre{
+    padding-top: 10px;
+    padding-left: 10px;
+  }
+
+  .center-text-in-image-two-squre{  
+    padding-top: 90px; 
+    padding-left: 20px;
+  }
+
+  .center-text-in-image-two-square-right{
+    padding-left: 250px;  
+    padding-top: 40px;
+  }
+
+  .oquefazemos .text
+  {
+    padding-top: 0px; 
+  }
+  
+  .team-text{
+    padding-top: 40px;
+    padding-left: 20px;
+  }
+
+  .oquefazemos .text
+  {
+    padding-top: 0px;
+  }
+
+  .fb-text{
+    padding-top: 70px;
+    padding-left: 20px;
+  }
+
+  /*Horario Atendimento*/
+  #office-hours-lg {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    padding: 5px;
+  }
+
+  .vacancy-arrows div{
+    width: 50%;
+    float: left;
+  }  
+}
+
+/* min-width-768px
+---------------------*/
+@media (min-width: 768px) {   
+  .center-text-in-image-one-squre{
+    padding-top: 10px;
+    padding-left: 10px;
+  }
+
+  .center-text-in-image-two-squre{
+    padding-top: 50px;
+    padding-left: 20px;
+  }
+
+  .center-text-in-image-two-square-right{
+    padding-left: 190px;  
+    padding-top: 20px;
+  }
+
+  .lemann-text{
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top:  10px;
+    line-height:  16px;    
+  }
+
+  .team-text{
+    padding-top: 40px;
+    padding-left: 20px;
+  }
+
+  .oquefazemos .text
+  {
+    padding-top: 157px;
+    letter-spacing: 1px;
+  }
+
+  .umdenos .want a {
+    width: 244px;   
+  }
+
+  .fb-text{
+    padding-top: 40px;
+    padding-left: 10px;
+  }
+
+  /*Horario Atendimento*/
+  #office-hours-lg {
+    position: absolute;
+    top: 5px;
+    padding: 5px;
+  }  
+
+  .umdenos .vaga strong {    
+    font-size: 30px !important;  
+  }
+}
+
+/* min-width-992px
+---------------------*/
+@media (min-width: 992px) {  
+  .center-text-in-image-one-squre{
+    padding-top: 40px;
+    padding-left: 20px;
+  }
+
+  .center-text-in-image-two-squre{
+    padding-top: 91px;
+    padding-left: 20px;
+  }
+
+  .center-text-in-image-two-square-right{
+    padding-left: 270px;  
+    padding-top: 40px;
+  }
+
+  .lemann-text{
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top:  20px;
+    line-height:  16px;
+    width: 40%;
+  }
+
+  .team-text{
+    padding-top: 40px;
+    padding-left: 20px;
+  }
+
+  /*Horario Atendimento*/
+  #office-hours-lg {
+    position: absolute;
+    top: 10px;
+    padding: 25px;
+  }
+
+  .umdenos .vaga strong {    
+    font-size: 40px !important;  
+  }
+}
+
+/* max-width-992px
+---------------------*/
+@media (max-width: 992px) {   
+  .oquefazemos .text
+  {
+    padding-top: 0px;
+  }
+
+  .umdenos .want a {
+    width: 180px;   
+  }
+
+  .fb-text{
+    padding-top: 35px;
+    padding-left: 10px;
+  }  
+}
+
+/* min-width-1200px
+---------------------*/
+@media (min-width: 1200px) {  
+  .center-text-in-image-one-squre{
+    padding-top: 40px;
+    padding-left: 20px;
+  }
+
+  .center-text-in-image-two-squre{
+    padding-top: 90px;
+    padding-left: 20px;
+  }
+
+  .center-text-in-image-two-square-right{
+    padding-left: 280px;  
+    padding-top: 40px;
+  }
+
+  .lemann-text{
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top:  20px;
+    line-height:  16px;
+    width: 40%;
+  }
+  .team-text{
+    padding-top: 40px;
+    padding-left: 20px;
+  }
+
+  .fb-text{
+    padding-top: 40px;
+    padding-left: 10px;
+  }
+}

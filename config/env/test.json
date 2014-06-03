@@ -1,0 +1,11 @@
+{
+    "db": "mongodb://localhost/bravi-website-test",
+    "port": 3001,
+    "app": {
+        "name": "Bravi Software - Test"
+    },
+  "mail": {
+    "username": "test@bravisoftware.com",
+    "password": "xxxxx"
+  }
+}

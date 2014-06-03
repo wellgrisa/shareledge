@@ -1,0 +1,461 @@
+{% extends 'layouts/default.html' %}
+
+{% block content %}
+
+<!-- Page -->
+
+<div id="what-we-do" class="oquefazemos section">
+  <div style="height: 40px;"></div>
+  <div class="row visible-xs logobravi" >
+    <img class="img-responsive" src="img/logo-bravi.png" alt="" />
+  </div>
+
+  <div class="container">
+
+    <!--O Que Fazemos-->
+
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <img class="img-responsive hidden-xs" src="img/bg-logo.png" alt="" />
+
+
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+        <div class="text">
+          <h4 id="what-we-do-top-header">{{ t('WhatWeDo.header') }}</h4>
+        </div>
+      </div>
+    </div>
+
+    <div class="row ">
+      <div class="col-lg-12 top-sentence">
+        <h2 class=>{{ t('WhatWeDo.short_description') }}</h2>
+        <p class="lead">{{ t('WhatWeDo.long_description') }}</p>
+      </div>
+    </div>
+
+    <!-- Tecnologia e inovação educacional -->
+    <div class="hidden-xs">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
+              <div style="position:relative">
+                <img class="img-responsive" src="img/bg-celular.png" alt="" />
+
+                <div class="text-in-image-two-square black-text center-text-in-image-two-squre celphone-text">
+                  <p class="hidden-xs">
+                    {{ t('MobileLearning.description') }}
+                  </p>
+
+                  <small class="hidden-lg hidden-md hidden-sm visible-xs">
+                    {{ t('MobileLearning.description') }}
+                  </small>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
+              <a href="https://www.facebook.com/pages/Bravi-Software/579455662116775" target="_blank">
+                <img class="img-responsive" style="margin-bottom: 0" src="img/bg-fb.png" alt="">
+              </a>
+              <div class="fb-text text-in-image-one-square white-text">
+                <a href="https://www.facebook.com/pages/Bravi-Software/579455662116775" target="_blank">fb.com/bravi</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div class="col-lg-6 col-md-6 col-sm-6" style="background:#fff; color:#a02358">
+          <div class="row" >
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="center-text-in-image-one-squre">
+                  <h6 style="color:#2f3336;">{{ t('DigitalEducation.header') }}</h6>
+                  <p>{{ t('DigitalEducation.description') }}</p>
+                </div>
+              </div>
+
+              <div class="col-lg-6 col-md-6 col-sm-6 hidden-xs">
+                <img class="img-responsive" src="img/foto-tablet.jpg" alt="" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="hidden-lg hidden-md hidden-sm visible-xs col-xs-6">
+            <img class="img-responsive" src="img/foto-tablet.jpg" alt="" />
+          </div>
+          <div class="col-lg-6 col-lg-offset-6 col-md-3 col-md-offset-3 col-sm-3 col-sm-offset-3 col-xs-6 blue">
+            <a href="http://www.tribalgroup.com/" target="_blank">
+              <img class="img-responsive" style="background:#fff;" src="img/parceria-tribal-{{language}}.png" alt="" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tecnologia e inovacao edu - MOBILE with links - Tribal - facebook, etc. -->
+    <div class="row visible-xs" style="margin-bottom: 10px;">
+      <div class="col-xs-5">
+        <a class="thumbnail" href="https://www.facebook.com/pages/Bravi-Software/579455662116775" target="_blank">
+          <img class="img-responsive" src="img/fb_mobile.png" alt="" style="max-height: 168px;">
+        </a>
+      </div>
+
+      <div class="col-xs-5">
+        <a class="thumbnail" href="http://www.tribalgroup.com/" target="_blank">
+          <img class="img-responsive" src="img/parceria-tribal-en.png" alt="" style="max-height: 168px;" >
+        </a>
+      </div>
+    </div>
+
+    <div class="row visible-xs" style="">
+      <div class="col-xs-5" style="background-color: #FFCC30; padding: 10px; color: black; height: 110px;">
+        {{ t('MobileLearning.description') }}
+      </div>
+      <div class="col-xs-7" style="background-color: #fff; padding: 10px; color: black; height: 110px;">
+         <h6 style="color:#2f3336;">{{ t('DigitalEducation.header') }}</h6>
+          <p>{{ t('DigitalEducation.description') }}</p>
+      </div>
+    </div>
+
+
+
+    <div class="row">
+      <div class="col-lg-6 col-lg-offset-3 col-sm-6 col-sm-offset-3 col-xs-12" >
+        <div class="row hidden-lg hidden-md hidden-sm visible-xs col-xs-12" style="background-color: #2D2451; padding: 10px;">
+          <h5 class="purple-text">SET/2013</h5>
+          <p>{{ t('LibraEContos.description') }}<br>
+          <a class="purple-text" href="http://fundacaolemann.org.br/blog/conheca-os-selecionados-para-o-start-ed" target="_blank">{{ t('LibraEContos.read_more') }}</a></p>
+        </div>
+
+        <img class="img-responsive hidden-xs" src="img/bg-lemann2.jpg" alt="" />
+
+        <div class="text-in-image-two-square lemann-text" style="height: auto">
+          <div class="hidden-xs">
+            <h6 class="purple-text">SET/2013</h6>
+             <p>{{ t('LibraEContos.description') }}<br>
+              <a class="purple-text" href="http://fundacaolemann.org.br/blog/conheca-os-selecionados-para-o-start-ed" target="_blank">{{ t('LibraEContos.read_more') }}</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-6 col-sm-offset-6 col-md-6 col-md-offset-6" >
+        <img class="img-responsive visible-md visible-lg" alt="Bravi - Social Good Brasil" src="img/social_good/bg-chamada-socialgoods.jpg" />
+        <p id="social-good-text" class="purple-text visible-lg visible-md">
+          {{t('SocialGood.description')}}&nbsp;
+          <a target="_blank" href="http://www.youtube.com/watch?v=9gYJU8E4Onw" title="Youtube video">{{t('SocialGood.read_more')}}</a>
+        </p>
+        <div id="social-good-device" class="visible-xs visible-sm">
+          <div class="media">
+            <img class="pull-left img-responsive media-object" style="overflow: hidden;" src="img/social_good/bg-logo.png" />
+            <div class="media-body">
+              <h5 class="purple-text media-heading">{{t('SocialGood.header')}}</h5>
+              <p class="purple-text">
+                {{t('SocialGood.description')}}&nbsp;
+                <a target="_blank" href="http://www.youtube.com/watch?v=9gYJU8E4Onw" title="Youtube video">{{t('SocialGood.read_more')}}</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="how-we-are" class="comosomos section">
+  <div class="container">
+    <div class="row">
+      <div class="top-sentence col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
+        <a id="how-we-are"></a>
+        <h3>{{ t('HowWeAre.header') }}</h3>
+        <p>{{ t('HowWeAre.short_description') }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-9 col-md-9 col-sm-12">
+        <div class="row">
+          <div class="col-lg-8 col-md-8 col-sm-8">
+            <img class="img-responsive" src="img/foto-sala.jpg" />
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-4 hidden-xs">
+                <img class="img-responsive" src="img/bg-vinho.png" />
+                <div class="text-in-image-one-square team-text">
+                  <p>{{ t('HowWeAre.long_description') }}</p>
+                </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOW WE ARE -->
+
+    <div class="row how-we-are">
+          <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 texto hidden-xs" style="padding: 20px;">
+
+            <h4 style="color: #24773f; font-weight: bold">{{ t('WeOffer.header') }}</h4>
+            <ul style="line-height: 20px">
+              <li>{{ t('WeOffer.li_1') }}</li>
+              <li>{{ t('WeOffer.li_2') }}</li>
+              <li>{{ t('WeOffer.li_3') }}</li>
+              <li>{{ t('WeOffer.li_4') }}</li>
+              <li>{{ t('WeOffer.li_5') }}</li>
+              <li>{{ t('WeOffer.li_6') }}</li>
+              <li>{{ t('WeOffer.li_7') }}</li>
+              <li><strong>{{ t('WeOffer.li_8') }}</strong></li>
+            </ul>
+          </div>
+
+          <div class="col-xs-12 hidden-lg hidden-md hidden-sm visible-xs" style="color:#585858; ">
+            <ul class="list-group">
+              <li class="list-group-item purple white-text">{{ t('HowWeAre.long_description') }}</li>
+              <li class="list-group-item"><h4 style="color: #24773f; font-weight: bold">{{ t('WeOffer.header') }}</h4></li>
+              <li class="list-group-item">{{ t('WeOffer.li_1') }}</li>
+              <li class="list-group-item">{{ t('WeOffer.li_2') }}</li>
+              <li class="list-group-item">{{ t('WeOffer.li_3') }}</li>
+              <li class="list-group-item">{{ t('WeOffer.li_4') }}</li>
+              <li class="list-group-item">{{ t('WeOffer.li_5') }}</li>
+              <li class="list-group-item">{{ t('WeOffer.li_6') }}</li>
+              <li class="list-group-item">{{ t('WeOffer.li_7') }}</li>
+              <li class="list-group-item"><strong>{{ t('WeOffer.li_8') }}</strong></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-3 col-sm-3 hidden-xs">
+            <img class="img-responsive" src="img/foto-equipe-01.jpg" alt="" />
+          </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="list_carousel responsive">
+          <ul id="employee">
+            <!-- list of employees - pictures -->
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div class="list_carousel responsive">
+          <ul id="employee-text">
+            <!-- list of employees - messages -->
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="one-of-us" class="umdenos section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 title">
+        <p class="frase01">{{ t('Opportunities.header_1') }}</p>
+        <p id="one-of-us-header2" class="frase02">{{ t('Opportunities.header_2') }}</p>
+        <p class="frase03">
+              {{ t('Opportunities.short_description_1') }}<br>
+              {{ t('Opportunities.short_description_2') }}
+        </p>
+      </div>
+    </div>
+
+    <div class="row one-of-us">
+      <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="row">
+          <div class="col-lg-3 col-md-3 col-sm-3 blue">
+          <br>          
+          <span class="vaga">{{ t('Opportunities.vacancies_text') }}</span>
+            <ul id="jobBox">              
+            </ul>
+              <div class="row vacancy-arrows">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-sm-6">
+                  <img class="img-responsive arrow-left" src="img/job/arrow-left.png">
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-sm-6">
+                  <img  class="img-responsive arrow-right" src="img/job/arrow-right.png">
+                </div>
+              </div>
+            <div id="jobPag"></div>
+          </div>
+          <div class="col-lg-9 col-md-9 col-sm-9">
+            <div class="row white-backgroud">
+              <div class="col-lg-4 hidden-md hidden-sm hidden-xs">
+                <img class="vacancy-man img-responsive" src="img/job/ft-vaga.jpg">
+              </div>
+              <div class="col-lg-8 col-md-12 col-sm-12 hidden-xs vagadescricao">
+                <p style="font-size:16px; font-weight:300">{{ t('Opportunities.long_description') }}</p>
+                <br>
+                <p>
+                  <strong>{{ t('Opportunities.list_description') }}</strong>
+                </p>
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-6">
+                    <ul>
+                      <li><p>{{ t('Opportunities.li_1') }}</p></li>
+                      <li><p>{{ t('Opportunities.li_2') }}</p></li>
+                      <li><p>{{ t('Opportunities.li_3') }}</p></li>
+                    </ul>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6">
+                    <ul>
+                      <li><p>{{ t('Opportunities.li_4') }}</p></li>
+                      <li><p>{{ t('Opportunities.li_5') }}</p></li>
+                      <li><p>{{ t('Opportunities.li_6') }}</p></li>
+                    </ul>
+                  </div>
+                </div>
+                <br>
+                <p>
+                  <strong>{{ t('Opportunities.bottom_phrase') }}</strong>
+                </p>
+              </div>  
+            </div>  
+          </div>
+          
+          
+        </div>
+
+        <div class="row hidden-lg hidden-md hidden-sm visible-xs">
+          <div class="col-xs-12 " style="color:#585858; text-shadow: none">
+            <ul class="list-group">
+              <li class="list-group-item"><p>{{ t('Opportunities.long_description') }}</p></li>
+              <li class="list-group-item"><strong>{{ t('Opportunities.list_description') }}</strong></li>
+              <li class="list-group-item">{{ t('Opportunities.li_1') }}</li>
+              <li class="list-group-item">{{ t('Opportunities.li_2') }}</li>
+              <li class="list-group-item">{{ t('Opportunities.li_3') }}</li>
+              <li class="list-group-item">{{ t('Opportunities.li_4') }}</li>
+              <li class="list-group-item">{{ t('Opportunities.li_5') }}</li>
+              <li class="list-group-item">{{ t('Opportunities.li_6') }}</li>
+              <li class="list-group-item"><strong>{{ t('Opportunities.bottom_phrase') }}</strong></li>
+              <li class="list-group-item comosomos"><h2 class="text-center"> <a data-toggle="modal" class="text-center white-text" href="#applicationModal">{{ t('Opportunities.apply') }}</a></h2></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- aplication modal -->
+{% include 'includes/curriculum-modal.html' %}
+
+<div id="localization" class="localizacao section">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
+        <h3 id="address-header">{{ t('Location.header') }}</h3>
+      </div>
+    </div>
+    <div class="row hidden-xs">
+      <div class="col-lg-6 col-md-6 col-sm-6">
+        <img class="img-responsive" src="img/bg-mapa.png">
+        <div class="text-in-image-two-square-right center-text-in-image-two-square-right">
+          <address>
+            Rodovia SC 401, n° 8600<br/>
+            {{ t('Location.room') }} 4, {{ t('Location.block') }} 08<br/>
+            Santo Antônio de Lisboa<br/>
+            CEP: 88050-000<br/>
+            Florianópolis - SC/ Brasil
+          </address>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3">
+        <img class="img-responsive" src="img/bg-horario.png">
+        <div id="office-hours-lg">
+          {{t('Location.office_hours')}}
+        </div>
+      </div>
+    </div>
+    <div class="row hidden-lg hidden-md hidden-sm visible-xs purple text-center">
+      <address>
+        Rodovia SC 401, n° 8600<br/>
+        {{ t('Location.room') }} 4, {{ t('Location.block') }} 08<br/>
+        Santo Antônio de Lisboa<br/>
+        CEP: 88050-000<br/>
+
+        Florianópolis - SC/ Brasil
+      </address>
+    </div>
+    <div style="background-color:#A88155" class="row hidden-lg hidden-md hidden-sm visible-xs text-center">
+      {{ t('Location.office_hours') }}
+    </div>
+    <div class="row">
+      <iframe width="100%" height="380" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" style="margin-left:1px; margin-bottom:-7px;" src="https://www.google.com.br/maps?f=q&amp;source=s_q&amp;hl=pt-BR&amp;geocode=&amp;q=Corporate+Park,+Florian%C3%B3polis+-+SC+-+SC-401,+Florian%C3%B3polis+-+Santa+Catarina&amp;aq=0&amp;sll=-27.508267,-48.512766&amp;sspn=0.058237,0.0945&amp;ie=UTF8&amp;z=11&amp;iwloc=A&amp;output=embed"></iframe>
+    </div>
+    <div class="row">
+      <div class="col-lg-3 col-lg-offset-6 col-md-3 col-md-offset-6 col-sm-6 col-xs-12">
+        <div class="row contact yellow">
+
+          <div>
+            <img src="img/ico-telefone.png" alt="" align="absmiddle"> +55 (48) 3239.7620<br>
+            <br>
+            <img src="img/ico-email.png" alt="" align="absmiddle"> <a href="mailto:hello@bravisoftware.com">hello@bravisoftware.com</a>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<nav id="main-navbar" class="navbar navbar-fixed-top hidden-xs" role="navigation">
+  <div class="container collapse navbar-collapse navbar-top-collapse" id="sidebar">
+    <div>
+      <ul class="nav navbar-nav">
+        <li><a id="nav-what" href="#what-we-do">{{ t('WhatWeDo.header') }}</a></li>
+        <li><a id="nav-about" href="#how-we-are">{{ t('HowWeAre.header') }}</a></li>
+        <li><a id="nav-work" href="#one-of-us">{{ t('Opportunities.header_2') }}</a></li>
+        <li><a id="nav-address" href="#localization">{{ t('Location.header') }}</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="nav navbar-nav navbar-right language">
+        <a class="btn btn-small btn-link {% if language === 'pt' %}active{% endif %}"  href="/?lang=pt">pt</a>
+        <a class="btn btn-small btn-link {% if language === 'en' %}active{% endif %}" href="/?lang=en">en</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+<nav id="mobile-main-navbar" class="navbar navbar-fixed-top hidden-sm hidden-md hidden-lg" role="navigation">
+  <div id="mobile-nav-container" id="sidebar">
+    <div class="btn-group pull-left">
+      <button id="mobile-nav-toggler" type="button" class="btn btn-navbar dropdown-toggle inverse" data-toggle="dropdown">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <ul id="mobile-nav-ul" class="navbar-inverse dropdown-menu inverse" role="menu">
+        <li><a href="#what-we-do">{{ t('WhatWeDo.header') }}</a></li>
+        <li><a href="#how-we-are">{{ t('HowWeAre.header') }}</a></li>
+        <li><a href="#one-of-us">{{ t('Opportunities.header_2') }}</a></li>
+        <li><a href="#localization">{{ t('Location.header') }}</a></li>
+      </ul>
+    </div>
+    <div class="navbar-right pull-right language">
+      <a class="btn btn-small btn-link {% if language === 'pt' %}active{% endif %}"  href="/?lang=pt">pt</a>
+      <a class="btn btn-small btn-link {% if language === 'en' %}active{% endif %}" href="/?lang=en">en</a>
+    </div>
+  </div>
+
+</nav>
+
+
+
+{% endblock %}
+
+{% block foot %}{% endblock %}

@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <title>{% block title %}Bravi Software{% endblock %}</title>
+
+  <!-- app/vendor css files -->
+  {% if settings.build_enabled %}
+  <link href="/css/app.min.css" rel="stylesheet" media="screen">
+  {% else %}
+  <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <link href="/css/custom-screens.css" rel="stylesheet" media="screen">
+  <link href="/css/bootstrap-overrides.css" rel="stylesheet" media="screen">
+  <link href="/css/estilos.css" rel="stylesheet" media="screen">
+  <link href="/css/bootstrap-multiselect.css" rel="stylesheet" media="screen">
+  {% endif %}
+
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+
+  <!-- google analytics -->
+  {% include '../includes/google_analytics.html' %}
+
+  {% block head %}{% endblock %}
+</head>
+<body data-target="#sidebar" data-spy="scroll">
+  <!-- messages -->
+  {% include '../includes/messages.html' %}
+
+  <!-- content -->
+  {% block content %}{% endblock %}
+
+  <!-- cdn scripts -->
+  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/1.4.3/jquery.scrollTo.min.js"></script>
+
+  <!-- app/vendor scripts -->
+  {% if settings.build_enabled %}
+  <script type="text/javascript" src="/lib/app.min.js"></script>
+  {% else %}
+  <script type="text/javascript" src="/lib/bootstrap.js"></script>
+  <script type="text/javascript" src="/lib/jquery-easing-1.3.pack.js"></script>
+  <script type="text/javascript" src="/lib/jquery-easing-compatibility.1.2.pack.js"></script>
+  <script type="text/javascript" src="/lib/coda-slider.1.1.1.pack.js"></script>
+  <script type="text/javascript" src="/lib/jquery.validate.js"></script>
+  <script type="text/javascript" src="/lib/jquery.carouFredSel-6.2.1-packed.js"></script>
+  <script type="text/javascript" src="/lib/employee-carousel.js"></script>  
+  <script type="text/javascript" src="/lib/job-carousel.js"></script>
+  <script type="text/javascript" src="/lib/main.js"></script>
+  <script type="text/javascript" src="/lib/bootstrap-multiselect.js"></script>  
+  <script type="text/javascript" src="/lib/i18next-1.7.2.min.js"></script>  
+  {% endif %}
+
+  <!-- foot -->
+  {% block foot %}{% endblock %}
+</body>
+</html>

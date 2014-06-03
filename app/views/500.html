@@ -1,0 +1,26 @@
+{% extends 'layouts/default.html' %}
+
+{% block content %}
+
+<div class="row" style="color: #000">
+  <div class="span6 bravi-large-logo"><img src="/img/logo-bravi.png" width="258" height="74" alt="" /></div>
+  <div class="span6">
+    <div id="error-title-box">
+      <h4>Oops... <br>Something went wrong</h4>
+      <h1>500</h1>
+      <a class="btn btn-link" href="/">Back to Home Page</a>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div id="error-message-box">
+    <div id="error-stack-trace">
+      <pre>{{ error }}</pre>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block foot %}
+{% endblock %}

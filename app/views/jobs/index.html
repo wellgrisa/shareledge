@@ -1,0 +1,28 @@
+{% extends '../layouts/admin.html' %}
+{% block content %}
+
+<h1 class="page-header">
+  Jobs
+  <a href="/bs-admin/jobs/new" class="btn btn-info pull-right">New Job</a>
+</h1>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Top Title</th>
+        <th>Title</th>
+        <th>Icon</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for job in jobs %}
+      <tr>
+        <td><a class="btn" href="/bs-admin/jobs/{{ job.id }}">{{ job.topTitle }}</a></td>
+        <td>{{ job.title }}</td>
+        <td><img src="{{ job.icon }}" width="45" class="img-thumbnail"></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

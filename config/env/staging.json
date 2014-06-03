@@ -1,0 +1,11 @@
+{
+  "db": "mongodb://localhost/bravi-website-staging",
+  "app": {
+    "name": "Bravi Software - Staging"
+  },
+  "mail": {
+    "username": "code@bravisoftware.com",
+    "password": "dummybravi",
+    "to": "code@bravisoftware.com"
+  }
+}

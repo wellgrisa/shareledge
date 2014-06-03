@@ -1,0 +1,78 @@
+{% extends '../layouts/admin.html' %}
+{% block content %}
+
+<h1 class="page-header">{{title}}</h1>
+<form role="form" action="/bs-admin/jobs{{action}}" method="POST" enctype="multipart/form-data">
+  {% if action %}
+  <input type="hidden" name="_method" value="PUT">
+  {% endif %}
+  <div class="form-group">
+    <label for="topTitle">Top Title</label>
+    <input type="text" name="topTitle" class="form-control" id="topTitle" placeholder="Enter Top Title" value="{{job.topTitle}}">
+  </div>
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input type="text" name="title" class="form-control" id="title" placeholder="Enter Title" value="{{job.title}}">
+  </div>
+  <div class="form-group">
+    <label for="icon">Icon</label>
+    <input type="file" id="icon" name="icon">
+    {% if job.icon %}
+    <img src="{{ job.icon }}" width="75">
+    {% endif %}
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">Positions</div>
+    <div class="panel-body">
+        <div class="row">
+          <div class="col-xs-6">
+            <div class="form-group">
+              <label for="position">Position<!-- <em class="languague">(english)</em> --></label>
+              <input type="text" name="position" class="form-control" id="position" placeholder="Enter Title" />
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="translate" disabled="disabled"> Translate
+              </label>
+            </div>
+            <!-- <div class="form-group">
+              <label for="positiontranslation">Position<em class="languague">(portuguese)</em></label>
+              <input type="text" name="positiontranslation" class="form-control" id="positiontranslation" placeholder="Enter Title" />
+            </div> -->
+            <input id="add-position" type="button" class="btn btn-primary btn-sm" value="Add" />
+          </div>
+          <div class="col-xs-6">
+            <div class="table-responsive">
+              <input type="hidden" name="positionsStr" id="positionsStr" />
+              <table id="positions" class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Position</th>
+                    <th>Translate</th>
+                    <!-- <th>Translation</th> -->
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for position in job.positions %}
+                  <tr>
+                    <td>{{ position.position }}</td>
+                    <td>{{ position.translate }}</td>
+                    <!-- <td>{{ position.position }}</td> -->
+                    <td><input type="button" class="remove-position" /></td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-success">Save</button>
+  <a class="btn" href="/bs-admin/jobs">Back to list</a>
+</form>
+
+<!-- error -->
+{% include '../includes/errors.html' %}

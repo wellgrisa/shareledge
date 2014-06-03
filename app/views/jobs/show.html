@@ -1,0 +1,48 @@
+{% extends '../layouts/admin.html' %}
+{% block content %}
+<h1 class="page-header">{{title}}</h1>
+
+<div class="row">
+  <div class="col-md-3">
+    <img src="{{ job.icon }}" style="width: 100%" class="img-thumbnail"></div>
+  <div class="col-md-9">
+    <div class="meta">
+      <h4>Top Title</h4>
+      <p>{{job.topTitle}}</p>
+      <h4>Title</h4>
+      <p>{{job.title}}</p>
+      <div class="panel panel-default">
+        <div class="panel-heading">Positions</div>
+        <div class="panel-body">
+          <div class="table-responsive">
+            <input type="hidden" name="positionsStr" id="positionsStr" />
+            <table id="positions" class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Position</th>
+                  <th>Translate</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for position in job.positions %}
+                <tr>
+                  <td>{{ position.position }}</td>
+                  <td>{{ position.translate }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form role="form"  data-confirm="Are you sure you want to delete?" 
+            action="/bs-admin/jobs/{{job.id}}" method="POST" class="panel-action">
+  <input type="hidden" name="_method" value="DELETE">
+  <a class="btn btn-default" href="/bs-admin/jobs/{{job.id}}/edit" >Edit</a>
+  <button class="btn btn-danger" type="submit">Delete</button>
+  <a class="btn" href="/bs-admin/jobs">Back to list</a>
+</form>

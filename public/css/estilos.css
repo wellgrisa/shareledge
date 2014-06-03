@@ -1,0 +1,489 @@
+body{ 
+ color: #fff;
+ font-family: "Open Sans", Helvetica, Arial, sans-serif;
+ font-weight:  400; 
+}
+
+.language {
+  padding-left: 25px;
+}
+#mobile-main-navbar .language {
+  padding-left: 20px;
+}
+
+.vacancy-man{
+  margin-top: 139px;
+}
+
+.caroufredsel_wrapper{
+  height:300px !important;
+}
+
+button.multiselect{
+  min-width: 200px;
+}
+
+.language .btn{
+  color: #fff;
+  height: 15px;
+  min-height: 15px;
+  line-height: 1px;
+  padding-left: 4px;
+  padding-right: 4px;
+  margin-top: 8px;
+  font-size: 0.9em !important;
+  font-weight: normal !important;
+  text-transform: lowercase !important;
+}
+#mobile-main-navbar .language .btn {
+  height: 25px;
+  min-height: 25px;
+  line-height: 8px;
+  margin-top: 4px;
+  margin-right: 5px;
+}
+
+
+.language .btn:hover,
+.language .btn:focus,
+.language .btn.active
+{
+  color: #2093C4 !important;
+  text-decoration: none;  
+  background-color: #fff !important;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+.section .container{
+  padding-bottom: 40px;
+}
+
+.localizacao {
+  padding-bottom: 80px;
+}
+.localizacao h4{
+  font-weight: 300;
+}
+
+#address-header {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.comosomos {
+ background:#a9bb4d  url(../img/bg-riscos.png) top center repeat-y; 
+ color:#fff;
+}
+
+.comosomos .top-sentence{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#how-we-are {
+  padding-top: 25px;
+}
+.how-we-are ul,
+.one-of-us ul{
+ font-size:  12px; 
+ font-weight: normal;
+}
+
+.localizacao {
+ background:#f38f3f  url(../img/bg-riscos.png) top center repeat-y;
+}
+
+.top-sentence h2{
+ font-weight: 400;
+}
+
+.top-sentence p{
+ font-weight: 300;
+}
+
+.celphone-text {
+ font-weight: 300;
+ font-size: 1.15em;
+}
+
+.lemann-text a{
+ font-size:  0.8em;  
+}
+
+.team-text{
+ font-weight: 300;
+ padding-right:  20px;
+}
+
+.blue{
+ background: #3aaadd;
+}
+
+.yellow{
+  background:#fcca47;
+}
+
+.white-backgroud{
+ background:#fff; 
+}
+
+.row{
+ margin: 0px;
+}
+
+.texto {
+ font-weight:400;
+ height:auto;
+ background:#fff;
+ color:#585858;
+}
+
+.black-text{
+ color: #000;
+}
+
+.purple-text{
+ color:#bd326d;
+}
+
+.white-text, .fb-text a{
+ color: #fff;
+}
+
+.purple{
+ background-color: #aa2a62;
+}
+
+.text-in-image-two-square{   
+ z-index: 100; 
+ position:absolute;        
+ top: 0;   
+ width: 50%;            
+}
+
+.text-in-image-one-square{    
+ z-index: 100;
+ position:absolute;
+ top: 0;                      
+}
+
+.text-in-image-two-square-right{   
+ z-index: 100; 
+ position:absolute;        
+ top: 0;   
+ width: 100%;             
+}
+
+.texto ul{
+ padding: 0;
+ margin: 0 0 10px 25px;
+}
+
+.oquefazemos{ 
+ background: #3aaadd url(../img/bg-riscos.png) top center repeat-y;
+}
+
+.oquefazemos .logobravi
+{
+ background-color: #fff;
+ padding: 15px;
+}
+
+.umdenos{
+ background:#fcca47  url(../img/bg-riscos.png) top center repeat-y;
+ text-shadow: 0.1em 0.1em 0.05em #caa239;
+}
+
+.umdenos p{
+ margin: 0 0 10px;
+ line-height: 25px;
+}
+
+.umdenos .title{
+ padding-top: 70px;
+}
+
+.umdenos .frase01 {
+ font-weight: 400;
+ font-size: 18px; 
+}
+
+.umdenos .frase02 {
+ font-weight: 300;
+ font-size: 55px;
+ color: #fff; 
+}
+
+.umdenos .frase03 {
+ padding: 20px 0;
+ font-size: 14px;
+}
+
+.vacancy-arrows{
+  padding-bottom: 20px; 
+}
+
+.vacancy-arrows img{
+  margin: 0 auto;
+}
+
+.arrow-left, .arrow-right{
+ cursor: pointer;
+ cursor: hand;
+}
+
+.one-of-us .vaga img{
+  margin: 0 auto;
+}
+
+.i-want{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.umdenos .vaga {
+ padding: 20px;
+ text-shadow: none;
+}
+
+.vacancy-icon{
+  padding-bottom: 10px;
+}
+
+.umdenos .vaga span {
+ font-weight: 300;
+ font-size: 20px;
+}
+
+.localizacao address{
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.localizacao .contact,
+.localizacao .contact a{
+  color:  #a41f58;
+  font-weight: 400;
+  line-height: 20px;    
+}
+
+.localizacao .contact div{
+  padding: 40px 5px;
+}
+
+.umdenos .vaga strong {
+ font-weight: 300;
+ font-size: 40px;  
+}
+
+.umdenos .vagadescricao {
+ text-shadow: none;
+ height: auto;
+ background: #fff;
+ color: #585858;
+ font-size: 12px;
+ padding: 20px;
+}
+
+.umdenos .want{
+ height: 190px;
+ background:#a9bb4d; 
+ color:#fff;
+}
+
+.umdenos .want a { 
+ height: 110px;
+ padding-top: 80px;
+ display: block;
+ font-weight: 300;
+ font-size: 28px;
+ text-align: center;
+ color: #fff;
+ text-decoration: none;
+ text-shadow: none;
+ letter-spacing: 1px;
+}
+
+.col1 select { width: 330px; }
+.fullWidth { width: 100%; }
+label.error {font-size: 12px; color: rgb(246, 36, 36); padding: 0; margin-top: -8px;}
+.hidden { visibility: hidden; }
+
+/*CAROUSEL*/
+.list_carousel {
+  margin: 0px;
+  width: auto;
+
+}
+.list_carousel ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: block;
+}
+.list_carousel li {
+  text-align: center;
+  width: 120px;
+  height: 125px;
+  padding: 0;
+  display: block;
+  float: left;
+}
+.list_carousel.responsive {
+  width: auto;
+  margin-left: 0;
+  height: 125px;
+}
+#employee-text{ 
+  background:#fff; color:#444; margin-bottom:20px; 
+}   
+#employee-text li{ 
+  text-align:center; padding-top:20px; font-size:16px; height:auto; 
+}
+#employee-text li .nome{ 
+  font-size:11px;
+  font-weight:700;
+  margin-bottom:0;
+  text-transform:uppercase; 
+}
+
+#employee .foto{
+  background-repeat: no-repeat; width: 120px; height: 125px; display: block;
+}
+
+/*JOB carousel
+---------------------*/
+#jobBox{
+
+}
+#jobBox {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: block;
+}
+#jobBox li {
+	text-align: left;
+	width: 245px;
+	height: 426px;
+	padding: 0;
+	display: block;
+	float: left;
+}
+#jobPag {
+	text-align: center;
+}
+
+#jobBox li .text{
+ z-index: 100; 
+ position:absolute;
+}
+
+#jobPag a {
+	background: url(../img/pag.png) 10px -0px  no-repeat transparent;
+	width: 25px;
+	height: 30px;
+	display: inline-block;
+}
+#jobPag a.selected {
+	background-position: -15px -0px;
+	cursor: default;
+}
+#jobPag a span {
+	display: none;
+}
+
+/* Error messages
+---------------------*/
+#error-title-box { padding-left: 5px; }
+#error-title-box h1 { font-size: 120px; padding-top: 20px; }
+#error-title-box .btn-link { color: #fff; margin-top: 20px; }
+#error-message-box { margin: 10px 0; padding: 10px 0; }
+
+
+/* Application Form
+---------------------*/
+#send-curriculum-form { overflow: auto; }
+#applicationModal .modal-content { background: #a9bb4d; }
+#send-curriculum-form .form-group { padding: 3px; }
+#application-modal-footer { padding: 15px 0 0 0 !important; margin-top: 15px; border-top: 1px solid #e5e5e5; }
+#btnSend { background: #fcca47; border-color: #a9bb4d; color: #000; }
+#btnSend:hover, #btnSend:active { background: #FFD054; color: #000; }
+
+
+/*Social Good Brasil*/
+#social-good-text { display: block; padding-left: 20px; font-size: 0.9em; width: 345px; margin-top: -85px; }
+#social-good-device { padding: 5px; font-size: 0.9em; background: white; }
+
+/*What we do*/
+#what-we-do-top-header { text-transform: uppercase; }
+/*One of us*/
+#one-of-us-header2 { text-transform: uppercase; }
+
+/* Alert
+---------------------*/
+#alert-top{ text-align: center; z-index: 2000; position: absolute; top: 0;  right: 0;}
+#alert-top input[type="button"] { padding-left: 5px; }
+
+
+/* Custom Navbar Sidebar Menu Top
+---------------------*/
+#main-navbar, #mobile-main-navbar { background: url('/img/bg-topo.png'); height: 40px; min-height: 40px; margin-left: -15px;}
+#main-navbar a { padding-top: 10px; padding-bottom: 10px; color: #fff; font-size: 12px; text-transform: uppercase; font-weight: bold; }
+#main-navbar a:hover { background: none; }
+
+#mobile-nav-container { padding-left: 18px; padding-top: 3px; }
+#mobile-nav-container .icon-bar {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background-color: #fff;
+  border-radius: 1px;
+  margin-bottom: 2px;
+}
+
+#mobile-nav-toggler {
+  padding: 10px 8px 8px 8px;
+  border-radius: 0px;
+  background-color: transparent;
+  border: none;
+}
+
+#mobile-nav-container .open {
+  background-color: #222;
+  border-color: #080808;
+}
+
+#mobile-nav-ul {
+  border-radius: 0px;
+  margin-top: -1px;
+  margin-left: 0px;
+  width: 200px;
+}
+#mobile-nav-ul li {
+  padding: 5px;  
+}
+#mobile-nav-ul a {
+  text-transform: uppercase;
+  color: #fff;
+}
+
+#sidebar {
+  padding-left: 30px;
+  padding-right: 25px;
+}
+
+#nav-what { padding-left: 1px;}
+#main-navbar li.active #nav-what, #main-navbar #nav-what:hover {color: #3aaadd; }
+#main-navbar li.active #nav-about, #main-navbar #nav-about:hover {color: #a9bb4d; }
+#main-navbar li.active #nav-work, #main-navbar #nav-work:hover {color: #fcca47; }
+#main-navbar li.active #nav-address, #main-navbar #nav-address:hover {color: #f38f3f; }
+
+
+/*Popup*/
+#popup-img {
+  cursor: pointer;
+}

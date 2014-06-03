@@ -1,0 +1,37 @@
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+
+pids
+logs
+results
+
+# Nodejs and Npm
+npm-debug.log
+node_modules
+
+.DS_Store
+thumbs.db
+
+# Vim files
+*.swp
+
+# Vagrant
+.vagrant
+
+# Website Upload Files
+public/upload/*
+!public/upload/.gitkeep
+
+# Build files
+public_build
+
+# nodemon
+.nodemonignore
+
+.project
