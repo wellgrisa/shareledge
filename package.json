@@ -12,9 +12,10 @@
     "url": "https://github.com/wellgrisa/shareledge.git"
   },
   "dependencies": {
-    "express": "*",
+    "express": "3.4.8",
     "mongoose": "latest",
     "connect-mongo": "~0.3.3",
+    "swig": "~1.0.0-rc3",
     "underscore": "*",    
     "view-helpers": "~0.1.4",
     "async": "~0.2.10"

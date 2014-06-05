@@ -2,60 +2,18 @@
  * Module dependencies.
  */
 var express = require('express'),
-    mongoStore = require('connect-mongo')(express),
-    swig = require('swig'),
-    flash = require('connect-flash'),
-    helpers = require('view-helpers'),
-    config = require('./config'),
-    i18n = require("i18next"),
-    passport = require("passport");
+  path = require('path'),
+    swig = require('swig');
 
 module.exports = function(app){
-  app.set('showStackError', true);
 
-  //Should be placed before express.static
-  app.use(express.compress({
-      filter: function(req, res) {
-          return (/json|text|javascript|css/).test(res.getHeader('Content-Type'));
-      },
-      level: 9
-  }));
-
-  //Setting the fav icon and static folder
-  app.use(express.favicon(config.root + '/' + config.static_public +  '/favicon.ico'));
-
-  // nginx will provide static files in prod environment
-  if (process.env.NODE_ENV !== 'production') {
-    app.use(express.static(config.root + '/' + config.static_public));
-  }
-
-  app.use('/locales',express.static(config.root + '/locales'));
-
-  // translation config
-  i18n.init({
-    ignoreRoutes: ['images/', config.static_public, 'css/', 'js/'],
-    saveMissing: true,
-    detectLngQS: 'lang',
-    supportedLngs: ['en', 'pt'],
-    // debug: true
-  });
-  i18n.registerAppHelper(app);
-
-  // global views variables
-  app.use(function (req, res, next) {
-    res.locals.getUserName = function() { 
-      return req.user ? req.user.name : ''; 
-    };
-    next();
-  });
 
   // Set views path and template engine
-  app.set('views', config.root + '/app/views');
+  app.set('views', path.normalize(__dirname + '../..') + '/app/views');
   app.engine('html', swig.renderFile);
   app.set('view engine', 'html');
 
-  // define if is using build - assets
-  app.set('build_enabled', config.build_enabled);
+  app.use(express.static(path.normalize(__dirname + '../../public')));
 
 
   app.configure(function() {
@@ -66,27 +24,6 @@ module.exports = function(app){
       app.use(express.limit('3mb'));
       app.use(express.bodyParser());
       app.use(express.methodOverride());
-
-
-      // register translation middleware
-      app.use(i18n.handle);
-      
-      //express/mongo session storage
-      app.use(express.session({
-          secret: 'BRAVIWEBSITE',
-          store: new mongoStore({
-              url: config.db,
-              collection: 'sessions'
-          })
-      }));
-      
-      //passport configuration
-      app.use(passport.initialize());
-      app.use(passport.session());
-
-      //connect flash for flash messages
-      app.use(flash());
-      app.use(helpers('BRAVIWEBSITE'));
 
       //routes should be at the last
       app.use(app.router);

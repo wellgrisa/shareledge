@@ -1,4 +1,4 @@
-var LocalStrategy = require('passport-local').Strategy,
+ar LocalStrategy = require('passport-local').Strategy,
       mongoose = require('mongoose')
       User = mongoose.model('User');
 

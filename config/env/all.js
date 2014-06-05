@@ -9,8 +9,7 @@ var buildBanner = function(){
 };
 
 var getPort = function(){
-  if(process.env.NODE_ENV === 'staging'){ return 8001;}
-  return process.env.PORT || 8000;
+  return 8000;
 };
 
 var errors = function (errors) {
