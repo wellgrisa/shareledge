@@ -1,10 +1,30 @@
 
-var express = require('express');
-// Bootstrap routes
+var fs = require('fs'),
+    express = require('express'),
+    mongoose = require('mongoose'),
+    passport = require('passport'),
+    path = require('path'),
+    config = require('./config/config');
 
+  var connect = function () {
+    var options = { server: { socketOptions: { keepAlive: 1 } } }
+    mongoose.connect(config.db, options);
+  }
+
+console.log(config.db);
+
+connect();
+
+var models_path = path.normalize(__dirname + '/app/models')
+
+/*fs.readdirSync(models_path).forEach(function (file) {
+  console.log(models_path + '/' + file);
+  if (~file.indexOf('.js')) require(models_path + '/' + file);
+});*/
+
+require(models_path + '/' + 'user.js')
 
 var http = require('http');
-
 
 var path = require('path');
 
@@ -13,7 +33,7 @@ var path = require('path');
 
 var app = express();
 
-require('./config/express')(app);
+require('./config/express')(app, passport);
 
 require('./config/routes')(app);
 

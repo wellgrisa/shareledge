@@ -1,44 +1,122 @@
 /**
  * Module dependencies.
  */
- 
 var mongoose = require('mongoose'),
-      Schema = mongoose.Schema;
- 
+  Schema = mongoose.Schema,
+  crypto = require('crypto');
+
+/**
+ * A Validation function for local strategy properties
+ */
+var validateLocalStrategyProperty = function(property) {
+  return ((this.provider !== 'local' && !this.updated) || property.length);
+};
+
+/**
+ * A Validation function for local strategy password
+ */
+var validateLocalStrategyPassword = function(password) {
+  return (this.provider !== 'local' || (password && password.length > 6));
+};
+
 /**
  * User Schema
  */
- 
 var UserSchema = new Schema({
-  name: String,
-  email: String,
-  username: String,
-  password: String
+  firstName: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  lastName: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  email: {
+    type: String,
+    trim: true,
+    default: ''
+    // validate: [validateLocalStrategyProperty, 'Please fill in your email'],
+    // match: [/.+\@.+\..+/, 'Please fill a valid email address']
+  },
+  userName: {
+    type: String,
+    unique: true,
+    required: 'Please fill in a username',
+    trim: true
+  },
+  password: {
+    type: String,
+    default: '',
+    validate: [validateLocalStrategyPassword, 'Password should be longer']
+  },
+  salt: {
+    type: String
+  },
+  provider: {
+    type: String,
+    required: 'Provider is required'
+  },
+  updated: {
+    type: Date
+  },
+  created: {
+    type: Date,
+    default: Date.now
+  }
 });
- 
+
 /**
- * Methods
+ * Hook a pre save method to hash the password
  */
- 
-UserSchema.methods.validPassword = function (password) {
-  return this.password === password;
+UserSchema.pre('save', function(next) {
+  if (this.password && this.password.length > 6) {
+    this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
+    this.password = this.hashPassword(this.password);
+  }
+
+  next();
+});
+
+/**
+ * Create instance method for hashing a password
+ */
+UserSchema.methods.hashPassword = function(password) {
+  if (this.salt && password) {
+    return crypto.pbkdf2Sync(password, this.salt, 10000, 64).toString('base64');
+  } else {
+    return password;
+  }
 };
- 
- /**
- * Statics
+
+/**
+ * Create instance method for authenticating user
  */
- 
-UserSchema.statics.authenticate = function (username, password, done) {
-  this.findOne({ username: username }, function(err, user) {
-    if (err) { return done(err); }
-    if (!user) {
-      return done(null, false, { message: 'Incorrect username.' });
+UserSchema.methods.authenticate = function(password) {
+  return this.password === this.hashPassword(password);
+};
+
+/**
+ * Find possible not used username
+ */
+UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
+  var _this = this;
+  var possibleUsername = username + (suffix || '');
+
+  _this.findOne({
+    username: possibleUsername
+  }, function(err, user) {
+    if (!err) {
+      if (!user) {
+        callback(possibleUsername);
+      } else {
+        return _this.findUniqueUsername(username, (suffix || 0) + 1, callback);
+      }
+    } else {
+      callback(null);
     }
-    if (!user.validPassword(password)) {
-      return done(null, false, { message: 'Incorrect password.' });
-    }
-    return done(null, user);
   });
 };
- 
+
 mongoose.model('User', UserSchema);

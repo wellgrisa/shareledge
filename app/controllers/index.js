@@ -1,14 +1,13 @@
 
 exports.render = function(req, res) {
-    res.render('index', {
+    res.render('process', {
       title: "title"
     });
 };
 
 exports.process = function(req, res) {
-    res.render('process');
-};
-
-exports.questions  = function(req, res) {
-    res.render('questions');
+     res.render('process', {
+      action: req.params.action,
+      wonder: req.params.wonder
+    });
 };

@@ -1,0 +1,79 @@
+<!-- <nav class="navbar navbar-inverse" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-5">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <img class="img-responsive bravi-logo" src="/img/bravi.png" alt="" />
+
+
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-5">
+      <p class="navbar-text navbar-right">Well</p> <img class="img-responsive user navbar-right" src="/img/well.png" alt="" />
+    </div>
+  </div>
+</nav> -->
+
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="www.bravi.com.br"><img class="img-responsive bravi-logo" src="/img/bravi.png" alt="" /></a>
+    </div>
+    <div class="navbar-collapse collapse" id="searchbar">
+
+      <ul class="nav navbar-nav navbar-right notifications">
+
+        <li><p class="navbar-text"><a href="#"><span class="glyphicon glyphicon-comment"></span></a></p></li>
+        <li class="divider-vertical"></li>
+        <li><p class="navbar-text"><a href="#"><span class="glyphicon glyphicon-thumbs-up"></span></a></p></li>
+        <li class="divider-vertical"></li>
+        <!-- <li><img id="user-avatar" data-toggle="modal" data-target="#sign-up-modal" class="img-responsive user navbar-right" src="/img/well.png" alt="" /></li> -->
+        <li class="divider-vertical"></li>
+        <li class="dropdown">
+          <img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right" src="/img/well.png" alt="" />
+
+          <div class="dropdown-menu" style="padding: 15px;">
+            <form action="/signup" method="post" accept-charset="UTF-8">
+              <input id="userName" style="margin-bottom: 15px;" type="text" name="userName" placeholder="User Name" size="30" />
+              <input id="password" style="margin-bottom: 15px;" type="password" name="password"  placeholder="Password" size="30" />
+              <!-- <input id="user_remember_me" style="float: left; margin-right: 10px;" type="checkbox" name="user[remember_me]" value="1" /> -->
+              <label class="string optional" for="user_remember_me"> Remember me</label>
+
+              <input class="btn btn-info" style="clear: left; width: 100%; height: 32px; font-size: 13px;" type="submit" name="commit" value="Sign In" />
+            </form>
+          </div>
+        </li>
+        <!-- <li class="dropdown">
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-5">
+
+          </div>
+        </li> -->
+      </ul>
+
+      <form class="navbar-form">
+        <div class="form-group" style="display:inline;">
+          <div id="nav-input-wonder" class="input-group">
+          <input type="text" class="form-control">
+          <span class="input-group-btn">
+          <!-- <button class="btn btn-info" type="button" >Ask!</button> -->
+          <button id="btn-ask" type="button" class="btn btn-info" data-container="body" data-toggle="popover" data-placement="bottom" data-content='<form class="form" role="form"><label>Register the question?</label><button type="submit" style="margin-left:10px" class="btn btn-info">Go!</button></form>' data-original-title="" title="">
+            Ask!
+          </button>
+          </span>
+          </div>
+        </div>
+      </form>
+
+    </div><!--/.nav-collapse -->
+  </div>
+</div>
+

@@ -3,7 +3,8 @@
  */
 var express = require('express'),
   path = require('path'),
-    swig = require('swig');
+  swig = require('swig'),
+  passport = require("passport");
 
 module.exports = function(app){
 
@@ -24,6 +25,10 @@ module.exports = function(app){
       app.use(express.limit('3mb'));
       app.use(express.bodyParser());
       app.use(express.methodOverride());
+
+ //passport configuration
+      app.use(passport.initialize());
+      app.use(passport.session());
 
       //routes should be at the last
       app.use(app.router);

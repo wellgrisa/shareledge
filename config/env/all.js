@@ -34,9 +34,7 @@ module.exports = {
   root: rootPath,
   uploadPath: path.join(rootPath, 'public/upload/'),
   port: getPort(),
-  db: process.env.MONGOHQ_URL,
-  banner: buildBanner(),
-  build_enabled: isBuildEnabled,
-  static_public: isBuildEnabled ? 'public_build' : 'public',
+  db: process.env.MONGOHQ_URL || 'mongodb://localhost:27017/test',
+  banner: buildBanner(),  
   errors: errors
 };
