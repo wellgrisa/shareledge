@@ -1,7 +1,9 @@
 
 exports.render = function(req, res) {
+  console.log('----------------------------' + req.user);
     res.render('process', {
-      title: "title"
+      title: "title",
+      user: req.user
     });
 };
 

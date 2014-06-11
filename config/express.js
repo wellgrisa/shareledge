@@ -4,9 +4,9 @@
 var express = require('express'),
   path = require('path'),
   swig = require('swig'),
-  passport = require("passport");
+  flash = require('connect-flash');
 
-module.exports = function(app){
+module.exports = function(app, passport){
 
 
   // Set views path and template engine
@@ -26,10 +26,11 @@ module.exports = function(app){
       app.use(express.bodyParser());
       app.use(express.methodOverride());
 
+      app.use(express.session({ secret: 'ilovescotchscotchyscotchscotch' }));
  //passport configuration
       app.use(passport.initialize());
       app.use(passport.session());
-
+      app.use(flash());
       //routes should be at the last
       app.use(app.router);
 

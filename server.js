@@ -28,23 +28,18 @@ var http = require('http');
 
 var path = require('path');
 
-// var mongo = require('mongodb');
-// var mongoose = require('mongoose');
-
 var app = express();
+
+require('./config/passport')(passport);
 
 require('./config/express')(app, passport);
 
-require('./config/routes')(app);
+require('./config/routes')(app, passport);
 
 // mongoose.connect('mongodb://localhost:27017/blogmanager');
 
 // all environments
 app.set('port', process.env.PORT || 3000);
-
-
-
-
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

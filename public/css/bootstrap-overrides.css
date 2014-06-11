@@ -66,3 +66,7 @@ body{
 .modal-open {
  overflow: auto;
 }
+
+.notifications .drop-form{
+    width:  400px;
+}

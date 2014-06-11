@@ -1,21 +1,52 @@
-ar LocalStrategy = require('passport-local').Strategy,
-      mongoose = require('mongoose')
-      User = mongoose.model('User');
+var LocalStrategy = require('passport-local').Strategy,
+mongoose = require('mongoose'),
+User = mongoose.model('User');
+
 
 module.exports = function (passport) {
   // serialize sessions
-  passport.serializeUser(function(user, done) {
-    done(null, user.id);
-  });
-
-  passport.deserializeUser(function(id, done) {
-    User.findOne({ _id: id }, function (err, user) {
-      done(err, user);
+    // used to serialize the user for the session
+    passport.serializeUser(function(user, done) {
+      console.log('serializin');
+      done(null, user.id);
     });
-  });
 
-  // use local strategy
-  passport.use(new LocalStrategy(function authenticateUser(username, password, done) {
-    return User.authenticate(username, password, done);
-  }));
-}
+    // used to deserialize the user
+    passport.deserializeUser(function(id, done) {
+      console.log('deserializin');
+      User.findById(id, function(err, user) {
+        done(err, user);
+      });
+    });
+
+
+    passport.use(new LocalStrategy({
+      usernameField: 'username',
+      passwordField: 'password'
+    },
+    function(username, password, done) {
+      console.log(username);
+      User.findOne({
+        username: username
+      }, function(err, user) {
+        console.log(user);
+        if (err) {
+          return done(err);
+        }
+        if (!user) {
+          return done(null, false, {
+            message: 'Unknown user'
+          });
+        }
+        if (!user.authenticate(password)) {
+          return done(null, false, {
+            message: 'Invalid password'
+          });
+        }
+
+        return done(null, user);
+      });
+    }
+    ));
+
+  }
