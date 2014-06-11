@@ -23,6 +23,7 @@ var models_path = path.normalize(__dirname + '/app/models')
 });*/
 
 require(models_path + '/' + 'user.js')
+require(models_path + '/' + 'question.js')
 
 var http = require('http');
 

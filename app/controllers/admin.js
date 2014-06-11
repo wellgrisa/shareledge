@@ -1,6 +1,10 @@
 var mongoose = require('mongoose'),
   User = mongoose.model('User');
 
+exports.login = function(req, res) {
+    res.render('login', { message: req.flash('loginMessage') });
+};
+
 exports.signout = function (req, res) {
   req.logout();
   res.redirect('/');

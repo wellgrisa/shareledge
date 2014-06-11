@@ -1,15 +1,15 @@
 
 exports.render = function(req, res) {
-  console.log('----------------------------' + req.user);
     res.render('process', {
       title: "title",
-      user: req.user
+      user: req.user,
+      action: req.params.action,
+      wonder: req.params.wonder
     });
 };
 
-exports.process = function(req, res) {
-     res.render('process', {
-      action: req.params.action,
-      wonder: req.params.wonder
+exports.index = function(req, res) {
+    res.render('index', {
+      title: "title"
     });
 };

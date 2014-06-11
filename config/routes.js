@@ -1,15 +1,19 @@
+var middlewares = require('./middlewares');
+
 module.exports = function(app, passport) {
   // Home route
   var index = require('../app/controllers/index');
-  app.get('/', index.render);
-  app.get('/process', index.process);
+  app.get('/', middlewares.ensureAuthenticated, index.render);
 
   var admin = require('../app/controllers/admin');
   app.post('/signup', admin.signup);
   app.post('/signin', admin.signin(passport));
   app.get('/signout', admin.signout);
+  app.get('/login', admin.login);
 
-app.get('/login', function(req, res) {
-      res.render('login', { message: req.flash('loginMessage') });
-    });
+  var question = require('../app/controllers/question');
+  app.get('/question', question.all);
+  app.post('/question', question.create);
+  app.get('/question/:id', question.getById);
+  app.put('/question/:id', question.update);
 };
