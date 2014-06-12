@@ -18,6 +18,21 @@ exports.all = function(req, res) {
       return res.status(500).send(err);
     }
   });
+
+};
+
+exports.search = function(req, res) {
+
+  var regex = new RegExp('^.*'+ req.params.search +'.*$', "i");
+
+  Question.find({content: regex }).exec(function(err, question){
+
+    if (!err) {
+        res.json({data: question});
+    } else {
+      return res.status(500).send(err);
+    }
+  });
 };
 
 exports.positions = function(req, res) {

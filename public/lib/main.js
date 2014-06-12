@@ -8,6 +8,16 @@ $(document).ready(function() {
     answer();
   });
 
+  $( "#question" ).keyup(function() {
+    $.get( '/question/search/' + $('#question').val(), function(res){
+      $('.list-group').html('');
+      var questions = res.data;
+      for (var i = 0; i < questions.length; i++) {
+        $('.list-group').append(question(questions[i]._id, questions[i].content, getShortAnswers(questions[i].solutions)));
+      }
+    });
+  });
+
   refreshQuestions();
 });
 
