@@ -33,7 +33,7 @@ function answer(){
   var url = '/question/' + questionIdentifier;
 
   $.get(url, function(data, textStatus, jqXHR) {
-      data.solutions.push({ answer : 'Sei lá porra!' });
+      data.solutions.push({ answer : $('#textarea').val() });
 
       registerAnswer(data);
   });
@@ -41,14 +41,15 @@ function answer(){
 
 function registerAnswer(question){
   var url = '/question/' + questionIdentifier;
-
+  console.log(question);
   jQuery.ajax({
     url: url,
-    contentType: 'application/json; charset=utf-8',
     type: "PUT",
-    data: JSON.stringify(question),
-    success: function (data, textStatus, jqXHR) {
-
+    data: question,
+    success: function (xhr, status, error) {
+      refreshQuestions();
+      $('#textarea').val('');
+      $('.answer-panel').fadeOut('slow');
     }
   });
 }
@@ -67,5 +68,9 @@ function question(id, content, answers){
 }
 
 function getShortAnswers(solutions){
-  return solutions.join().substr(0, 10);
+  var solutionsString = '';
+  for (var i = 0; i < solutions.length; i++) {
+    solutionsString += solutions[i].answer;
+  }
+  return solutionsString.substr(0, 500);
 }

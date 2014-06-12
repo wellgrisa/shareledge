@@ -105,10 +105,8 @@ exports.edit = function (req, res) {
 };
 
 exports.update = function(req, res){
-  console.log('-------------------');
   Question.findById(req.params.id, function (err, question){
-    console.log('-------------------' + req);
-    console.log('-------------------');
+    question.solutions = req.body.solutions;
     return question.save(function (err) {
       if (!err) {
         console.log("updated");
