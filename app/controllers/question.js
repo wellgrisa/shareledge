@@ -100,7 +100,8 @@ exports.create = function (req, res) {
 };
 
 exports.getById = function(req, res){
-  return Question.findById(req.params.id, function (err, job){
+  return Question.findById(req.params.id).populate('solutions.user').exec(function (err, job){
+    console.log(job);
     if (!err) {
       return res.send(job);
     } else {
@@ -122,6 +123,11 @@ exports.edit = function (req, res) {
 exports.update = function(req, res){
   Question.findById(req.params.id, function (err, question){
     question.solutions = req.body.solutions;
+
+    for (var i =0; i < question.solutions.length; i++) {
+      question.solutions[i].user = req.user;
+    }
+
     return question.save(function (err) {
       if (!err) {
         console.log("updated");

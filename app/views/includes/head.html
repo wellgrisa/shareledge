@@ -43,6 +43,7 @@
             <img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right" src="/img/unknown.png" alt="" />
           {% else %}
             <img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right" src="/img/{{user.username}}.png" alt="" />
+            <input type=hidden name=customerid value="{{user._id}}">
           {% endif %}
 
           {% if user.username == undefined  %}

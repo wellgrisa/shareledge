@@ -11,7 +11,11 @@ var QuestionSchema = new Schema({
     required: 'Please fill in a question',
     default: ''
   },
-  solutions: [{ answer : String }],
+  solutions: [{
+    answer : String,
+    created : { type: Date, default: Date.now },
+    user: { type : Schema.ObjectId, ref: 'User' }
+  }],
   user: {
     type: Schema.ObjectId,
     ref: 'User'

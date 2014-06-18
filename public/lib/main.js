@@ -68,6 +68,24 @@ var questionIdentifier;
 
 function showAnswer(id){
   questionIdentifier = id;
+
+  var url = '/question/' + questionIdentifier;
+
+  $.get(url, function(data, textStatus, jqXHR) {
+    $('#answers').html('');
+
+    for (var i = 0; i < data.solutions.length; i++) {
+
+      var answer = '<div class="panel panel-default">' +
+                      '<div class="panel-heading">' + data.solutions[i].user.username + ' ' + data.solutions[i].created + '</div>' +
+                          '<div class="panel-body">'+
+                            data.solutions[i].answer +
+                          '</div>' +
+                    '</div>';
+      $('#answers').append(answer);
+    }
+  });
+
   $('.answer-panel').fadeIn('slow');
 }
 
