@@ -13,7 +13,7 @@
 
 </head>
 <body>
-
+{% include 'includes/signup.html' %}
   <div class="parent">
   <div class="child">
     <div class="container">
@@ -25,7 +25,8 @@
         <form class="form-signin" role="form" action="/signin" method="post">
           <input type="username" name="username" class="form-control" placeholder="Username" required="" autofocus="">
           <input type="password" name="password" class="form-control" placeholder="Password" required="">
-          <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+          <button class="btn btn-lg btn-primary" type="submit">Sign in</button>
+          <label style="color: white">or</label> <a href="#" data-toggle="modal" data-target="#sign-up-modal" class="btn btn-lg btn-warning">Sign up!</a>
         </form>
 
     </div>
