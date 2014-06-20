@@ -51,8 +51,21 @@ body{
  margin-right: 15px;
 }
 
-.navbar .notifications .glyphicon{
+.navbar .notifications .glyphicon, .answer-result .glyphicon{
   font-size: 18px;
+}
+
+.answer-result{
+  float: right;
+  margin-left: 5px;
+}
+
+.green{
+  color: #5cb85c;
+}
+
+.red{
+  color: #d9534f;
 }
 
 .hide{

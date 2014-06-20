@@ -121,7 +121,8 @@ exports.edit = function (req, res) {
 };
 
 exports.update = function(req, res){
-  Question.findById(req.params.id, function (err, question){
+  Question.findById(req.params.id).populate('solutions.user').exec(function (err, question){
+
     question.solutions = req.body.solutions;
 
     for (var i =0; i < question.solutions.length; i++) {

@@ -77,7 +77,7 @@ function showAnswer(id){
     for (var i = 0; i < data.solutions.length; i++) {
 
       var answer = '<div class="panel panel-default">' +
-                      '<div class="panel-heading">' + data.solutions[i].user.username + ' ' + data.solutions[i].created + '</div>' +
+                      '<div class="panel-heading">' + data.solutions[i].user.username + ' ' + data.solutions[i].created + '<a class="answer-result green" href="#"><span class="glyphicon glyphicon-remove"></span></a><a class="answer-result red" href="#"><span class="glyphicon glyphicon-ok"></span></a></div>' +
                           '<div class="panel-body">'+
                             data.solutions[i].answer +
                           '</div>' +
