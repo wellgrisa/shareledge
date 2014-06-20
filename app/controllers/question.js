@@ -140,6 +140,34 @@ exports.update = function(req, res){
   });
 };
 
+exports.updateAnswer = function(req, res){
+  Question.findById(req.params.id, function (err, question){
+console.log('------------------------------');
+console.log(req.body);
+console.log('------------------------------');
+    for (var i = 0; i < question.solutions.length; i++) {
+      if(question.solutions[i]._id == req.body.answer){
+        if(req.body.rate == 'up'){
+          question.solutions[i].useful = question.solutions[i].useful  + 1;
+        }else{
+          question.solutions[i].useful = question.solutions[i].useful  - 1;
+        }
+
+        console.log(question.solutions[i].useful);
+      }
+    }
+console.log('------------------------------');
+    return question.save(function (err) {
+      if (!err) {
+        console.log("updated");
+      } else {
+        console.log(err);
+      }
+      return res.json(question);
+    });
+  });
+};
+
 exports.destroy = function(req, res){
   Job.findById(req.params.id, function (err, job){
     job.remove(function(err){

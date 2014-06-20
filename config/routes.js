@@ -17,4 +17,5 @@ module.exports = function(app, passport) {
   app.post('/question', question.create);
   app.get('/question/:id', question.getById);
   app.put('/question/:id', question.update);
+  app.put('/answer/:id', question.updateAnswer);
 };

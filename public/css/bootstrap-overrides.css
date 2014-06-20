@@ -68,6 +68,12 @@ body{
   color: #d9534f;
 }
 
+#answers .badge{
+  margin-right: 10px;
+  font-size: 18px;
+  background-color: #3276b1;
+}
+
 .hide{
   display: none;
 }

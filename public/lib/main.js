@@ -43,7 +43,7 @@ function answer(){
   var url = '/question/' + questionIdentifier;
 
   $.get(url, function(data, textStatus, jqXHR) {
-      data.solutions.push({ answer : $('#textarea').val() });
+      data.solutions.push({ content : $('#textarea').val() });
 
       registerAnswer(data);
   });
@@ -77,9 +77,9 @@ function showAnswer(id){
     for (var i = 0; i < data.solutions.length; i++) {
 
       var answer = '<div class="panel panel-default">' +
-                      '<div class="panel-heading">' + data.solutions[i].user.username + ' ' + data.solutions[i].created + '<a class="answer-result green" href="#"><span class="glyphicon glyphicon-remove"></span></a><a class="answer-result red" href="#"><span class="glyphicon glyphicon-ok"></span></a></div>' +
+                      '<div class="panel-heading"><span class="badge">' + data.solutions[i].useful + '</span><label>' + data.solutions[i].user.username + '</label> ' + data.solutions[i].created + '<a onclick="rateDown(\'' + data.solutions[i]._id +'\')" class="answer-result red" href="#"><span class="glyphicon glyphicon-remove"></span></a><a onclick="rateUp(\'' + data.solutions[i]._id +'\')" class="answer-result green" href="#"><span class="glyphicon glyphicon-ok"></span></a></div>' +
                           '<div class="panel-body">'+
-                            data.solutions[i].answer +
+                            data.solutions[i].content +
                           '</div>' +
                     '</div>';
       $('#answers').append(answer);
@@ -88,6 +88,28 @@ function showAnswer(id){
 
   $('.answer-panel').fadeIn('slow');
 }
+
+function rateUp(identifier){
+rate(identifier, 'up');
+}
+
+function rateDown(identifier){
+ rate(identifier, 'down');
+}
+
+function rate(identifier, rate){
+  var url = '/answer/' + questionIdentifier;
+
+  jQuery.ajax({
+    url: url,
+    type: "PUT",
+    data: { answer: identifier , rate: rate },
+    success: function (xhr, status, error) {
+      showAnswer(questionIdentifier);
+    }
+  });
+}
+
 
 function question(id, content, answers){
   return '<a onclick="showAnswer(\'' + id +'\')" href="#" class="list-group-item ">' +
@@ -98,7 +120,7 @@ function question(id, content, answers){
 function getShortAnswers(solutions){
   var solutionsString = '';
   for (var i = 0; i < solutions.length; i++) {
-    solutionsString += solutions[i].answer;
+    solutionsString += solutions[i].content;
   }
   return solutionsString.substr(0, 500);
 }
