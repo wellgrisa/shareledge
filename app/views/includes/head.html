@@ -42,7 +42,7 @@
           {% if user.username == undefined  %}
             <img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="/img/unknown.png" alt="" />
           {% else %}
-            <img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="/img/{{user.username}}.png" alt="" />
+            <img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="{{user.google.picture}}" alt="" />
             <input type=hidden name=customerid value="{{user._id}}">
           {% endif %}
 

@@ -2,6 +2,7 @@ var mongoose = require('mongoose'),
   User = mongoose.model('User');
 
 exports.login = function(req, res) {
+   console.log('---------------teste----------------------------', req.user);
     res.render('login', { message: req.flash('loginMessage') });
 };
 
@@ -41,9 +42,12 @@ exports.signup = function(req, res) {
 };
 
 exports.signin = function(passport) {
+  console.log('---------------teste----------------------------');
+
   return passport.authenticate('local', {
       successRedirect : '/', // redirect to the secure profile section
       failureRedirect : '/login', // redirect back to the signup page if there is an error
       failureFlash : true // allow flash messages
     });
 };
+

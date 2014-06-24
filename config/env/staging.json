@@ -1,5 +1,5 @@
 {
-  "db": "mongodb://localhost/bravi-website-staging",
+  "db": "mongodb://localhost/test",
   "app": {
     "name": "Bravi Software - Staging"
   },
@@ -7,5 +7,11 @@
     "username": "code@bravisoftware.com",
     "password": "dummybravi",
     "to": "code@bravisoftware.com"
+  },
+  "google": {
+    "clientID": "577142620268-2htcsd0h9d6vqbn7lo6p6k2gl3qgem2g.apps.googleusercontent.com",
+    "clientSecret": "Tas6zLbXRS54j0JUEy9TsP5K",
+    "callbackURL": "http://localhost:3000/auth/google/callback",
+    "scopes": "email profile"
   }
 }

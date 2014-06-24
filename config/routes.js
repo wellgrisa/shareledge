@@ -1,4 +1,5 @@
-var middlewares = require('./middlewares');
+var middlewares = require('./middlewares')
+config = require('../config/config');
 
 module.exports = function(app, passport) {
   // Home route
@@ -18,4 +19,25 @@ module.exports = function(app, passport) {
   app.get('/question/:id', question.getById);
   app.put('/question/:id', question.update);
   app.put('/answer/:id', question.updateAnswer);
-};
+
+  //  // Setting the google oauth routes
+  //  app.get('/auth/google', passport.authenticate('google', {
+  //   failureRedirect: '/login',
+  //   scope: config.google.scopes,
+  //   accessType: 'offline'
+  // }), admin.signin);
+
+  //  app.get('/auth/google/callback', passport.authenticate('google', {
+  //   failureRedirect: '/login'
+  // }), function(req, res){res.redirect('/');});
+
+      app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
+
+    // the callback after google has authenticated the user
+    app.get('/auth/google/callback',
+      passport.authenticate('google', {
+        successRedirect : '/',
+        failureRedirect : '/login'
+      }));
+
+ };
