@@ -74,6 +74,11 @@ body{
   background-color: #3276b1;
 }
 
+.notifications .badge{
+  font-size: 17px;
+  background-color: #3276b1;
+}
+
 .hide{
   display: none;
 }

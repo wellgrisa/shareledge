@@ -36,6 +36,7 @@ var QuestionSchema = new Schema({
   updated: {
     type: Date
   },
+  read: { type : Boolean, default : true },
   created: {
     type: Date,
     default: Date.now

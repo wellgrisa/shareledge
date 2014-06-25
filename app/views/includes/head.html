@@ -32,14 +32,18 @@
 
       <ul class="nav navbar-nav navbar-right notifications">
 
-        <li><p class="navbar-text"><a href="#"><span class="glyphicon glyphicon-comment"></span></a></p></li>
+        <li><p class="navbar-text"><a id="outstandingQuestions" href="#"><span class="glyphicon glyphicon-comment"></span></a></p></li>
         <li class="divider-vertical"></li>
-        <li><p class="navbar-text"><a href="#"><span class="glyphicon glyphicon-thumbs-up"></span></a></p></li>
+        <li><p class="navbar-text"><a id="outstandingQuestionsByUser" href="#"><span class="glyphicon glyphicon-thumbs-up"></span>
+        {% if outstandingQuestionsByUser > 0  %}
+          <span class="badge" style="margin-left: 5px">{{outstandingQuestionsByUser}}</span>
+        {% endif %}
+        </a></p></li>
         <li class="divider-vertical"></li>
         <!-- <li><img id="user-avatar" data-toggle="modal" data-target="#sign-up-modal" class="img-responsive user navbar-right" src="/img/well.png" alt="" /></li> -->
         <li class="divider-vertical"></li>
         <li class="dropdown">
-          {% if user.username == undefined  %}
+          {% if user.google.picture == undefined  %}
             <img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="/img/unknown.png" alt="" />
           {% else %}
             <img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="{{user.google.picture}}" alt="" />

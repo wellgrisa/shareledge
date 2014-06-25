@@ -18,6 +18,30 @@ $(document).ready(function() {
     });
   });
 
+$( "#outstandingQuestions" ).on('click', function() {
+    $.get( '/questions/outstanding', function(questions){
+      $('.list-group').html('');
+      for (var i = 0; i < questions.length; i++) {
+        $('.list-group').append(question(questions[i]._id, questions[i].content, getShortAnswers(questions[i].solutions)));
+      }
+    });
+  });
+
+$( "#outstandingQuestionsByUser" ).on('click', function() {
+    $.get( '/questionByUser', function(questions){
+      $('.list-group').html('');
+      for (var i = 0; i < questions.length; i++) {
+        $('.list-group').append(question(questions[i]._id, questions[i].content, getShortAnswers(questions[i].solutions)));
+      }
+    });
+  });
+
+$.get( '/questions/outstanding', function(res){
+  if(res.length > 0){
+    $('#outstandingQuestions').append('<span class="badge" style="margin-left: 5px">' + res.length + '</span>');
+  }
+});
+
   refreshQuestions();
 });
 
@@ -68,6 +92,16 @@ var questionIdentifier;
 
 function showAnswer(id){
   questionIdentifier = id;
+
+  var urlUpdateRead = '/question/updateRead/' + questionIdentifier;
+  console.log(question);
+  jQuery.ajax({
+    url: urlUpdateRead,
+    type: "PUT",
+    success: function (xhr, status, error) {
+
+    }
+  });
 
   var url = '/question/' + questionIdentifier;
 

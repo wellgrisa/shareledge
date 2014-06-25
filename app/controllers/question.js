@@ -35,54 +35,6 @@ exports.search = function(req, res) {
   });
 };
 
-exports.positions = function(req, res) {
-  Job.findById(req.query.id, function (err, job){
-    if (!err) {
-      return res.json(job.positions);
-    } else {
-      return res.status(500).send(err);
-    }
-  });
-};
-
-exports.index = function(req, res){
-  var page = (req.param('page') > 0 ? req.param('page') : 1) - 1;
-  var perPage = 30;
-  var options = {
-    perPage: perPage,
-    page: page
-  };
-
-  Job.list(options, function(err, jobs) {
-    if (err) return res.render('500');
-    Job.count().exec(function (err, count) {
-      res.render('jobs/index', {
-        jobs: jobs,
-        page: page + 1,
-        pages: Math.ceil(count / perPage)
-      });
-    });
-  });
-};
-
-exports.new = function(req, res){
-  res.render('jobs/form', {
-    title: 'New Job',
-    job: new Job({})
-  });
-};
-
-var parsePositions = function(positionsStr){
-  var positions = [];
-  positionsStr.split('%%').forEach(function(_position){
-    var position = _position.split('^');
-    if (position[0]) {
-      positions.push({ position : position[0], translate : position[1] === 'true' });
-    }
-  });
-  return positions;
-};
-
 exports.create = function (req, res) {
   console.log('create');
   var question = new Question(req.body);
@@ -100,23 +52,45 @@ exports.create = function (req, res) {
 };
 
 exports.getById = function(req, res){
-  return Question.findById(req.params.id).populate('solutions.user').exec(function (err, job){
-    console.log(job);
+  return Question.findById(req.params.id).populate('solutions.user').exec(function (err, question){
+    console.log(question);
     if (!err) {
-      return res.send(job);
+      return res.send(question);
     } else {
       return console.log(err);
     }
   });
 };
 
-exports.edit = function (req, res) {
-  Job.findById(req.params.id, function (err, job){
-    res.render('jobs/form', {
-      title: 'Edit Job',
-      job: job,
-      action: '/' + job._id
-    });
+exports.getByUser = function(req, res){
+  return Question.find({'user' : new mongoose.Types.ObjectId(req.user._id)}).populate('user solutions.user').exec(function (err, questions){
+    console.log(questions);
+    if (!err) {
+      return res.send(questions);
+    } else {
+      return console.log(err);
+    }
+  });
+};
+
+exports.getOutstandingQuestions = function(req, res){
+return Question.find({$or : [{"solutions.useful": 0}, {"solutions": {$size: 0}}]}).populate('user solutions.user').exec(function (err, questions){
+    if (!err) {
+      return res.send(questions);
+    } else {
+      return console.log(err);
+    }
+  });
+};
+
+exports.getOutstandingQuestionsByUser = function(req, res){
+return Question.count({'user' : new mongoose.Types.ObjectId(req.user._id), 'read' : false}).populate('user solutions.user').exec(function (err, questions){
+    console.log(questions);
+    if (!err) {
+      return res.send(questions);
+    } else {
+      return console.log(err);
+    }
   });
 };
 
@@ -124,6 +98,8 @@ exports.update = function(req, res){
   Question.findById(req.params.id).populate('solutions.user').exec(function (err, question){
 
     question.solutions = req.body.solutions;
+
+    question.read = false;
 
     for (var i =0; i < question.solutions.length; i++) {
       question.solutions[i].user = req.user;
@@ -137,6 +113,25 @@ exports.update = function(req, res){
       }
       return res.json(question);
     });
+  });
+};
+
+exports.updateRead = function(req, res){
+  Question.findById(req.params.id).populate('user').exec(function (err, question){
+    if(question.user._id.toString() == new mongoose.Types.ObjectId(req.user._id)){
+      question.read = true;
+
+      return question.save(function (err) {
+        if (!err) {
+          console.log("updated");
+        } else {
+          console.log(err);
+        }
+        return res.json(question);
+      });
+    }else{
+      console.log('-----------não o mesmo-------', req.user._id, question.user._id);
+    }
   });
 };
 
