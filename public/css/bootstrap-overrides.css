@@ -68,7 +68,7 @@ body{
   color: #d9534f;
 }
 
-#answers .badge{
+.answers .badge{
   margin-right: 10px;
   font-size: 18px;
   background-color: #3276b1;
@@ -95,6 +95,6 @@ body{
     width:  400px;
 }
 
-#answers{
+.answers {
   margin-bottom:  10px;
 }
