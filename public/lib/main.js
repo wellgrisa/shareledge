@@ -13,7 +13,8 @@ $(document).ready(function() {
       $('.list-group').html('');
       var questions = res.data;
       for (var i = 0; i < questions.length; i++) {
-        $('.list-group').append(question(questions[i]._id, questions[i].content, getShortAnswers(questions[i].solutions)));
+//        $('.list-group').append(question(questions[i]._id, questions[i].content, getShortAnswers(questions[i].solutions)));
+        $('.list-group').append(getQuestion(questions[i]));
       }
     });
   });
@@ -22,7 +23,8 @@ $( "#outstandingQuestions" ).on('click', function() {
     $.get( '/questions/outstanding', function(questions){
       $('.list-group').html('');
       for (var i = 0; i < questions.length; i++) {
-        $('.list-group').append(question(questions[i]._id, questions[i].content, getShortAnswers(questions[i].solutions)));
+//        $('.list-group').append(question(questions[i]._id, questions[i].content, getShortAnswers(questions[i].solutions)));
+        $('.list-group').append(getQuestion(questions[i]));
       }
     });
   });
@@ -31,7 +33,8 @@ $( "#outstandingQuestionsByUser" ).on('click', function() {
     $.get( '/questionByUser', function(questions){
       $('.list-group').html('');
       for (var i = 0; i < questions.length; i++) {
-        $('.list-group').append(question(questions[i]._id, questions[i].content, getShortAnswers(questions[i].solutions)));
+//        $('.list-group').append(question(questions[i]._id, questions[i].content, getShortAnswers(questions[i].solutions)));
+        $('.list-group').append(getQuestion(questions[i]));
       }
     });
   });
@@ -43,6 +46,8 @@ $.get( '/questions/outstanding', function(res){
 });
 
   refreshQuestions();
+    
+    configureEventHandlers();
 });
 
 function refreshQuestions(){
@@ -50,7 +55,8 @@ function refreshQuestions(){
     $('.list-group').html('');
     var questions = res.data;
     for (var i = 0; i < questions.length; i++) {
-      $('.list-group').append(question(questions[i]._id, questions[i].content, getShortAnswers(questions[i].solutions)));
+//      $('.list-group').append(question(questions[i]._id, questions[i].content, getShortAnswers(questions[i].solutions)));
+      $('.list-group').append(getQuestion(questions[i]));
     }
   });
 }
@@ -157,4 +163,62 @@ function getShortAnswers(solutions){
     solutionsString += solutions[i].content;
   }
   return solutionsString.substr(0, 500);
+}
+
+// Refactored Functions
+
+
+function configureEventHandlers() {
+    var questions = $(".list-group");
+    
+    questions.delegate(".list-group-item", "click", function(event) {
+        var question = $(event.currentTarget),
+            url = '/question/' + question.data("id");
+        
+        console.log(url);
+        console.log(question);
+
+        $.get(url, function(data) {
+            var answers = question.find('.answers'),
+                answer;
+
+            answers.html('');
+
+            for (var i = 0; i < data.solutions.length; i++) {
+                answer = [];
+              
+                answer.push('<div class="panel panel-default">');
+                answer.push('    <div class="panel-heading">');
+                answer.push('        <span class="badge">' + data.solutions[i].useful + '</span>');
+                answer.push('        <label>' + data.solutions[i].user.username + '</label>');
+                answer.push('        ' + data.solutions[i].created);
+                answer.push('        <a onclick="rateDown(\'' + data.solutions[i]._id +'\')" class="answer-result red" href="#">');
+                answer.push('            <span class="glyphicon glyphicon-remove"></span>');
+                answer.push('        </a>');
+                answer.push('        <a onclick="rateUp(\'' + data.solutions[i]._id +'\')" class="answer-result green" href="#">');
+                answer.push('            <span class="glyphicon glyphicon-ok"></span>');
+                answer.push('        </a>');
+                answer.push('    </div>');
+                answer.push('    <div class="panel-body">');
+                answer.push('   ' + data.solutions[i].content );
+                answer.push('    </div>');
+                answer.push('</div>');
+
+                answers.append(answer.join(''));
+            }
+        });
+
+    });
+}
+
+function getQuestion(question){
+    var html = [];
+  
+    html.push('<a href="#" class="list-group-item" data-id="' + question._id +'">');
+    html.push('  <h4 class="list-group-item-heading">' + question.content + '</h4>');
+    html.push('  <p class="list-group-item-text">' + getShortAnswers(question.solutions) + '</p>');
+    html.push('  <div class="answers"></div>');
+    html.push('</a>');
+    
+    return html.join('');
 }

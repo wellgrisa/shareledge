@@ -2,58 +2,18 @@
 
 {% block content %}
 
-{% include 'includes/head.html' %}
+    {% include 'includes/header.html' %}
+    
+    {% include 'components/modals/signup.html' %}
 
-{% include 'includes/signup.html' %}
+    <div class="container">
 
-<br>
-<div class="container">
+        {% include 'components/panels/question-panel.html' %}
+        {% include 'components/panels/answer-panel.html' %}
 
-<div class="col-lg-12">
-  <div class="panel panel-default">
-    <div class="panel-heading">Questions</div>
-    <div class="panel-body">
-      <div class="list-group">
-      </div>
     </div>
-  </div>
-</div>
-
-<div class="col-lg-12">
-
-<div class="panel panel-default">
-      <div class="panel-body">
-      <div class="bs-example bs-example-tabs">
-    <ul id="myTab" class="nav nav-tabs">
-      <li class="active"><a href="#answers" data-toggle="tab">Answers</a></li>
-      <li class=""><a href="#answer-it" data-toggle="tab">Answer it!</a></li>
-    </ul>
-    <div id="myTabContent" class="tab-content">
-      <div class="tab-pane fade active in" id="answers">
-      </div>
-      <div class="tab-pane fade" id="answer-it">
-        <textarea id="textarea" class="form-control" rows="3"></textarea>
-        <button id="btn-register" class="btn btn-primary btn-block" type="submit">Register</button>
-      </div>
-    </div>
-  </div>
-      </div>
-    </div>
-</div>
-
-</div>
-
-
-</div>
-
-
-
-
 
 {% endblock %}
 
 {% block foot %}
-
-
-
 {% endblock %}
