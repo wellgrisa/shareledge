@@ -45,6 +45,8 @@ $.get( '/questions/outstanding', function(res){
   refreshQuestions();
 
   handleListGroup();
+
+  $('.notifications span').tooltip();
 });
 
 function handleListGroup(){
@@ -55,7 +57,19 @@ listGroup.delegate('.answer-collapsible', 'click', function(e){
 });
 
   listGroup.delegate(".answer-collapsible", "show.bs.collapse", function(){
-       $('#accordion .in').collapse('hide');
+   $('#accordion .in').collapse('hide');
+
+   var questionIdentifier  = $('.list-group-item.active').data("id");
+
+   var urlUpdateRead = '/question/updateRead/' + questionIdentifier;
+     console.log(question);
+     jQuery.ajax({
+      url: urlUpdateRead,
+      type: "PUT",
+      success: function (xhr, status, error) {
+        console.log('sucess');
+      }
+    });
   });
 
   listGroup.delegate(".list-group-item", "click", function(event) {
@@ -84,6 +98,8 @@ function ask(){
 }
 
 function answer(){
+  var questionIdentifier  = $('.list-group-item.active').data("id");
+
   var url = '/question/' + questionIdentifier;
 
   $.get(url, function(data, textStatus, jqXHR) {
@@ -94,6 +110,9 @@ function answer(){
 }
 
 function registerAnswer(question){
+
+  var questionIdentifier  = $('.list-group-item.active').data("id");
+
   var url = '/question/' + questionIdentifier;
   console.log(question);
   jQuery.ajax({
@@ -229,7 +248,18 @@ function getQuestion(question){
 
     var questionCollapsibleId = 'answer-for-' + question._id;
 
-    html.push('<a data-target="#' + questionCollapsibleId + '" class="list-group-item" data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'">');
+    var unreadStyle = "";
+
+
+
+    if(!question.read){
+      var userIdentifier = question.user._id ? question.user._id : question.user;
+      if(userIdentifier == $('#user-id').val()){
+        unreadStyle = 'style="background-color: #f0ad4e;"';
+      }
+    }
+
+    html.push('<a data-target="#' + questionCollapsibleId + '" class="list-group-item" ' + unreadStyle + ' data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'">');
     html.push('  <h4 class="list-group-item-heading">' + question.content + '</h4>');
     html.push('  <p class="list-group-item-text answer-preview-text">' + getShortAnswers(question.solutions) + '</p>');
 
@@ -239,7 +269,6 @@ function getQuestion(question){
       html.push('<div class="panel-heading">');
       html.push('<span id="' + question.solutions[i]._id +  '" class="badge">' + question.solutions[i].useful + '</span>');
       html.push('<label>' + question.solutions[i].user.username + '</label>' + '  ' + question.solutions[i].created);
-      debugger;
       html.push('<button onclick="rateDown(\'' + question.solutions[i]._id +'\')" class="answer-result red" href="#">');
       html.push('<span class="glyphicon glyphicon-remove"></span>');
       html.push('</button>');
@@ -251,6 +280,7 @@ function getQuestion(question){
       html.push(question.solutions[i].content);
       html.push('</div>');
       html.push('</div>');
+      //  html.push('<div class="col-lg-12">    <div class="panel panel-default">        <div class="panel-body">            <div id="answer-it">                <h2 class="text-center">Answer it!</h2>                <textarea id="textarea" class="form-control" rows="3"></textarea>                <button id="btn-register" class="btn btn-default btn-block" type="submit">Register</button>            </div>        </div>    </div></div>');
     }
 
     html.push('</div>');

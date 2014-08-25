@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
  */
 exports.all = function(req, res) {
   console.log('message');
-  Question.find().exec(function(err, question){
+  Question.find().populate('solutions.user').exec(function(err, question){
     console.log(question);
     if (!err) {
         res.json({data: question});

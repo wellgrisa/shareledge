@@ -12,11 +12,11 @@
 
       <ul class="nav navbar-nav navbar-right notifications">
 
-        <li><p class="navbar-text"><a id="outstandingQuestions" href="#"><span class="glyphicon glyphicon-comment"></span></a></p></li>
+        <li><p class="navbar-text"><a id="outstandingQuestions" href="#"><span title="Outstanding Questions." data-toggle="tooltip" data-placement="bottom" class="glyphicon glyphicon-comment"></span></a></p></li>
         <li class="divider-vertical"></li>
-        <li><p class="navbar-text"><a id="outstandingQuestionsByUser" href="#"><span class="glyphicon glyphicon-thumbs-up"></span>
+        <li><p class="navbar-text"><a id="outstandingQuestionsByUser" href="#"><span title="Your Questions. It shows a number when you got an answer." data-toggle="tooltip" data-placement="bottom" class="glyphicon glyphicon-thumbs-up"></span>
         {% if outstandingQuestionsByUser > 0  %}
-          <span class="badge" style="margin-left: 5px">{{outstandingQuestionsByUser}}</span>
+          <span title="You have {{outstandingQuestionsByUser}} answered questions." data-toggle="tooltip" data-placement="bottom" class="badge" style="margin-left: 5px">{{outstandingQuestionsByUser}}</span>
         {% endif %}
         </a></p></li>
         <li class="divider-vertical"></li>
@@ -27,9 +27,7 @@
             <img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="/img/unknown.png" alt="" />
           {% else %}
             <img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="{{user.google.picture}}" alt="" />
-            <input type=hidden name=customerid value="{{user._id}}">
           {% endif %}
-
           {% if user.username == undefined  %}
             <div class="dropdown-menu drop-form" style="padding: 15px;">
               <form action="/signin" method="post" role="form">
@@ -49,6 +47,7 @@
             <div class="dropdown-menu text-center" style="padding: 15px;">
               <a href="\signout" class="btn btn-warning">Sign out!</a>
             </div>
+            <input type="hidden" id="user-id"  name="user-id" value="{{user._id}}">
           {% endif %}
 
         </li>

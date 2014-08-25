@@ -106,3 +106,7 @@ body{
 .list-group-item.active .list-group-item-text {
   color: #428bca !important;
 }
+
+#accordion .list-group-item-heading{
+  cursor: pointer;
+}
