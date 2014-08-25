@@ -137,7 +137,7 @@ exports.updateRead = function(req, res){
 
 exports.updateAnswer = function(req, res){
   Question.findById(req.params.id, function (err, question){
-
+    var answerUpdated;
     for (var i = 0; i < question.solutions.length; i++) {
       if(question.solutions[i]._id == req.body.answer){
         if(req.body.rate == 'up'){
@@ -145,7 +145,7 @@ exports.updateAnswer = function(req, res){
         }else{
           question.solutions[i].useful = question.solutions[i].useful  - 1;
         }
-
+        answerUpdated = question.solutions[i];
         console.log(question.solutions[i].useful);
       }
     }
@@ -155,7 +155,8 @@ exports.updateAnswer = function(req, res){
       } else {
         console.log(err);
       }
-      return res.json(question);
+      console.log('answerupdated --- ', answerUpdated);
+      return res.json(answerUpdated);
     });
   });
 };

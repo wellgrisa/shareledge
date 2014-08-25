@@ -1,7 +1,7 @@
-body{ 
+body{
  color: #fff;
  font-family: "Open Sans", Helvetica, Arial, sans-serif;
- font-weight:  400; 
+ font-weight:  400;
 }
 
 .language {
@@ -49,7 +49,7 @@ button.multiselect{
 .language .btn.active
 {
   color: #2093C4 !important;
-  text-decoration: none;  
+  text-decoration: none;
   background-color: #fff !important;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -73,7 +73,7 @@ button.multiselect{
 }
 
 .comosomos {
- background:#a9bb4d  url(../img/bg-riscos.png) top center repeat-y; 
+ background:#a9bb4d  url(../img/bg-riscos.png) top center repeat-y;
  color:#fff;
 }
 
@@ -87,7 +87,7 @@ button.multiselect{
 }
 .how-we-are ul,
 .one-of-us ul{
- font-size:  12px; 
+ font-size:  12px;
  font-weight: normal;
 }
 
@@ -109,7 +109,7 @@ button.multiselect{
 }
 
 .lemann-text a{
- font-size:  0.8em;  
+ font-size:  0.8em;
 }
 
 .team-text{
@@ -126,7 +126,7 @@ button.multiselect{
 }
 
 .white-backgroud{
- background:#fff; 
+ background:#fff;
 }
 
 .row{
@@ -156,24 +156,24 @@ button.multiselect{
  background-color: #aa2a62;
 }
 
-.text-in-image-two-square{   
- z-index: 100; 
- position:absolute;        
- top: 0;   
- width: 50%;            
-}
-
-.text-in-image-one-square{    
+.text-in-image-two-square{
  z-index: 100;
  position:absolute;
- top: 0;                      
+ top: 0;
+ width: 50%;
 }
 
-.text-in-image-two-square-right{   
- z-index: 100; 
- position:absolute;        
- top: 0;   
- width: 100%;             
+.text-in-image-one-square{
+ z-index: 100;
+ position:absolute;
+ top: 0;
+}
+
+.text-in-image-two-square-right{
+ z-index: 100;
+ position:absolute;
+ top: 0;
+ width: 100%;
 }
 
 .texto ul{
@@ -181,7 +181,7 @@ button.multiselect{
  margin: 0 0 10px 25px;
 }
 
-.oquefazemos{ 
+.oquefazemos{
  background: #3aaadd url(../img/bg-riscos.png) top center repeat-y;
 }
 
@@ -207,13 +207,13 @@ button.multiselect{
 
 .umdenos .frase01 {
  font-weight: 400;
- font-size: 18px; 
+ font-size: 18px;
 }
 
 .umdenos .frase02 {
  font-weight: 300;
  font-size: 55px;
- color: #fff; 
+ color: #fff;
 }
 
 .umdenos .frase03 {
@@ -222,7 +222,7 @@ button.multiselect{
 }
 
 .vacancy-arrows{
-  padding-bottom: 20px; 
+  padding-bottom: 20px;
 }
 
 .vacancy-arrows img{
@@ -267,7 +267,7 @@ button.multiselect{
 .localizacao .contact a{
   color:  #a41f58;
   font-weight: 400;
-  line-height: 20px;    
+  line-height: 20px;
 }
 
 .localizacao .contact div{
@@ -276,7 +276,7 @@ button.multiselect{
 
 .umdenos .vaga strong {
  font-weight: 300;
- font-size: 40px;  
+ font-size: 40px;
 }
 
 .umdenos .vagadescricao {
@@ -290,11 +290,11 @@ button.multiselect{
 
 .umdenos .want{
  height: 190px;
- background:#a9bb4d; 
+ background:#a9bb4d;
  color:#fff;
 }
 
-.umdenos .want a { 
+.umdenos .want a {
  height: 110px;
  padding-top: 80px;
  display: block;
@@ -337,17 +337,17 @@ label.error {font-size: 12px; color: rgb(246, 36, 36); padding: 0; margin-top: -
   margin-left: 0;
   height: 125px;
 }
-#employee-text{ 
-  background:#fff; color:#444; margin-bottom:20px; 
-}   
-#employee-text li{ 
-  text-align:center; padding-top:20px; font-size:16px; height:auto; 
+#employee-text{
+  background:#fff; color:#444; margin-bottom:20px;
 }
-#employee-text li .nome{ 
+#employee-text li{
+  text-align:center; padding-top:20px; font-size:16px; height:auto;
+}
+#employee-text li .nome{
   font-size:11px;
   font-weight:700;
   margin-bottom:0;
-  text-transform:uppercase; 
+  text-transform:uppercase;
 }
 
 #employee .foto{
@@ -378,7 +378,7 @@ label.error {font-size: 12px; color: rgb(246, 36, 36); padding: 0; margin-top: -
 }
 
 #jobBox li .text{
- z-index: 100; 
+ z-index: 100;
  position:absolute;
 }
 
@@ -464,7 +464,7 @@ label.error {font-size: 12px; color: rgb(246, 36, 36); padding: 0; margin-top: -
   width: 200px;
 }
 #mobile-nav-ul li {
-  padding: 5px;  
+  padding: 5px;
 }
 #mobile-nav-ul a {
   text-transform: uppercase;
@@ -487,3 +487,4 @@ label.error {font-size: 12px; color: rgb(246, 36, 36); padding: 0; margin-top: -
 #popup-img {
   cursor: pointer;
 }
+

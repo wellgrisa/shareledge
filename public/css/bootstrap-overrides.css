@@ -98,3 +98,11 @@ body{
 .answers {
   margin-bottom:  10px;
 }
+
+.answer-collapsible .panel-body {
+  color: #555;
+}
+
+.list-group-item.active .list-group-item-text {
+  color: #428bca !important;
+}

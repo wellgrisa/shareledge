@@ -13,7 +13,6 @@ $(document).ready(function() {
       $('.list-group').html('');
       var questions = res.data;
       for (var i = 0; i < questions.length; i++) {
-//        $('.list-group').append(question(questions[i]._id, questions[i].content, getShortAnswers(questions[i].solutions)));
         $('.list-group').append(getQuestion(questions[i]));
       }
     });
@@ -23,7 +22,6 @@ $( "#outstandingQuestions" ).on('click', function() {
     $.get( '/questions/outstanding', function(questions){
       $('.list-group').html('');
       for (var i = 0; i < questions.length; i++) {
-//        $('.list-group').append(question(questions[i]._id, questions[i].content, getShortAnswers(questions[i].solutions)));
         $('.list-group').append(getQuestion(questions[i]));
       }
     });
@@ -33,7 +31,6 @@ $( "#outstandingQuestionsByUser" ).on('click', function() {
     $.get( '/questionByUser', function(questions){
       $('.list-group').html('');
       for (var i = 0; i < questions.length; i++) {
-//        $('.list-group').append(question(questions[i]._id, questions[i].content, getShortAnswers(questions[i].solutions)));
         $('.list-group').append(getQuestion(questions[i]));
       }
     });
@@ -46,16 +43,33 @@ $.get( '/questions/outstanding', function(res){
 });
 
   refreshQuestions();
-    
-    configureEventHandlers();
+
+  handleListGroup();
 });
+
+function handleListGroup(){
+  var listGroup = $(".list-group");
+
+listGroup.delegate('.answer-collapsible', 'click', function(e){
+  e.stopPropagation();
+});
+
+  listGroup.delegate(".answer-collapsible", "show.bs.collapse", function(){
+       $('#accordion .in').collapse('hide');
+  });
+
+  listGroup.delegate(".list-group-item", "click", function(event) {
+    var previous = $(event.currentTarget).closest(".list-group").children(".active");
+    previous.removeClass('active');
+    $(event.currentTarget).addClass('active');
+  });
+}
 
 function refreshQuestions(){
   $.get( '/question', function(res){
     $('.list-group').html('');
     var questions = res.data;
     for (var i = 0; i < questions.length; i++) {
-//      $('.list-group').append(question(questions[i]._id, questions[i].content, getShortAnswers(questions[i].solutions)));
       $('.list-group').append(getQuestion(questions[i]));
     }
   });
@@ -94,10 +108,8 @@ function registerAnswer(question){
   });
 }
 
-var questionIdentifier;
-
 function showAnswer(id){
-  questionIdentifier = id;
+  var questionIdentifier  = $('.list-group-item.active').data("id");
 
   var urlUpdateRead = '/question/updateRead/' + questionIdentifier;
   console.log(question);
@@ -105,7 +117,7 @@ function showAnswer(id){
     url: urlUpdateRead,
     type: "PUT",
     success: function (xhr, status, error) {
-
+        console.log('sucess');
     }
   });
 
@@ -130,7 +142,7 @@ function showAnswer(id){
 }
 
 function rateUp(identifier){
-rate(identifier, 'up');
+  rate(identifier, 'up');
 }
 
 function rateDown(identifier){
@@ -138,14 +150,14 @@ function rateDown(identifier){
 }
 
 function rate(identifier, rate){
-  var url = '/answer/' + questionIdentifier;
+  var url = '/answer/' + $('.list-group-item.active').data("id");
 
   jQuery.ajax({
     url: url,
     type: "PUT",
     data: { answer: identifier , rate: rate },
-    success: function (xhr, status, error) {
-      showAnswer(questionIdentifier);
+    success: function (data) {
+      $('#' + data._id).html(data.useful);
     }
   });
 }
@@ -170,11 +182,11 @@ function getShortAnswers(solutions){
 
 function configureEventHandlers() {
     var questions = $(".list-group");
-    
+
     questions.delegate(".list-group-item", "click", function(event) {
         var question = $(event.currentTarget),
             url = '/question/' + question.data("id");
-        
+
         console.log(url);
         console.log(question);
 
@@ -186,7 +198,7 @@ function configureEventHandlers() {
 
             for (var i = 0; i < data.solutions.length; i++) {
                 answer = [];
-              
+
                 answer.push('<div class="panel panel-default">');
                 answer.push('    <div class="panel-heading">');
                 answer.push('        <span class="badge">' + data.solutions[i].useful + '</span>');
@@ -212,13 +224,83 @@ function configureEventHandlers() {
 }
 
 function getQuestion(question){
+
     var html = [];
-  
-    html.push('<a href="#" class="list-group-item" data-id="' + question._id +'">');
+
+    var questionCollapsibleId = 'answer-for-' + question._id;
+
+    html.push('<a data-target="#' + questionCollapsibleId + '" class="list-group-item" data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'">');
     html.push('  <h4 class="list-group-item-heading">' + question.content + '</h4>');
-    html.push('  <p class="list-group-item-text">' + getShortAnswers(question.solutions) + '</p>');
-    html.push('  <div class="answers"></div>');
+    html.push('  <p class="list-group-item-text answer-preview-text">' + getShortAnswers(question.solutions) + '</p>');
+
+    html.push('  <div class="answer-collapsible collapse"  id="' + questionCollapsibleId + '">');
+    for (var i = 0; i < question.solutions.length; i++) {
+      html.push('<div class="panel panel-default">');
+      html.push('<div class="panel-heading">');
+      html.push('<span id="' + question.solutions[i]._id +  '" class="badge">' + question.solutions[i].useful + '</span>');
+      html.push('<label>' + question.solutions[i].user.username + '</label>' + '  ' + question.solutions[i].created);
+      debugger;
+      html.push('<button onclick="rateDown(\'' + question.solutions[i]._id +'\')" class="answer-result red" href="#">');
+      html.push('<span class="glyphicon glyphicon-remove"></span>');
+      html.push('</button>');
+      html.push('<button onclick="rateUp(\'' + question.solutions[i]._id +'\')" class="answer-result green" href="#">');
+      html.push('<span class="glyphicon glyphicon-ok"></span>');
+      html.push('</button>');
+      html.push('</div>');
+      html.push('<div class="panel-body">');
+      html.push(question.solutions[i].content);
+      html.push('</div>');
+      html.push('</div>');
+    }
+
+    html.push('</div>');
     html.push('</a>');
-    
+
+
+
+    var a = html.join('');
+
+    console.log(a);
+
     return html.join('');
+}
+
+function handleCollapsibleAnswers(elementEvent){
+
+  var question = $(elementEvent.currentTarget).parent('.list-group-item');
+  var id = question.data('id');
+  var url = '/question/' + id;
+
+  console.log(url);
+  console.log(question);
+
+  $.get(url, function(data) {
+    var answers = question.find('#answer-for-' + data._id),
+    answer;
+
+    answers.html('');
+
+    for (var i = 0; i < data.solutions.length; i++) {
+      answer = [];
+
+      answer.push('<div class="panel panel-default">');
+      answer.push('    <div class="panel-heading">');
+      answer.push('        <span class="badge">' + data.solutions[i].useful + '</span>');
+      answer.push('        <label>' + data.solutions[i].user.username + '</label>');
+      answer.push('        ' + data.solutions[i].created);
+      answer.push('        <a onclick="rateDown(\'' + data.solutions[i]._id +'\')" class="answer-result red" href="#">');
+      answer.push('            <span class="glyphicon glyphicon-remove"></span>');
+      answer.push('        </a>');
+      answer.push('        <a onclick="rateUp(\'' + data.solutions[i]._id +'\')" class="answer-result green" href="#">');
+      answer.push('            <span class="glyphicon glyphicon-ok"></span>');
+      answer.push('        </a>');
+      answer.push('    </div>');
+      answer.push('    <div class="panel-body">');
+      answer.push('   ' + data.solutions[i].content );
+      answer.push('    </div>');
+      answer.push('</div>');
+
+      answers.append(answer.join(''));
+    }
+  });
 }
