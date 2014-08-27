@@ -4,10 +4,6 @@ $(document).ready(function() {
     html:true
   });
 
-  $('#btn-register').on('click', function(){
-    answer();
-  });
-
   $( "#question" ).keyup(function() {
     $.get( '/question/search/' + $('#question').val(), function(res){
       $('.list-group').html('');
@@ -47,19 +43,28 @@ $.get( '/questions/outstanding', function(res){
   handleListGroup();
 
   $('.notifications span').tooltip();
+
+  focusTextArea();
 });
 
 function handleListGroup(){
   var listGroup = $(".list-group");
 
-listGroup.delegate('.answer-collapsible', 'click', function(e){
-  e.stopPropagation();
-});
+  listGroup.delegate('.answer-collapsible', 'click', function(e){
+    e.stopPropagation();
+  });
+
+  listGroup.delegate(".answer-collapsible", "shown.bs.collapse", function(){
+    $('.text-area-answer', $('.list-group-item.active')).eq(0).focus();
+  });
 
   listGroup.delegate(".answer-collapsible", "show.bs.collapse", function(){
+
    $('#accordion .in').collapse('hide');
 
-   var questionIdentifier  = $('.list-group-item.active').data("id");
+   var selectedQuestion = $('.list-group-item.active');
+
+   var questionIdentifier  = selectedQuestion.data("id");
 
    var urlUpdateRead = '/question/updateRead/' + questionIdentifier;
      console.log(question);
@@ -98,20 +103,23 @@ function ask(){
 }
 
 function answer(){
-  var questionIdentifier  = $('.list-group-item.active').data("id");
+  var selectedQuestion = $('.list-group-item.active');
+
+  var questionIdentifier  = selectedQuestion.data("id");
 
   var url = '/question/' + questionIdentifier;
 
   $.get(url, function(data, textStatus, jqXHR) {
-      data.solutions.push({ content : $('#textarea').val() });
+      data.solutions.push({ content : $('.text-area-answer', selectedQuestion).val() });
 
       registerAnswer(data);
   });
 }
 
 function registerAnswer(question){
+  var selectedQuestion = $('.list-group-item.active');
 
-  var questionIdentifier  = $('.list-group-item.active').data("id");
+  var questionIdentifier  = selectedQuestion.data("id");
 
   var url = '/question/' + questionIdentifier;
   console.log(question);
@@ -121,8 +129,7 @@ function registerAnswer(question){
     data: question,
     success: function (xhr, status, error) {
       refreshQuestions();
-      $('#textarea').val('');
-      $('.answer-panel').fadeOut('slow');
+      $('.text-area-answer', selectedQuestion).val('');
     }
   });
 }
@@ -250,11 +257,8 @@ function getQuestion(question){
 
     var unreadStyle = "";
 
-
-
     if(!question.read){
-      var userIdentifier = question.user._id ? question.user._id : question.user;
-      if(userIdentifier == $('#user-id').val()){
+      if(question.user.username == $('#user-name').val()){
         unreadStyle = 'style="background-color: #f0ad4e;"';
       }
     }
@@ -283,6 +287,12 @@ function getQuestion(question){
       //  html.push('<div class="col-lg-12">    <div class="panel panel-default">        <div class="panel-body">            <div id="answer-it">                <h2 class="text-center">Answer it!</h2>                <textarea id="textarea" class="form-control" rows="3"></textarea>                <button id="btn-register" class="btn btn-default btn-block" type="submit">Register</button>            </div>        </div>    </div></div>');
     }
 
+    html.push('<div class="panel-answer">');
+    html.push('<textarea class="form-control text-area-answer" rows="3"></textarea>');
+    html.push('<div class="panel-bottom-answer">');
+    html.push('<button onclick="answer()" class="btn btn-default btn-answer" type="submit">Register</button>');
+    html.push('</div>');
+    html.push('</div>');
     html.push('</div>');
     html.push('</a>');
 

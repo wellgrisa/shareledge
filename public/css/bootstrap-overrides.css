@@ -110,3 +110,13 @@ body{
 #accordion .list-group-item-heading{
   cursor: pointer;
 }
+
+.btn-answer{
+  margin-bottom:  10px;
+  float:  right;
+}
+
+.panel-answer .panel-bottom-answer{
+  padding-top: 10px;
+  padding-bottom: 45px;
+}

@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
  */
 exports.all = function(req, res) {
   console.log('message');
-  Question.find().populate('solutions.user').exec(function(err, question){
+  Question.find().populate('user solutions.user').exec(function(err, question){
     console.log(question);
     if (!err) {
         res.json({data: question});
@@ -52,7 +52,7 @@ exports.create = function (req, res) {
 };
 
 exports.getById = function(req, res){
-  return Question.findById(req.params.id).populate('solutions.user').exec(function (err, question){
+  return Question.findById(req.params.id).populate('user solutions.user').exec(function (err, question){
     console.log(question);
     if (!err) {
       return res.send(question);
