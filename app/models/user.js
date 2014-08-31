@@ -64,7 +64,8 @@ var UserSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  google: {}
+  google: {},
+  showTour: { type : Boolean, default : true },
 });
 
 /**

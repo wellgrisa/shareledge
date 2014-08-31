@@ -8,6 +8,7 @@ module.exports = function(app, passport) {
 
   var admin = require('../app/controllers/admin');
   app.post('/signup', admin.signup);
+  app.put('/finishTour/:id', admin.finishTour);
   app.post('/signin', admin.signin(passport));
   app.get('/signout', admin.signout);
   app.get('/login', admin.login);
@@ -23,6 +24,8 @@ module.exports = function(app, passport) {
   app.get('/questions/outstandingByUser', question.getOutstandingQuestionsByUser);
   app.put('/question/:id', question.update);
   app.put('/answer/:id', question.updateAnswer);
+
+  app.post('/uploadImage', question.uploadImage);
 
   app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
 

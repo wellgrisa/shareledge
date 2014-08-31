@@ -13,7 +13,8 @@ exports.render = function(req, res) {
         user: req.user,
         outstandingQuestionsByUser : outstandingQuestions,
         action: req.params.action,
-        wonder: req.params.wonder
+        wonder: req.params.wonder,
+        showTour: req.user.showTour
       });
 
     } else {

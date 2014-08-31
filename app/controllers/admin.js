@@ -41,6 +41,24 @@ exports.signup = function(req, res) {
   });
 };
 
+exports.finishTour = function(req, res){
+
+  User.findById(req.user._id).exec(function (err, user){
+      console.log(user);
+      user.showTour = false;
+
+      return user.save(function (err) {
+        if (!err) {
+          console.log("updated");
+        } else {
+          console.log(err);
+        }
+        return res.json(user);
+      });
+
+  });
+};
+
 exports.signin = function(passport) {
   console.log('---------------teste----------------------------');
 

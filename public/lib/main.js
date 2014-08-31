@@ -36,16 +36,109 @@ $.get( '/questions/outstanding', function(res){
   if(res.length > 0){
     $('#outstandingQuestions').append('<span class="badge" style="margin-left: 5px">' + res.length + '</span>');
   }
+
 });
+
+// document.onpaste = function(event){
+//     var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+//   console.log(JSON.stringify(items)); // will give you the mime types
+//   var blob = items[0].getAsFile();
+//   var reader = new FileReader();
+//   reader.onload = function(event){
+//     console.log(event.target.result)}; // data url!
+//   reader.readAsDataURL(blob);
+// }
 
   refreshQuestions();
 
   handleListGroup();
 
   $('.notifications span').tooltip();
-
-  focusTextArea();
+  window.addEventListener("paste",processEvent);
 });
+
+function processEvent(e) {
+    for (var i = 0 ; i < e.clipboardData.items.length ; i++) {
+
+        var clipboardItem = e.clipboardData.items[i];
+        var type = clipboardItem.type;
+
+        if (type.indexOf("image") != -1) {
+          var blob = clipboardItem.getAsFile();
+            var reader = new FileReader();
+            reader.onload = function(event){
+                createImage(event.target.result); //event.target.results contains the base64 code to create the image.
+              };
+            reader.readAsDataURL(blob);//Convert the blob from clipboard to base64
+
+        } else {
+            console.log("Not supported: " + type);
+        }
+
+    }
+}
+
+function createImage(imagePasted){
+jQuery.ajax({
+    url: 'uploadImage',
+    type: "POST",
+    data: { img : imagePasted },
+    success: function (data) {
+
+      var img= new Image();// : document.createElement('img');
+      img.src= data.imgSrc;
+
+      doInsert(img);
+    },
+    error: function (xhr, status, error) {
+
+    }
+  });
+}
+
+function HandleSelectionChange() {
+    var sel = window.getSelection && window.getSelection();
+    if (sel && sel.rangeCount > 0) {
+        savedRange = sel.getRangeAt(0);
+    }
+}
+
+function doInsert(element) {
+    var sel = window.getSelection && window.getSelection();
+
+    if (sel && sel.rangeCount > 0) {
+        var range = sel.getRangeAt(0);
+
+        range.insertNode(element);
+    }
+}
+
+
+// function insertTextAtCursor(element) {
+//     var sel, range, html;
+//     if (window.getSelection) {
+//         sel = window.getSelection();
+//         if (sel.getRangeAt && sel.rangeCount) {
+//             range = sel.getRangeAt(0);
+//             range.deleteContents();
+//             range.insertNode(element);
+//         }
+//     } else if (document.selection && document.selection.createRange) {
+//         //document.selection.createRange().text = text;
+//     }
+// }
+
+// function insertNodeAtCursor(node) {
+//   var range, html;
+//   if (window.getSelection && window.getSelection().getRangeAt) {
+//     range = window.getSelection().getRangeAt(0);
+//     range.insertNode(node);
+//   } else if (document.selection && document.selection.createRange) {
+//     range = document.selection.createRange();
+//     html = (node.nodeType == 3) ? node.data : node.outerHTML;
+//     range.pasteHTML(html);
+//   }
+// }
 
 function handleListGroup(){
   var listGroup = $(".list-group");
@@ -55,7 +148,11 @@ function handleListGroup(){
   });
 
   listGroup.delegate(".answer-collapsible", "shown.bs.collapse", function(){
-    $('.text-area-answer', $('.list-group-item.active')).eq(0).focus();
+    var textarea = $('.textarea', $('.list-group-item.active'));
+
+    textarea.wysiwyg();
+
+    textarea.eq(0).focus();
   });
 
   listGroup.delegate(".answer-collapsible", "show.bs.collapse", function(){
@@ -84,6 +181,17 @@ function handleListGroup(){
   });
 }
 
+function finishTour(){
+  var finishTour = '/finishTour/' + $('#user-id').val();
+  jQuery.ajax({
+    url: finishTour,
+    type: "PUT",
+    success: function (xhr, status, error) {
+      console.log('sucess');
+    }
+  });
+}
+
 function refreshQuestions(){
   $.get( '/question', function(res){
     $('.list-group').html('');
@@ -99,6 +207,7 @@ function ask(){
   "content": $('#question').val()
   }, function(data, textStatus, jqXHR) {
     refreshQuestions();
+    $('#btn-ask').popover('hide');
   });
 }
 
@@ -110,7 +219,7 @@ function answer(){
   var url = '/question/' + questionIdentifier;
 
   $.get(url, function(data, textStatus, jqXHR) {
-      data.solutions.push({ content : $('.text-area-answer', selectedQuestion).val() });
+      data.solutions.push({ content : $('.textarea', selectedQuestion).html() });
 
       registerAnswer(data);
   });
@@ -198,7 +307,7 @@ function question(id, content, answers){
 function getShortAnswers(solutions){
   var solutionsString = '';
   for (var i = 0; i < solutions.length; i++) {
-    solutionsString += solutions[i].content;
+    solutionsString += solutions[i].content.replace(/<img [^>]+>/g, "").replace(/<br>/g, "");
   }
   return solutionsString.substr(0, 500);
 }
@@ -288,7 +397,8 @@ function getQuestion(question){
     }
 
     html.push('<div class="panel-answer">');
-    html.push('<textarea class="form-control text-area-answer" rows="3"></textarea>');
+    //html.push('<textarea class="form-control text-area-answer" rows="3"></textarea>');
+    html.push('<div class="textarea">Go ahead&hellip;</div>');
     html.push('<div class="panel-bottom-answer">');
     html.push('<button onclick="answer()" class="btn btn-default btn-answer" type="submit">Register</button>');
     html.push('</div>');

@@ -3,7 +3,9 @@
  */
 var mongoose = require('mongoose'),
     Question = mongoose.model('Question'),
-    config = require('../../config/config');
+    fs = require('fs'),
+    config = require('../../config/config')
+    uuid = require('node-uuid');
 
 /**
  * Get Question
@@ -169,3 +171,15 @@ exports.destroy = function(req, res){
     });
   });
 };
+
+exports.uploadImage = function(req, res){
+
+  var buff = new Buffer(req.body.img.replace(/^data:image\/(png|gif|jpeg);base64,/,''), 'base64');
+
+  var filePath = 'img/questions/' + uuid.v4() + '.jpeg';
+
+  fs.writeFile('public/' + filePath, buff, function (err) {
+    console.log('uploaded with success');
+    return res.json({ imgSrc : filePath});
+  });
+}
