@@ -1,10 +1,20 @@
 $(document).ready(function() {
 
+  $('#question').focus();
+
   $('#btn-ask').popover({
     html:true
   });
 
-  $( "#question" ).keyup(function() {
+  $( "#question" ).keyup(function(e) {
+
+    var evtobj = window.event? event : e
+
+    if (evtobj.keyCode == 13) {
+      $('#btn-ask').popover('show');
+      $('.btn-ask').focus();
+    }
+
     $.get( '/question/search/' + $('#question').val(), function(res){
       $('.list-group').html('');
       var questions = res.data;
@@ -239,19 +249,24 @@ function refreshQuestions(){
 }
 
 function ask(){
+  if($('#question').val() == ""){
+    alertUser('danger', 'É necessário digitar uma pergunta.');
+    return;
+  }
 
   if(!$('#systems').val()){
     alertUser('danger', 'Por favor selecione um Sistema ao lado esquerdo para registrar a pergunta.');
-  }else{
-   jQuery.post("/question", {
-    "content": $('#question').val(),
-    "type" : $('#systems').val()
-    }, function(data, textStatus, jqXHR) {
-      alertUser('success', 'Questão registrada com sucesso.');
-      refreshQuestions();
-      $('#btn-ask').popover('hide');
-    });
+    return;
   }
+
+ jQuery.post("/question", {
+  "content": $('#question').val(),
+  "type" : $('#systems').val()
+  }, function(data, textStatus, jqXHR) {
+    alertUser('success', 'Questão registrada com sucesso.');
+    refreshQuestions();
+    $('#btn-ask').popover('hide');
+  });
 }
 
 function alertUser(type, message){

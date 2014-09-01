@@ -1,14 +1,61 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
+
+  <ul class="nav navbar-nav navbar-right notifications">
+
+    <li><p class="navbar-text"><a id="outstandingQuestions" href="#"><span title="Outstanding Questions." data-toggle="tooltip" data-placement="bottom" class="glyphicon glyphicon-comment"></span></a></p></li>
+    <li class="divider-vertical"></li>
+    <li><p class="navbar-text"><a id="outstandingQuestionsByUser" href="#"><span title="Your Questions. It shows a number when you got an answer." data-toggle="tooltip" data-placement="bottom" class="glyphicon glyphicon-thumbs-up"></span>
+      {% if outstandingQuestionsByUser > 0  %}
+      <span title="You have {{outstandingQuestionsByUser}} answered questions." data-toggle="tooltip" data-placement="bottom" class="badge" style="margin-left: 5px">{{outstandingQuestionsByUser}}</span>
+      {% endif %}
+    </a></p></li>
+    <li class="divider-vertical"></li>
+    <!-- <li><img id="user-avatar" data-toggle="modal" data-target="#sign-up-modal" class="img-responsive user navbar-right" src="/img/well.png" alt="" /></li> -->
+    <li class="divider-vertical"></li>
+    <li class="dropdown">
+      {% if user.google.picture == undefined  %}
+      <img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="/img/unknown.png" alt="" />
+      {% else %}
+      <img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="{{user.google.picture}}" alt="" />
+      {% endif %}
+      {% if user.username == undefined  %}
+      <div class="dropdown-menu drop-form" style="padding: 15px;">
+        <form action="/signin" method="post" role="form">
+          <div class="form-group">
+            <label for="username">User Name</label>
+            <input type="text" class="form-control" id="userame" name="username" placeholder="Enter user name">
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+          </div>
+          <button type="submit" class="btn btn-info">Log in</button>
+          or <a href="#" data-toggle="modal" data-target="#sign-up-modal" class="btn btn-warning">Sign up!</a>
+        </form>
+      </div>
+      {% else %}
+      <div class="dropdown-menu text-center" style="padding: 15px;">
+        <a href="\signout" class="btn btn-warning">Sign out!</a>
+      </div>
+      <input type="hidden" id="user-id"  name="user-id" value="{{user._id}}">
+      <input type="hidden" id="user-name"  name="user-name" value="{{user.username}}">
+      <input type="hidden" id="showTour" value="{{showTour}}">
+      <input type="hidden" id="filter" value="{{user.filter}}">
+      <input type="hidden" id="department" value="{{user.department}}">
+      {% endif %}
+
+    </li>
+  </ul>
+  <a style="float: left" href="www.bravi.com.br"><img class="img-responsive bravi-logo" src="/img/bravi.png" alt="" /></a>
   <ul class="nav navbar-nav">
+
   <li class="dropdown" style="float: left;margin-top: 10px;">
-
-
     <select id="systems" name="systems" required class="form-control">
       <option value="hours">horas</option>
       <option value="ebs">ebs</option>
     </select>
-
   </li>
+
   </ul>
   <div class="container">
     <div class="navbar-header">
@@ -17,58 +64,10 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a href="www.bravi.com.br"><img class="img-responsive bravi-logo" src="/img/bravi.png" alt="" /></a>
     </div>
     <div class="navbar-collapse collapse" id="searchbar">
 
-      <ul class="nav navbar-nav navbar-right notifications">
-
-        <li><p class="navbar-text"><a id="outstandingQuestions" href="#"><span title="Outstanding Questions." data-toggle="tooltip" data-placement="bottom" class="glyphicon glyphicon-comment"></span></a></p></li>
-        <li class="divider-vertical"></li>
-        <li><p class="navbar-text"><a id="outstandingQuestionsByUser" href="#"><span title="Your Questions. It shows a number when you got an answer." data-toggle="tooltip" data-placement="bottom" class="glyphicon glyphicon-thumbs-up"></span>
-        {% if outstandingQuestionsByUser > 0  %}
-          <span title="You have {{outstandingQuestionsByUser}} answered questions." data-toggle="tooltip" data-placement="bottom" class="badge" style="margin-left: 5px">{{outstandingQuestionsByUser}}</span>
-        {% endif %}
-        </a></p></li>
-        <li class="divider-vertical"></li>
-        <!-- <li><img id="user-avatar" data-toggle="modal" data-target="#sign-up-modal" class="img-responsive user navbar-right" src="/img/well.png" alt="" /></li> -->
-        <li class="divider-vertical"></li>
-        <li class="dropdown">
-          {% if user.google.picture == undefined  %}
-            <img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="/img/unknown.png" alt="" />
-          {% else %}
-            <img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="{{user.google.picture}}" alt="" />
-          {% endif %}
-          {% if user.username == undefined  %}
-            <div class="dropdown-menu drop-form" style="padding: 15px;">
-              <form action="/signin" method="post" role="form">
-                <div class="form-group">
-                <label for="username">User Name</label>
-                  <input type="text" class="form-control" id="userame" name="username" placeholder="Enter user name">
-                </div>
-                <div class="form-group">
-                  <label for="password">Password</label>
-                  <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                </div>
-                <button type="submit" class="btn btn-info">Log in</button>
-                or <a href="#" data-toggle="modal" data-target="#sign-up-modal" class="btn btn-warning">Sign up!</a>
-              </form>
-            </div>
-          {% else %}
-            <div class="dropdown-menu text-center" style="padding: 15px;">
-              <a href="\signout" class="btn btn-warning">Sign out!</a>
-            </div>
-            <input type="hidden" id="user-id"  name="user-id" value="{{user._id}}">
-            <input type="hidden" id="user-name"  name="user-name" value="{{user.username}}">
-            <input type="hidden" id="showTour" value="{{showTour}}">
-            <input type="hidden" id="filter" value="{{user.filter}}">
-            <input type="hidden" id="department" value="{{user.department}}">
-          {% endif %}
-
-        </li>
-      </ul>
-
-      <form class="navbar-form" action="/knowledge" method="post" >
+      <div class="navbar-form" >
         <div class="form-group" style="display:inline;">
           <div id="nav-input-wonder" class="input-group">
           <input type="text" id="question" id="question" name="question" class="form-control">
@@ -80,7 +79,7 @@
           </span>
           </div>
         </div>
-      </form>
+      </div>
 
     </div><!--/.nav-collapse -->
   </div>
