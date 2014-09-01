@@ -34,7 +34,7 @@ exports.signup = function(req, res) {
         if (err) {
           res.send(400, err);
         } else {
-          res.jsonp(user);
+          res.redirect('/');
         }
       });
     }
@@ -46,6 +46,24 @@ exports.finishTour = function(req, res){
   User.findById(req.user._id).exec(function (err, user){
       console.log(user);
       user.showTour = false;
+
+      return user.save(function (err) {
+        if (!err) {
+          console.log("updated");
+        } else {
+          console.log(err);
+        }
+        return res.json(user);
+      });
+
+  });
+};
+
+exports.updateFilter = function(req, res){
+
+  User.findById(req.user._id).exec(function (err, user){
+
+      user.filter = req.body.filter;
 
       return user.save(function (err) {
         if (!err) {

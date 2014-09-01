@@ -65,7 +65,14 @@ var UserSchema = new Schema({
     default: Date.now
   },
   google: {},
-  showTour: { type : Boolean, default : true },
+  showTour: {
+    type : Boolean,
+    default : true
+  },
+  filter: {
+    type: String
+  },
+  department: { type: String, enum: ['administrative', 'development', 'peopleCare'] }
 });
 
 /**

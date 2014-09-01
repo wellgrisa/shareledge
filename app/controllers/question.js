@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
  */
 exports.all = function(req, res) {
   console.log('message');
-  Question.find().populate('user solutions.user').exec(function(err, question){
+  Question.find({ type : req.user.filter }).sort('-views').populate('user solutions.user').exec(function(err, question){
     console.log(question);
     if (!err) {
         res.json({data: question});
@@ -27,7 +27,7 @@ exports.search = function(req, res) {
 
   var regex = new RegExp('^.*'+ req.params.search +'.*$', "i");
 
-  Question.find({content: regex }).exec(function(err, question){
+  Question.find({content: regex, type : req.user.filter }).exec(function(err, question){
 
     if (!err) {
         res.json({data: question});
@@ -40,6 +40,7 @@ exports.search = function(req, res) {
 exports.create = function (req, res) {
   console.log('create');
   var question = new Question(req.body);
+
   question.user = req.user;
 
   question.save(function(err) {
@@ -65,7 +66,7 @@ exports.getById = function(req, res){
 };
 
 exports.getByUser = function(req, res){
-  return Question.find({'user' : new mongoose.Types.ObjectId(req.user._id)}).populate('user solutions.user').exec(function (err, questions){
+  return Question.find({'user' : new mongoose.Types.ObjectId(req.user._id), 'type' : req.user.filter}).populate('user solutions.user').exec(function (err, questions){
     console.log(questions);
     if (!err) {
       return res.send(questions);
@@ -76,7 +77,7 @@ exports.getByUser = function(req, res){
 };
 
 exports.getOutstandingQuestions = function(req, res){
-return Question.find({$or : [{"solutions.useful": 0}, {"solutions": {$size: 0}}]}).populate('user solutions.user').exec(function (err, questions){
+return Question.find({$or : [{"solutions.useful": 0}, {"solutions": {$size: 0}}], type : req.user.filter}).populate('user solutions.user').exec(function (err, questions){
     if (!err) {
       return res.send(questions);
     } else {
@@ -144,8 +145,10 @@ exports.updateAnswer = function(req, res){
       if(question.solutions[i]._id == req.body.answer){
         if(req.body.rate == 'up'){
           question.solutions[i].useful = question.solutions[i].useful  + 1;
+          question.views ++;
         }else{
           question.solutions[i].useful = question.solutions[i].useful  - 1;
+          question.views --;
         }
         answerUpdated = question.solutions[i];
         console.log(question.solutions[i].useful);

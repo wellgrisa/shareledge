@@ -37,7 +37,42 @@ $.get( '/questions/outstanding', function(res){
     $('#outstandingQuestions').append('<span class="badge" style="margin-left: 5px">' + res.length + '</span>');
   }
 
+handleMultiSelect();
+
 });
+
+function handleMultiSelect(){
+  var sections = $('#filter').val().split(',');
+
+  var systems = $('#systems');
+
+  initMultiSelect(systems);
+
+  systems.val(sections);
+
+  systems.multiselect('refresh');
+}
+
+function initMultiSelect(element){
+  element.multiselect({
+    buttonWidth: '100%',
+    buttonClass: 'btn btn-link',
+    nonSelectedText: 'Selecione um sistema',
+    onChange : systemChanged
+  });
+}
+
+function systemChanged(element, checked){
+ jQuery.ajax({
+    url: '/updateFilter',
+    type: "PUT",
+    data : { filter : $('#systems').val() },
+    success: function (xhr, status, error) {
+      console.log('sucess');
+      refreshQuestions();
+    }
+  });
+}
 
 // document.onpaste = function(event){
 //     var items = (event.clipboardData || event.originalEvent.clipboardData).items;
@@ -193,6 +228,7 @@ function finishTour(){
 }
 
 function refreshQuestions(){
+
   $.get( '/question', function(res){
     $('.list-group').html('');
     var questions = res.data;
@@ -203,12 +239,38 @@ function refreshQuestions(){
 }
 
 function ask(){
- jQuery.post("/question", {
-  "content": $('#question').val()
-  }, function(data, textStatus, jqXHR) {
-    refreshQuestions();
-    $('#btn-ask').popover('hide');
-  });
+
+  if(!$('#systems').val()){
+    alertUser('danger', 'Por favor selecione um Sistema ao lado esquerdo para registrar a pergunta.');
+  }else{
+   jQuery.post("/question", {
+    "content": $('#question').val(),
+    "type" : $('#systems').val()
+    }, function(data, textStatus, jqXHR) {
+      alertUser('success', 'Questão registrada com sucesso.');
+      refreshQuestions();
+      $('#btn-ask').popover('hide');
+    });
+  }
+}
+
+function alertUser(type, message){
+  var alertPanel = buildPanel(type, message);
+
+  $('.alert-panel').append(alertPanel);
+
+  setTimeout(function(){
+    $('.alert', '.alert-panel').fadeOut('slow');
+  } , 2000);
+}
+
+function buildPanel(type, message){
+    var messageBox = [];
+    messageBox.push('<div class="alert alert-' + type + '">');
+    messageBox.push('<a href="#" class="close" data-dismiss="alert">&times;</a>');
+    messageBox.push(message);
+    messageBox.push('</div>');
+    return messageBox.join('');
 }
 
 function answer(){
@@ -393,16 +455,14 @@ function getQuestion(question){
       html.push(question.solutions[i].content);
       html.push('</div>');
       html.push('</div>');
-      //  html.push('<div class="col-lg-12">    <div class="panel panel-default">        <div class="panel-body">            <div id="answer-it">                <h2 class="text-center">Answer it!</h2>                <textarea id="textarea" class="form-control" rows="3"></textarea>                <button id="btn-register" class="btn btn-default btn-block" type="submit">Register</button>            </div>        </div>    </div></div>');
     }
 
-    html.push('<div class="panel-answer">');
-    //html.push('<textarea class="form-control text-area-answer" rows="3"></textarea>');
-    html.push('<div class="textarea">Go ahead&hellip;</div>');
-    html.push('<div class="panel-bottom-answer">');
-    html.push('<button onclick="answer()" class="btn btn-default btn-answer" type="submit">Register</button>');
-    html.push('</div>');
-    html.push('</div>');
+    if($('#systems').val() != 'hours'){
+      html.push(buildAnswerPanel());
+    }else if($('#department').val() == 'administrative'){
+      html.push(buildAnswerPanel());
+    }
+
     html.push('</div>');
     html.push('</a>');
 
@@ -413,6 +473,17 @@ function getQuestion(question){
     console.log(a);
 
     return html.join('');
+}
+
+function buildAnswerPanel(){
+  var answerPanel = []
+  answerPanel.push('<div class="panel-answer">');
+  answerPanel.push('<div class="textarea">Go ahead&hellip;</div>');
+  answerPanel.push('<div class="panel-bottom-answer">');
+  answerPanel.push('<button onclick="answer()" class="btn btn-default btn-answer" type="submit">Register</button>');
+  answerPanel.push('</div>');
+  answerPanel.push('</div>');
+  return answerPanel.join('');
 }
 
 function handleCollapsibleAnswers(elementEvent){

@@ -1,4 +1,15 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
+  <ul class="nav navbar-nav">
+  <li class="dropdown" style="float: left;margin-top: 10px;">
+
+
+    <select id="systems" name="systems" required class="form-control">
+      <option value="hours">horas</option>
+      <option value="ebs">ebs</option>
+    </select>
+
+  </li>
+  </ul>
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -50,6 +61,8 @@
             <input type="hidden" id="user-id"  name="user-id" value="{{user._id}}">
             <input type="hidden" id="user-name"  name="user-name" value="{{user.username}}">
             <input type="hidden" id="showTour" value="{{showTour}}">
+            <input type="hidden" id="filter" value="{{user.filter}}">
+            <input type="hidden" id="department" value="{{user.department}}">
           {% endif %}
 
         </li>

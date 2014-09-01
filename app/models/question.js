@@ -33,6 +33,7 @@ var QuestionSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   },
+  type: { type: String, enum: ['hours', 'ebs'] },
   updated: {
     type: Date
   },
@@ -40,7 +41,8 @@ var QuestionSchema = new Schema({
   created: {
     type: Date,
     default: Date.now
-  }
+  },
+  views:{ type: Number, default : 0 },
 });
 
 mongoose.model('Question', QuestionSchema);

@@ -166,3 +166,11 @@ div[data-role="editor-toolbar"] {
 .dropdown-menu a {
   cursor: pointer;
 }
+
+.alert{
+  width: 100%;
+  top: 0;
+  margin-top: 60px;
+  position: absolute;
+  z-index: 10000;
+}
