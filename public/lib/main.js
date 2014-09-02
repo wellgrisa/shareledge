@@ -510,9 +510,13 @@ function getQuestion(question){
     var picture = question.user.google ? question.user.google.picture :"/img/unknown.png";
 
     html.push('<a data-target="#' + questionCollapsibleId + '" class="list-group-item" ' + unreadStyle + ' data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'">');
-    //html.push('<img data-toggle="dropdown" class="img-responsive panel-user navbar-right img-circle" src="' + picture + '" alt=""/>');
+    html.push('<img data-toggle="dropdown" class="img-responsive panel-user navbar-right img-circle" src="' + picture + '" alt=""/>');
     html.push('  <h4 class="list-group-item-heading">' + question.content + '</h4>');
-    html.push('  <p class="list-group-item-text answer-preview-text">' + getShortAnswers(question.solutions) + '</p>');
+    if(question.solutions.length){
+        html.push('  <p class="list-group-item-text answer-preview-text">' + getShortAnswers(question.solutions) + '</p>');
+    }else{
+        html.push('<br>');
+    }
 
     html.push('  <div class="answer-collapsible collapse"  id="' + questionCollapsibleId + '">');
     for (var i = 0; i < question.solutions.length; i++) {
