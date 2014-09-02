@@ -1,6 +1,6 @@
 
 var fs = require('fs'),
-    express = require('express'),
+    express = require('express.io'),
     mongoose = require('mongoose'),
     passport = require('passport'),
     path = require('path'),
@@ -31,6 +31,8 @@ var path = require('path');
 
 var app = express();
 
+app.http().io();
+
 require('./config/passport')(passport);
 
 require('./config/express')(app, passport);
@@ -42,6 +44,6 @@ require('./config/routes')(app, passport);
 // all environments
 app.set('port', process.env.PORT || 3000);
 
-http.createServer(app).listen(app.get('port'), function(){
+app.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });

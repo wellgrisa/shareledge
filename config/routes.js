@@ -23,8 +23,17 @@ module.exports = function(app, passport) {
   app.get('/questionByUser', question.getByUser);
   app.get('/questions/outstanding', question.getOutstandingQuestions);
   app.get('/questions/outstandingByUser', question.getOutstandingQuestionsByUser);
+  app.get('/questions/outstandingFilter', question.getOutstandingByFilter);
   app.put('/question/:id', question.update);
   app.put('/answer/:id', question.updateAnswer);
+
+  app.io.route('question-created', function(req){
+    req.io.broadcast('update-general-badge');
+  });
+
+  app.io.route('question-answered', function(req){
+    req.io.broadcast('update-user-badge');
+  });
 
   app.post('/uploadImage', question.uploadImage);
 

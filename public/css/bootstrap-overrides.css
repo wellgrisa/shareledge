@@ -33,6 +33,10 @@ body{
  margin-right: 10px;
  height: 50px;
 }
+
+.panel-user{
+  height: 40px;
+}
 /*
 .navbar .notifications .glyphicon{
   font-size: 24px;
@@ -114,6 +118,7 @@ body{
 .panel-answer .panel-bottom-answer{
   padding-top: 10px;
   padding-bottom: 45px;
+  margin-top: 10px;
 }
 
 .editor {overflow:scroll; max-height:300px}
@@ -182,3 +187,7 @@ div[data-role="editor-toolbar"] {
   margin-left:  -15px;
   margin-right:  -15px;
 }
+/*
+.panel-body .list-group-item{
+  padding-bottom: 20px;
+}*/

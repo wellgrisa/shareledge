@@ -1,5 +1,23 @@
 $(document).ready(function() {
 
+  io = io.connect();
+
+  io.on('update-general-badge', function() {
+    updateOutstandingQuestionsBadge();
+    if(!$('.answer-collapsible .in').length && $('#question').val() == ""
+      && !$('#outstandingQuestionsByUser').hasClass('questions-selected')){
+      refreshQuestions();
+    }
+  });
+
+  io.on('update-user-badge', function() {
+    updateOutstandingQuestionsByUserBadge();
+    if(!$('.answer-collapsible .in').length && $('#question').val() == ""
+      && !$('#outstandingQuestionsByUser').hasClass('questions-selected')){
+      refreshQuestions();
+    }
+  });
+
   $('#question').focus();
 
   $('#btn-ask').popover({
@@ -25,6 +43,8 @@ $(document).ready(function() {
   });
 
 $( "#outstandingQuestions" ).on('click', function() {
+    $(this).addClass('questions-selected');
+    $( "#outstandingQuestionsByUser" ).removeClass('questions-selected');
     $.get( '/questions/outstanding', function(questions){
       $('.list-group').html('');
       for (var i = 0; i < questions.length; i++) {
@@ -34,6 +54,8 @@ $( "#outstandingQuestions" ).on('click', function() {
   });
 
 $( "#outstandingQuestionsByUser" ).on('click', function() {
+    $(this).addClass('questions-selected');
+    $( "#outstandingQuestions" ).removeClass('questions-selected');
     $.get( '/questionByUser', function(questions){
       $('.list-group').html('');
       for (var i = 0; i < questions.length; i++) {
@@ -248,6 +270,34 @@ function refreshQuestions(){
   });
 }
 
+function updateOutstandingQuestionsBadge(){
+  $.getJSON( '/questions/outstandingFilter', {$or : [{"solutions.useful": 0}, {"solutions": {$size : 0}}], type : $('#filter').val()} )
+  .done(function(json){
+    if($('#outstandingQuestions .badge').length){
+      $('#outstandingQuestions .badge').html('<span class="badge" style="margin-left: 5px">' + json.count + '</span>');
+    }else{
+      $('#outstandingQuestions .badge').append('<span class="badge" style="margin-left: 5px">' + json.count + '</span>');
+    }
+  })
+  .fail(function(jqxhr, textStatus, error){
+
+  });
+}
+
+function updateOutstandingQuestionsByUserBadge(){
+  $.getJSON( '/questions/outstandingFilter', {'user' : true, 'read' : false} )
+  .done(function(json){
+    if($('#outstandingQuestionsByUser .badge').length){
+      $('#outstandingQuestionsByUser .badge').html('<span class="badge" style="margin-left: 5px">' + json.count + '</span>');
+    }else{
+      $('#outstandingQuestionsByUser .badge').append('<span class="badge" style="margin-left: 5px">' + json.count + '</span>');
+    }
+  })
+  .fail(function(jqxhr, textStatus, error){
+
+  });
+}
+
 function ask(){
   if($('#question').val() == ""){
     alertUser('danger', 'É necessário digitar uma pergunta.');
@@ -266,6 +316,10 @@ function ask(){
     alertUser('success', 'Questão registrada com sucesso.');
     refreshQuestions();
     $('#btn-ask').popover('hide');
+
+    io.emit('question-created');
+
+    updateOutstandingQuestionsBadge();
   });
 }
 
@@ -316,6 +370,10 @@ function registerAnswer(question){
     success: function (xhr, status, error) {
       refreshQuestions();
       $('.text-area-answer', selectedQuestion).val('');
+
+      io.emit('question-answered');
+
+      updateOutstandingQuestionsByUserBadge();
     }
   });
 }
@@ -449,7 +507,10 @@ function getQuestion(question){
       }
     }
 
+    var picture = question.user.google ? question.user.google.picture :"/img/unknown.png";
+
     html.push('<a data-target="#' + questionCollapsibleId + '" class="list-group-item" ' + unreadStyle + ' data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'">');
+    //html.push('<img data-toggle="dropdown" class="img-responsive panel-user navbar-right img-circle" src="' + picture + '" alt=""/>');
     html.push('  <h4 class="list-group-item-heading">' + question.content + '</h4>');
     html.push('  <p class="list-group-item-text answer-preview-text">' + getShortAnswers(question.solutions) + '</p>');
 
