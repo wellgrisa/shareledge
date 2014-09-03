@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
   io = io.connect();
+i18n.init();
 
   io.on('update-general-badge', function() {
     updateOutstandingQuestionsBadge();
@@ -69,6 +70,8 @@ $.get( '/questions/outstanding', function(res){
     $('#outstandingQuestions').append('<span class="badge" style="margin-left: 5px">' + res.length + '</span>');
   }
 
+  updateOutstandingQuestionsByUserBadge();
+
 handleMultiSelect();
 
 });
@@ -89,7 +92,7 @@ function initMultiSelect(element){
   element.multiselect({
     buttonWidth: '100%',
     buttonClass: 'btn btn-link',
-    nonSelectedText: 'Selecione um sistema',
+    nonSelectedText: i18n.t("main-page.header.system-select"),
     onChange : systemChanged
   });
 }
@@ -273,10 +276,12 @@ function refreshQuestions(){
 function updateOutstandingQuestionsBadge(){
   $.getJSON( '/questions/outstandingFilter', {$or : [{"solutions.useful": 0}, {"solutions": {$size : 0}}], type : $('#filter').val()} )
   .done(function(json){
-    if($('#outstandingQuestions .badge').length){
-      $('#outstandingQuestions .badge').html('<span class="badge" style="margin-left: 5px">' + json.count + '</span>');
-    }else{
-      $('#outstandingQuestions .badge').append('<span class="badge" style="margin-left: 5px">' + json.count + '</span>');
+    if(json.count > 0){
+      if($('#outstandingQuestions .badge').length){
+        $('#outstandingQuestions .badge').html('<span class="badge" style="margin-left: 5px">' + json.count + '</span>');
+      }else{
+        $('#outstandingQuestions').append('<span class="badge" style="margin-left: 5px">' + json.count + '</span>');
+      }
     }
   })
   .fail(function(jqxhr, textStatus, error){
@@ -287,10 +292,12 @@ function updateOutstandingQuestionsBadge(){
 function updateOutstandingQuestionsByUserBadge(){
   $.getJSON( '/questions/outstandingFilter', {'user' : true, 'read' : false} )
   .done(function(json){
-    if($('#outstandingQuestionsByUser .badge').length){
-      $('#outstandingQuestionsByUser .badge').html('<span class="badge" style="margin-left: 5px">' + json.count + '</span>');
-    }else{
-      $('#outstandingQuestionsByUser .badge').append('<span class="badge" style="margin-left: 5px">' + json.count + '</span>');
+    if(json.count > 0){
+      if($('#outstandingQuestionsByUser .badge').length){
+        $('#outstandingQuestionsByUser .badge').html('<span class="badge" style="margin-left: 5px">' + json.count + '</span>');
+      }else{
+        $('#outstandingQuestionsByUser').append('<span class="badge" style="margin-left: 5px">' + json.count + '</span>');
+      }
     }
   })
   .fail(function(jqxhr, textStatus, error){
@@ -300,12 +307,12 @@ function updateOutstandingQuestionsByUserBadge(){
 
 function ask(){
   if($('#question').val() == ""){
-    alertUser('danger', 'É necessário digitar uma pergunta.');
+    alertUser('danger', i18n.t("main-page.messages.question-required"));
     return;
   }
 
   if(!$('#systems').val()){
-    alertUser('danger', 'Por favor selecione um Sistema ao lado esquerdo para registrar a pergunta.');
+    alertUser('danger', i18n.t("main-page.messages.system-required"));
     return;
   }
 
@@ -313,7 +320,7 @@ function ask(){
   "content": $('#question').val(),
   "type" : $('#systems').val()
   }, function(data, textStatus, jqXHR) {
-    alertUser('success', 'Questão registrada com sucesso.');
+    alertUser('success', i18n.t("main-page.messages.question-successful"));
     refreshQuestions();
     $('#btn-ask').popover('hide');
 

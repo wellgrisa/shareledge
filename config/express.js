@@ -1,26 +1,37 @@
-/*
- * Module dependencies.
- */
 var express = require('express'),
   path = require('path'),
   swig = require('swig'),
+  i18n = require("i18next"),
   flash = require('connect-flash');
 
 module.exports = function(app, passport){
 
+  app.use(express.static(path.normalize(__dirname + '../../public')));
+  app.use('/locales', express.static(path.normalize(__dirname + '../../locales')));
+
+  console.log('locales------------------', path.normalize(__dirname + '../../locales'));
+
+  i18n.init({
+    ignoreRoutes: ['images/', 'public', 'css/', 'js/'],
+    saveMissing: true,
+    detectLngQS: 'lang',
+    supportedLngs: ['en', 'pt'],
+    defaultLocale: 'en',
+    directory:path.normalize(__dirname + '../../locales'),
+  // debug: true
+  });
+  i18n.registerAppHelper(app)
 
   // Set views path and template engine
   app.set('views', path.normalize(__dirname + '../..') + '/app/views');
   app.engine('html', swig.renderFile);
   app.set('view engine', 'html');
 
-  app.use(express.static(path.normalize(__dirname + '../../public')));
-
 
   app.configure(function() {
       //cookieParser should be above session
       app.use(express.cookieParser());
-
+      app.use(i18n.handle);
       //bodyParser should be above methodOverride
       app.use(express.limit('3mb'));
       app.use(express.bodyParser());

@@ -1,5 +1,7 @@
 $(document).ready(function() {
-    var pageguide = tl.pg.init({ pg_caption : 'Page Help'});
+    i18n.init(function(t) {
+      var pageguide = tl.pg.init({ pg_caption : i18n.t("main-page.tour.page-help")});
+    });
 });
 
 function initialiseTour(){

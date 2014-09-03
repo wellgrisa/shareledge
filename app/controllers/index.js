@@ -7,13 +7,13 @@ exports.render = function(req, res) {
   Question.count({'user' : new mongoose.Types.ObjectId(req.user._id), 'read' : false}).populate('user solutions.user').exec(function (err, questions){
     if (!err) {
       outstandingQuestions = questions;
-
       res.render('process', {
         title: "title",
         user: req.user,
         outstandingQuestionsByUser : outstandingQuestions,
         action: req.params.action,
         wonder: req.params.wonder,
+        language: req.i18n.lng(),
         showTour: req.user.showTour
       });
 
@@ -24,7 +24,26 @@ exports.render = function(req, res) {
 };
 
 exports.index = function(req, res) {
-    res.render('index', {
-      title: "title"
+
+    set_lang(req, res, function(){
+      res.render('process', {
+        title: "title",
+        user: req.user,
+        action: req.params.action,
+        wonder: req.params.wonder,
+        language: req.i18n.lng(),
+        showTour: req.user.showTour
+      });
     });
+};
+
+var set_lang = function(req, res, callback) {
+  // Nothing to change, just run the callback
+  if(!req.query.lang) {
+    callback();
+    return;
+  }
+
+  // Force to reload the page to change the language
+  return res.redirect('/');
 };

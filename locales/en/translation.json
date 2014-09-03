@@ -1,0 +1,48 @@
+{
+  "main-page":{
+    "header" : {
+        "ask" : "Ask",
+        "go" : "Go",
+        "register" : "Register the question?",
+        "system-hours" : "hours",
+        "system-ebs" : "ebs",
+        "sign-out" : "Sair",
+        "outstanding-questions" : "Outstanding questions",
+        "your-questions" : "Your Questions. It shows a number when you got an answer",
+        "system-select" : "Select a system"
+    },
+    "question-panel" : {
+      "title" : "Questions",
+      "register" : "Register",
+      "go-ahead" : "Write your answer here..."
+    },
+    "tour" : {
+      "page-help" : "Page Help",
+      "show-tips" : "Show tips",
+      "go-ahead" : "Write your answer here...",
+      "step-one" : "The search is done automaticaly while the user is typing. The system will search for the word/sentence typed. For register the question you just have to type it and click in the button ask, which will open a confirmation window.",
+      "step-two" : "This icon brings all the outstanding questions at the moment. It shows a number related with the quantity.",
+      "step-three" : "This icon brings all the user's questions.",
+      "step-four" : "This area shows all the questions, according to the search or filter.",
+      "step-five" : "This area is also responsible to show the answers. When the question is clicked, the system shows the answers more detailed. Alongside with an area to register the answer."
+    },
+    "messages" : {
+      "question-required" : "Please, fill the field Question.",
+      "system-required" : "Please, select a system in the left field.",
+      "question-successful" : "Question saved successfuly."
+    },
+    "sign-up" : {
+      "title" : "Register",
+      "name" : "Name",
+      "email" : "Email",
+      "password" : "Password",
+      "department" : "Department",
+      "administrative" : "Administrative",
+      "development" : "Development",
+      "people-care" : "People Care",
+      "sign-up" : "Sign up",
+      "sign-in" : "Sign in",
+      "or" : "or"
+    }
+  }
+}

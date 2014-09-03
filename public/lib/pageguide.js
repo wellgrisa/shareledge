@@ -122,7 +122,7 @@ tl.pg.interval = {};
         '<div id="tlyPageGuideWrapper">' +
             '<div id="tlyPageGuideOverlay"></div>' +
             '<div id="tlyPageGuideMessages">' +
-                '<a href="#" class="tlypageguide_close" title="Close Guide">close</a>' +
+                '<a href="#" class="tlypageguide_close" title="Close Guide">X</a>' +
                 '<span class="tlypageguide_index"></span>' +
                 '<div class="tlypageguide_text"></div>' +
                 '<a href="#" class="tlypageguide_back" title="Previous">Previous</a>' +
@@ -136,7 +136,7 @@ tl.pg.interval = {};
     tl.pg.toggle_markup =
         '<div class="tlypageguide_toggle" title="Launch Page Guide">' +
             '<div><span class="tlypageguide_toggletitle"></span></div>' +
-            '<a href="#" class="tlypageguide_close" title="close guide">close guide &raquo;</a>' +
+            '<a href="#" class="tlypageguide_close" title="close guide">X &raquo;</a>' +
         '</div>';
 
     /**

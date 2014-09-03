@@ -2,12 +2,9 @@
 
   <ul class="nav navbar-nav navbar-right notifications">
 
-    <li><p class="navbar-text"><a id="outstandingQuestions" href="#"><span title="Outstanding Questions." data-toggle="tooltip" data-placement="bottom" class="glyphicon glyphicon-comment"></span></a></p></li>
+    <li><p class="navbar-text"><a id="outstandingQuestions" href="#"><span title="{{ t('main-page.header.outstanding-questions') }}" data-toggle="tooltip" data-placement="bottom" class="glyphicon glyphicon-comment"></span></a></p></li>
     <li class="divider-vertical"></li>
-    <li><p class="navbar-text"><a id="outstandingQuestionsByUser" href="#"><span title="Your Questions. It shows a number when you got an answer." data-toggle="tooltip" data-placement="bottom" class="glyphicon glyphicon-thumbs-up"></span>
-      {% if outstandingQuestionsByUser > 0  %}
-      <span title="You have {{outstandingQuestionsByUser}} answered questions." data-toggle="tooltip" data-placement="bottom" class="badge" style="margin-left: 5px">{{outstandingQuestionsByUser}}</span>
-      {% endif %}
+    <li><p class="navbar-text"><a id="outstandingQuestionsByUser" href="#"><span title="{{ t('main-page.header.your-questions') }}" data-toggle="tooltip" data-placement="bottom" class="glyphicon glyphicon-thumbs-up"></span>
     </a></p></li>
     <li class="divider-vertical"></li>
     <!-- <li><img id="user-avatar" data-toggle="modal" data-target="#sign-up-modal" class="img-responsive user navbar-right" src="/img/well.png" alt="" /></li> -->
@@ -18,6 +15,7 @@
       {% else %}
       <img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="{{user.google.picture}}" alt="" />
       {% endif %}
+
       {% if user.username == undefined  %}
       <div class="dropdown-menu drop-form" style="padding: 15px;">
         <form action="/signin" method="post" role="form">
@@ -35,7 +33,7 @@
       </div>
       {% else %}
       <div class="dropdown-menu text-center" style="padding: 15px;">
-        <a href="\signout" class="btn btn-warning">Sign out!</a>
+        <a href="\signout" class="btn btn-warning">{{ t("main-page.header.sign-out") }}</a>
       </div>
       <input type="hidden" id="user-id"  name="user-id" value="{{user._id}}">
       <input type="hidden" id="user-name"  name="user-name" value="{{user.username}}">
@@ -48,11 +46,16 @@
   </ul>
   <a style="float: left" href="www.bravi.com.br"><img class="img-responsive bravi-logo" src="/img/bravi.png" alt="" /></a>
   <ul class="nav navbar-nav">
-
+  <li>
+  <div style="float: right; margin-top:14px; margin-left:3px">
+      <a href="/?lang=pt"><img src="/img/bra.png" alt="" /></a>
+      <a href="/?lang=en"><img src="/img/uk.jpg" alt="" style="width:24px; margin-top: 0px" /></a>
+    </div>
+  </li>
   <li class="dropdown" style="float: left;margin-top: 10px;">
     <select id="systems" name="systems" required class="form-control">
-      <option value="hours">horas</option>
-      <option value="ebs">ebs</option>
+      <option value="hours">{{ t("main-page.header.system-hours") }}</option>
+      <option value="ebs">{{ t("main-page.header.system-ebs") }}</option>
     </select>
   </li>
 
@@ -73,8 +76,8 @@
           <input type="text" id="question" id="question" name="question" class="form-control">
           <span class="input-group-btn">
           <!-- <button class="btn btn-info" type="button" >Ask!</button> -->
-          <button id="btn-ask" type="button" class="btn btn-info" data-container="body" data-toggle="popover" data-placement="bottom" data-content='<label>Register the question?</label><button onclick="ask()" style="margin-left:10px" class="btn btn-info btn-ask">Go!</button>' data-original-title="" title="">
-            Ask!
+          <button id="btn-ask" type="button" class="btn btn-info" data-container="body" data-toggle="popover" data-placement="bottom" data-content='<label>{{ t("main-page.header.register") }}</label><button onclick="ask()" style="margin-left:10px" class="btn btn-info btn-ask">{{ t("main-page.header.go") }}</button>' data-original-title="" title="">
+            {{ t('main-page.header.ask') }}
           </button>
           </span>
           </div>

@@ -27,11 +27,11 @@
       <br>
       <div class="col-lg-12">
         <form class="form-signin" role="form" action="/signin" method="post">
-          <input type="username" name="username" class="form-control" placeholder="Username" required="" autofocus="">
-          <input type="password" name="password" class="form-control" placeholder="Password" required="">
-          <button class="btn btn-lg btn-primary" type="submit">Sign in</button>
-          <label style="color: white">or</label> <a href="#" data-toggle="modal" data-target="#sign-up-modal" class="btn btn-lg btn-warning">Sign up!</a>
-          <label style="color: white">or</label> <a href="/auth/google" class="btn btn-lg btn-danger">Gmail!</a>
+          <input type="username" name="username" class="form-control" placeholder="{{ t('main-page.sign-up.name') }}" required="" autofocus="">
+          <input type="password" name="password" class="form-control" placeholder="{{ t('main-page.sign-up.password') }}" required="">
+          <button class="btn btn-lg btn-primary" type="submit">{{ t('main-page.sign-up.sign-in') }}</button>
+          <label style="color: white">{{ t('main-page.sign-up.or') }}</label> <a href="#" data-toggle="modal" data-target="#sign-up-modal" class="btn btn-lg btn-warning">{{ t('main-page.sign-up.sign-up') }}</a>
+          <label style="color: white">{{ t('main-page.sign-up.or') }}</label> <a href="/auth/google" class="btn btn-lg btn-danger">Gmail!</a>
         </form>
 
     </div>

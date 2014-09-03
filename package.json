@@ -24,6 +24,6 @@
     "passport-google-oauth": "~0.1.5",
     "connect-flash": "~0.1.1",
     "node-uuid" : "*",
-    "express.io" : "*",
+    "express.io" : "*"
   }
 }
