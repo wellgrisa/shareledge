@@ -187,3 +187,28 @@ div[data-role="editor-toolbar"] {
   margin-left:  -15px;
   margin-right:  -15px;
 }
+
+.right-inner-addon {
+    position: relative;
+}
+.right-inner-addon input {
+    padding-right: 70px;
+}
+.right-inner-addon i {
+    position: absolute;
+    right: 0px;
+    padding: 10px 12px;
+    pointer-events: none;
+}
+
+.left-inner-addon {
+    position: relative;
+}
+.left-inner-addon input {
+    padding-left: 30px;
+}
+.left-inner-addon a {
+    position: absolute;
+    padding: 10px 12px;
+    pointer-events: none;
+}
