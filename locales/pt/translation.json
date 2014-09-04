@@ -11,6 +11,14 @@
         "your-questions" : "Suas questões. Um número aparece quando você recebe uma resposta.",
         "system-select" : "Selecione uma sistema"
     },
+    "sidebar" : {
+      "my-questions" : "Minhas Questões",
+      "my-answered-questions" : "Respondidas",
+      "my-unread-questions" : "Minhas Não Lidas",      
+      "outstanding-questions" : "Pendentes",
+      "answered-outstanding-questions" : "Respondidas",
+      "all-questions" : "Todas as Questões"
+    },
     "question-panel" : {
       "title" : "Questões",
       "register" : "Registrar",

@@ -16,6 +16,7 @@ module.exports = function(app, passport) {
 
   var question = require('../app/controllers/question');
   app.get('/question', question.all);
+  app.get('/counts', question.counts);
   app.get('/question/search/:search', question.search);
   app.post('/question', question.create);
   app.get('/question/:id', question.getById);

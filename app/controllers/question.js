@@ -20,7 +20,41 @@ exports.all = function(req, res) {
       return res.status(500).send(err);
     }
   });
+};
 
+exports.counts = function(req, res) {
+  Question.find({ type : req.user.filter }).sort('-created').populate('user solutions.user').exec(function(err, questions){
+    var result = { 
+      myQuestions : 0,
+      myAnsweredQuestions : 0,
+      myUnreadQuestions : 0,
+      outstandingQuestions : 0,
+      answeredOutstandingQuestions : 0,
+      allQuestions : 0
+    };
+    for (var i = 0; i < questions.length; i++) {      
+      if(questions[i].user._id.toString() == new mongoose.Types.ObjectId(req.user._id)){
+        result.myQuestions ++;
+      }
+      console.log('0000000000000000000', questions[i].user._id);
+      console.log('0000000000000000000', req.user._id);
+      if(questions[i].user._id.toString() == new mongoose.Types.ObjectId(req.user._id) && questions[i].solutions.length > 0){
+        result.myAnsweredQuestions ++;
+      }
+      if(questions[i].user._id.toString() == new mongoose.Types.ObjectId(req.user._id) && questions[i].read == false){
+        result.myUnreadQuestions ++;
+      }
+      if(questions[i].solutions.length == 0){
+        result.outstandingQuestions ++;
+      }
+      if(questions[i].solutions.length > 0){
+        result.answeredOutstandingQuestions ++;
+      }
+      result.allQuestions ++;
+    }
+
+    res.json({data: result});;
+  });
 };
 
 exports.search = function(req, res) {

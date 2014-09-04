@@ -1,10 +1,15 @@
 $(document).ready(function() {
 
+$("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("active");
+});
+
   io = io.connect();
 i18n.init();
 
   io.on('update-general-badge', function() {
-    updateOutstandingQuestionsBadge();
+    updateCounts();
     if(!$('.answer-collapsible .in').length && $('#question').val() == ""
       && !$('#outstandingQuestionsByUser').hasClass('questions-selected')){
       refreshQuestions();
@@ -12,7 +17,7 @@ i18n.init();
   });
 
   io.on('update-user-badge', function() {
-    updateOutstandingQuestionsByUserBadge();
+    updateCounts();
     if(!$('.answer-collapsible .in').length && $('#question').val() == ""
       && !$('#outstandingQuestionsByUser').hasClass('questions-selected')){
       refreshQuestions();
@@ -70,11 +75,17 @@ $.get( '/questions/outstanding', function(res){
     $('#outstandingQuestions').append('<span class="badge" style="margin-left: 5px">' + res.length + '</span>');
   }
 
-  updateOutstandingQuestionsByUserBadge();
-
 handleMultiSelect();
 
+updateCounts();
+
 });
+
+function updateCounts(){
+  $.get( '/counts', function(res){
+    updateBadges(res.data);
+  });
+}
 
 function handleMultiSelect(){
   var sections = $('#filter').val().split(',');
@@ -108,16 +119,6 @@ function systemChanged(element, checked){
     }
   });
 }
-
-// document.onpaste = function(event){
-//     var items = (event.clipboardData || event.originalEvent.clipboardData).items;
-//   console.log(JSON.stringify(items)); // will give you the mime types
-//   var blob = items[0].getAsFile();
-//   var reader = new FileReader();
-//   reader.onload = function(event){
-//     console.log(event.target.result)}; // data url!
-//   reader.readAsDataURL(blob);
-// }
 
   refreshQuestions();
 
@@ -273,6 +274,35 @@ function refreshQuestions(){
   });
 }
 
+function getOutstandingCountByFilter(filter){
+    $.getJSON( '/questions/outstandingFilter', filter)
+  .done(function(json){
+    return json.count;
+  })
+  .fail(function(jqxhr, textStatus, error){
+
+  });
+}
+
+function updateBadge(name, value){
+  var elementName = '#' + name + ' .badge';
+
+  if($(elementName).length){
+    $(elementName).html('<span class="badge" style="margin-left: 5px">' + value + '</span>');
+  }else{
+    $('#' + name).append('<span class="badge" style="margin-left: 5px">' + value + '</span>');
+  }
+}
+
+function updateBadges(result){
+  updateBadge('my-questions', result.myQuestions);
+  updateBadge('my-answered-questions', result.myAnsweredQuestions);
+  updateBadge('my-unread-questions', result.myUnreadQuestions);
+  updateBadge('outstanding-questions', result.outstandingQuestions);
+  updateBadge('answered-outstanding-questions', result.outstandingQuestions);
+  updateBadge('all-questions', result.allQuestions);
+}
+
 function updateOutstandingQuestionsBadge(){
   $.getJSON( '/questions/outstandingFilter', {$or : [{"solutions.useful": 0}, {"solutions": {$size : 0}}], type : $('#filter').val()} )
   .done(function(json){
@@ -326,7 +356,9 @@ function ask(){
 
     io.emit('question-created');
 
-    updateOutstandingQuestionsBadge();
+    $.get( '/counts', function(res){
+      updateBadges(res.data);
+    });
   });
 }
 
@@ -380,7 +412,9 @@ function registerAnswer(question){
 
       io.emit('question-answered');
 
-      updateOutstandingQuestionsByUserBadge();
+      $.get( '/counts', function(res){
+        updateBadges(res.data);
+      });
     }
   });
 }

@@ -11,6 +11,14 @@
         "your-questions" : "Your Questions. It shows a number when you got an answer",
         "system-select" : "Select a system"
     },
+    "sidebar" : {
+      "my-questions" : "My Questions",
+      "my-answered-questions" : "My Answered Questions",
+      "my-unread-questions" : "My Unread Questions",      
+      "outstanding-questions" : "Outstanding Questions",
+      "answered-outstanding-questions" : "Answered Questions",
+      "all-questions" : "All Questions"
+    },
     "question-panel" : {
       "title" : "Questions",
       "register" : "Register",
