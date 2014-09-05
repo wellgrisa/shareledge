@@ -291,7 +291,7 @@ function sidebarClicked(){
   if(linkId == 'my-questions'){
    questions = getOutstandingCountByFilter({'user' : true}, refreshQuestionsWith);
   }else if(linkId == 'my-answered-questions'){
-    questions = getOutstandingCountByFilter({"solutions" : {$not : { $size : 0 }}, type : $('#filter').val()}, refreshQuestionsWith);
+    questions = getOutstandingCountByFilter({"solutions" : {$not : { $size : 0 }}, 'user' : true, type : $('#filter').val()}, refreshQuestionsWith);
   }else if(linkId == 'my-unread-questions'){
     questions = getOutstandingCountByFilter({'user' : true, 'read' : false}, refreshQuestionsWith);
   }else if(linkId == 'outstanding-questions'){
