@@ -2,13 +2,7 @@
 
   <ul class="nav navbar-nav navbar-right notifications">
 
-    <li><p class="navbar-text"><a id="outstandingQuestions" href="#"><span title="{{ t('main-page.header.outstanding-questions') }}" data-toggle="tooltip" data-placement="bottom" class="glyphicon glyphicon-comment"></span></a></p></li>
-    <li class="divider-vertical"></li>
-    <li><p class="navbar-text"><a id="outstandingQuestionsByUser" href="#"><span title="{{ t('main-page.header.your-questions') }}" data-toggle="tooltip" data-placement="bottom" class="glyphicon glyphicon-thumbs-up"></span>
-    </a></p></li>
-    <li class="divider-vertical"></li>
-    <!-- <li><img id="user-avatar" data-toggle="modal" data-target="#sign-up-modal" class="img-responsive user navbar-right" src="/img/well.png" alt="" /></li> -->
-    <li class="divider-vertical"></li>
+    
     <li class="dropdown">
       {% if user.google.picture == undefined  %}
       <img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="/img/unknown.png" alt="" />

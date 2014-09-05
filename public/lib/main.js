@@ -5,6 +5,8 @@ $("#menu-toggle").click(function(e) {
         $("#wrapper").toggleClass("active");
 });
 
+$('.side-nav a').on('click', sidebarClicked);
+
   io = io.connect();
 i18n.init();
 
@@ -274,10 +276,38 @@ function refreshQuestions(){
   });
 }
 
-function getOutstandingCountByFilter(filter){
+function refreshQuestionsWith(questions){
+  $('.list-group').html('');
+  for (var i = 0; i < questions.length; i++) {
+    $('.list-group').append(getQuestion(questions[i]));
+  }
+}
+
+function sidebarClicked(){
+  var linkId = this.id;
+
+  var questions;
+
+  if(linkId == 'my-questions'){
+   questions = getOutstandingCountByFilter({'user' : true}, refreshQuestionsWith);
+  }else if(linkId == 'my-answered-questions'){
+    questions = getOutstandingCountByFilter({"solutions" : {$not : { $size : 0 }}, type : $('#filter').val()}, refreshQuestionsWith);
+  }else if(linkId == 'my-unread-questions'){
+    questions = getOutstandingCountByFilter({'user' : true, 'read' : false}, refreshQuestionsWith);
+  }else if(linkId == 'outstanding-questions'){
+    questions = getOutstandingCountByFilter({$or : [{"solutions.useful": 0}, {"solutions": {$size : 0}}], type : $('#filter').val()}, refreshQuestionsWith);
+  }else if(linkId == 'answered-outstanding-questions'){
+   questions = getOutstandingCountByFilter({"solutions" : {$not : { $size : 0 }}, type : $('#filter').val()}, refreshQuestionsWith);
+  }else if(linkId == 'all-questions'){
+    questions = getOutstandingCountByFilter({}, refreshQuestionsWith);
+  }
+
+}
+
+function getOutstandingCountByFilter(filter, callback){
     $.getJSON( '/questions/outstandingFilter', filter)
   .done(function(json){
-    return json.count;
+    callback(json);
   })
   .fail(function(jqxhr, textStatus, error){
 
@@ -299,7 +329,7 @@ function updateBadges(result){
   updateBadge('my-answered-questions', result.myAnsweredQuestions);
   updateBadge('my-unread-questions', result.myUnreadQuestions);
   updateBadge('outstanding-questions', result.outstandingQuestions);
-  updateBadge('answered-outstanding-questions', result.outstandingQuestions);
+  updateBadge('answered-outstanding-questions', result.answeredOutstandingQuestions);
   updateBadge('all-questions', result.allQuestions);
 }
 

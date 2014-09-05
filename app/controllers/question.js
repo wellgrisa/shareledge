@@ -24,7 +24,7 @@ exports.all = function(req, res) {
 
 exports.counts = function(req, res) {
   Question.find({ type : req.user.filter }).sort('-created').populate('user solutions.user').exec(function(err, questions){
-    var result = { 
+    var result = {
       myQuestions : 0,
       myAnsweredQuestions : 0,
       myUnreadQuestions : 0,
@@ -32,12 +32,10 @@ exports.counts = function(req, res) {
       answeredOutstandingQuestions : 0,
       allQuestions : 0
     };
-    for (var i = 0; i < questions.length; i++) {      
+    for (var i = 0; i < questions.length; i++) {
       if(questions[i].user._id.toString() == new mongoose.Types.ObjectId(req.user._id)){
         result.myQuestions ++;
       }
-      console.log('0000000000000000000', questions[i].user._id);
-      console.log('0000000000000000000', req.user._id);
       if(questions[i].user._id.toString() == new mongoose.Types.ObjectId(req.user._id) && questions[i].solutions.length > 0){
         result.myAnsweredQuestions ++;
       }
@@ -49,6 +47,12 @@ exports.counts = function(req, res) {
       }
       if(questions[i].solutions.length > 0){
         result.answeredOutstandingQuestions ++;
+
+        for (var j = 0; j < questions[i].solutions.length; j++) {
+          if(questions[i].solutions[j].useful == 0){
+            result.outstandingQuestions ++;
+          }
+        }
       }
       result.allQuestions ++;
     }
@@ -137,10 +141,9 @@ if(req.query.user){
   req.query.user = new mongoose.Types.ObjectId(req.user._id);
 }
 console.log(req.query);
-return Question.count(req.query).populate('user solutions.user').exec(function (err, questions){
-    console.log(questions);
+return Question.find(req.query).populate('user solutions.user').exec(function (err, questions){
     if (!err) {
-      return res.json({ count : questions});
+      return res.json(questions);
     } else {
       return console.log(err);
     }

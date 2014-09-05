@@ -1,5 +1,5 @@
 {
-  "db": "mongodb://localhost/ShareKnowledge",
+  "db": "mongodb://localhost/test",
   "app": {
     "name": "Bravi Software - Staging"
   },
