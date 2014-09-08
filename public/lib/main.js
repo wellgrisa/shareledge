@@ -284,7 +284,13 @@ function refreshQuestionsWith(questions){
 }
 
 function sidebarClicked(){
-  var linkId = this.id;
+  var linkId = $(this).attr('id');
+
+  if(!$(this).hasClass("active")){
+    var lastActive = $(this).closest(".side-nav").children(".active");
+    lastActive.removeClass("active");
+    $(this).parent().addClass("active");
+  }
 
   var questions;
 

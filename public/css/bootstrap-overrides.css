@@ -490,6 +490,9 @@ ul.alert-dropdown {
         overflow-y: auto;
         background-color: #222;
         height: 100%;
+        border-right-color: #080808;
+        border-right-width: 1px;
+        border-right-style: solid;
     }
 
     .side-nav>li>a {
@@ -594,4 +597,8 @@ ul.alert-dropdown {
   font-size: 17px;
   background-color: #3276b1;
   float: right;
+}
+
+.side-nav li.active{
+  background-color: #000;
 }
