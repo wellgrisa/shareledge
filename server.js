@@ -1,4 +1,9 @@
 
+/**
+ * Forces use a default environment if it is not defined
+ */
+if (!process.env.NODE_ENV) process.env.NODE_ENV = 'development';
+
 var fs = require('fs'),
     express = require('express.io'),
     mongoose = require('mongoose'),
@@ -7,23 +12,21 @@ var fs = require('fs'),
     config = require('./config/config');
 
   var connect = function () {
-    var options = { server: { socketOptions: { keepAlive: 1 } } }
+    var options = { server: { socketOptions: { keepAlive: 1 } } };
     mongoose.connect(config.db, options);
-  }
-
-console.log(config.db);
+  };
 
 connect();
 
-var models_path = path.normalize(__dirname + '/app/models')
+var models_path = path.normalize(__dirname + '/app/models');
 
 /*fs.readdirSync(models_path).forEach(function (file) {
   console.log(models_path + '/' + file);
   if (~file.indexOf('.js')) require(models_path + '/' + file);
 });*/
 
-require(models_path + '/' + 'user.js')
-require(models_path + '/' + 'question.js')
+require(models_path + '/' + 'user.js');
+require(models_path + '/' + 'question.js');
 
 var http = require('http');
 

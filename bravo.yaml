@@ -1,0 +1,25 @@
+---
+
+image: 'docker.bravi.com.br/shareledge'
+
+production:
+  serverName: 'shareledge.bravi.com.br'
+  tag: '0.0.1'
+  create:
+    AttachStdin: true
+    AttachStdout: true
+    AttachStderr: true
+    OpenStdin: true
+    Tty: true
+    Volumes:
+      '/data/db': {}
+      # '/src/assets': {}
+  run:
+    Binds:
+      - '/srv/shareledge/data/db:/data/db'
+      # - '/srv/shareledge/public:/src/assets'
+    PortBindings:
+      '3000/tcp':
+        - HostIp: '127.0.0.1'
+      '27017/tcp':
+        - HostIp: '127.0.0.1'

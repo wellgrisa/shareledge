@@ -7,6 +7,9 @@
     "node": "0.10.x",
     "npm": "1.2.x"
   },
+  "scripts": {
+    "start": "node server.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/wellgrisa/shareledge.git"

@@ -7,5 +7,11 @@
   "mail": {
     "username": "test@bravisoftware.com",
     "password": "xxxxx"
+  },
+  "google": {
+    "clientID": "",
+    "clientSecret": "",
+    "callbackURL": "http://localhost:3000/auth/google/callback",
+    "scopes": "email profile"
   }
 }
