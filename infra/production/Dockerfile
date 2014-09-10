@@ -6,7 +6,7 @@ RUN /usr/local/bin/setup_timezone
 ENV NODE_ENV production
 
 ADD . /src
-ADD .bowerrc /src/.bowerrc
+# ADD .bowerrc /src/.bowerrc
 WORKDIR /src
 
 # forces install all dependences
