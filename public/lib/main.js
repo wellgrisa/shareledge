@@ -1,29 +1,23 @@
 $(document).ready(function() {
 
+i18n.init(handleMultiSelect);
+
 $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("active");
 });
 
+
 $('.side-nav a').on('click', sidebarClicked);
 
   io = io.connect();
-i18n.init();
 
-  io.on('update-general-badge', function() {
-    updateCounts();
+  io.on('update-counts', function() {
     if(!$('.answer-collapsible .in').length && $('#question').val() == ""
       && !$('#outstandingQuestionsByUser').hasClass('questions-selected')){
-      refreshQuestions();
+      searchFunction();
     }
-  });
-
-  io.on('update-user-badge', function() {
     updateCounts();
-    if(!$('.answer-collapsible .in').length && $('#question').val() == ""
-      && !$('#outstandingQuestionsByUser').hasClass('questions-selected')){
-      refreshQuestions();
-    }
   });
 
   $('#question').focus();
@@ -41,13 +35,17 @@ i18n.init();
       $('.btn-ask').focus();
     }
 
-    $.get( '/question/search/' + $('#question').val(), function(res){
-      $('.list-group').html('');
-      var questions = res.data;
-      for (var i = 0; i < questions.length; i++) {
-        $('.list-group').append(getQuestion(questions[i]));
-      }
-    });
+    searchFunction = getBySearch;
+
+    getBySearch();
+
+    // $.get( '/question/search/' + $('#question').val(), function(res){
+    //   $('.list-group').html('');
+    //   var questions = res.data;
+    //   for (var i = 0; i < questions.length; i++) {
+    //     $('.list-group').append(getQuestion(questions[i]));
+    //   }
+    // });
   });
 
 $( "#outstandingQuestions" ).on('click', function() {
@@ -72,20 +70,31 @@ $( "#outstandingQuestionsByUser" ).on('click', function() {
     });
   });
 
-$.get( '/questions/outstanding', function(res){
-  if(res.length > 0){
-    $('#outstandingQuestions').append('<span class="badge" style="margin-left: 5px">' + res.length + '</span>');
-  }
-
-handleMultiSelect();
-
 updateCounts();
 
-});
+initiateSearch();
+
 
 function updateCounts(){
   $.get( '/counts', function(res){
     updateBadges(res.data);
+  });
+}
+
+function getBySearch(){
+  var pageNumber =  $('li.active > a', '.pagination').html();
+
+  if($('#question').val() == ""){
+    $(".side-nav").children(".active").removeClass('active');
+    $('#all-questions').parent().addClass('active');
+  }
+
+  $.getJSON( '/question/search', {filter : { criteria : { content: { $regex: '^.*'+  $('#question').val() +'.*$', $options: 'i' }, type : $('#systems').val() }, page : pageNumber }})
+  .done(function(json){
+    refreshQuestionsWith(json);
+  })
+  .fail(function(jqxhr, textStatus, error){
+
   });
 }
 
@@ -117,12 +126,14 @@ function systemChanged(element, checked){
     data : { filter : $('#systems').val() },
     success: function (xhr, status, error) {
       console.log('sucess');
-      refreshQuestions();
+      $('#filter').val($('#systems').val());
+      initiateSearch();
+      updateCounts();
     }
   });
 }
 
-  refreshQuestions();
+  //refreshQuestions();
 
   handleListGroup();
 
@@ -186,33 +197,6 @@ function doInsert(element) {
     }
 }
 
-
-// function insertTextAtCursor(element) {
-//     var sel, range, html;
-//     if (window.getSelection) {
-//         sel = window.getSelection();
-//         if (sel.getRangeAt && sel.rangeCount) {
-//             range = sel.getRangeAt(0);
-//             range.deleteContents();
-//             range.insertNode(element);
-//         }
-//     } else if (document.selection && document.selection.createRange) {
-//         //document.selection.createRange().text = text;
-//     }
-// }
-
-// function insertNodeAtCursor(node) {
-//   var range, html;
-//   if (window.getSelection && window.getSelection().getRangeAt) {
-//     range = window.getSelection().getRangeAt(0);
-//     range.insertNode(node);
-//   } else if (document.selection && document.selection.createRange) {
-//     range = document.selection.createRange();
-//     html = (node.nodeType == 3) ? node.data : node.outerHTML;
-//     range.pasteHTML(html);
-//   }
-// }
-
 function handleListGroup(){
   var listGroup = $(".list-group");
 
@@ -234,6 +218,12 @@ function handleListGroup(){
 
    var selectedQuestion = $('.list-group-item.active');
 
+   var attr = selectedQuestion.attr('style');
+
+    if (typeof attr !== typeof undefined && attr !== false) {
+      selectedQuestion.removeAttr('style');
+    }
+
    var questionIdentifier  = selectedQuestion.data("id");
 
    var urlUpdateRead = '/question/updateRead/' + questionIdentifier;
@@ -243,6 +233,9 @@ function handleListGroup(){
       type: "PUT",
       success: function (xhr, status, error) {
         console.log('sucess');
+
+        updateCounts();
+
       }
     });
   });
@@ -252,6 +245,8 @@ function handleListGroup(){
     previous.removeClass('active');
     $(event.currentTarget).addClass('active');
   });
+
+  $('.pagination').delegate('a', 'click', paginationClicked);
 }
 
 function finishTour(){
@@ -276,15 +271,45 @@ function refreshQuestions(){
   });
 }
 
-function refreshQuestionsWith(questions){
+function refreshQuestionsWith(result){
+
+  var questions = result.records;
+
+  var pagination = $('.pagination');
+
+  pagination.html('');
+
+  for (var i = 1; i <= result.pagination.totalPages; i++) {
+
+    if(result.pagination.currentPage == i)
+        pagination.append($('<li/>', {'class': 'active'}).append('<a href="#">' + i + '</a></li>'));
+    else
+        pagination.append('<li><a href="#">' + i + '</a></li>')
+  }
+
   $('.list-group').html('');
   for (var i = 0; i < questions.length; i++) {
+
     $('.list-group').append(getQuestion(questions[i]));
   }
 }
 
+function paginationClicked(){
+  if(!$(this).hasClass("active")){
+    var lastActive = $(this).closest(".pagination").children(".active");
+    lastActive.removeClass("active");
+    $(this).parent().addClass("active");
+  }
+
+  searchFunction();
+}
+
+var searchFunction;
+
 function sidebarClicked(){
   var linkId = $(this).attr('id');
+
+  searchFunction = getQuestionsByLink;
 
   if(!$(this).hasClass("active")){
     var lastActive = $(this).closest(".side-nav").children(".active");
@@ -292,22 +317,30 @@ function sidebarClicked(){
     $(this).parent().addClass("active");
   }
 
-  var questions;
+  $(".pagination").children(".active").removeClass('active');
+
+  getQuestionsByLink();
+}
+
+function getQuestionsByLink(){
+
+  var linkId = $('li.active > a', '.side-nav').attr('id');
+
+  var pageNumber =  $('li.active > a', '.pagination').html();
 
   if(linkId == 'my-questions'){
-   questions = getOutstandingCountByFilter({'user' : true}, refreshQuestionsWith);
+   getOutstandingCountByFilter({filter : { criteria : {'user' : true, type : $('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
   }else if(linkId == 'my-answered-questions'){
-    questions = getOutstandingCountByFilter({"solutions" : {$not : { $size : 0 }}, 'user' : true, type : $('#filter').val()}, refreshQuestionsWith);
+    getOutstandingCountByFilter({filter : { criteria :{"solutions" : {$not : { $size : 0 }}, 'user' : true, type : $('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
   }else if(linkId == 'my-unread-questions'){
-    questions = getOutstandingCountByFilter({'user' : true, 'read' : false}, refreshQuestionsWith);
+    getOutstandingCountByFilter({filter : { criteria :{$or : [{"solutions.useful": 0}, {"solutions": {$size : 0}}], 'user' : true, type :$('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
   }else if(linkId == 'outstanding-questions'){
-    questions = getOutstandingCountByFilter({$or : [{"solutions.useful": 0}, {"solutions": {$size : 0}}], type : $('#filter').val()}, refreshQuestionsWith);
+    getOutstandingCountByFilter({filter : { criteria :{$or : [{"solutions.useful": 0}, {"solutions": {$size : 0}}], type :$('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
   }else if(linkId == 'answered-outstanding-questions'){
-   questions = getOutstandingCountByFilter({"solutions" : {$not : { $size : 0 }}, type : $('#filter').val()}, refreshQuestionsWith);
+   getOutstandingCountByFilter({filter : { criteria :{"solutions" : {$not : { $size : 0 }}, type :$('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
   }else if(linkId == 'all-questions'){
-    questions = getOutstandingCountByFilter({}, refreshQuestionsWith);
+       getOutstandingCountByFilter({filter : { criteria :{type :$('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
   }
-
 }
 
 function getOutstandingCountByFilter(filter, callback){
@@ -324,7 +357,7 @@ function updateBadge(name, value){
   var elementName = '#' + name + ' .badge';
 
   if($(elementName).length){
-    $(elementName).html('<span class="badge" style="margin-left: 5px">' + value + '</span>');
+    $(elementName).text(value);
   }else{
     $('#' + name).append('<span class="badge" style="margin-left: 5px">' + value + '</span>');
   }
@@ -337,38 +370,6 @@ function updateBadges(result){
   updateBadge('outstanding-questions', result.outstandingQuestions);
   updateBadge('answered-outstanding-questions', result.answeredOutstandingQuestions);
   updateBadge('all-questions', result.allQuestions);
-}
-
-function updateOutstandingQuestionsBadge(){
-  $.getJSON( '/questions/outstandingFilter', {$or : [{"solutions.useful": 0}, {"solutions": {$size : 0}}], type : $('#filter').val()} )
-  .done(function(json){
-    if(json.count > 0){
-      if($('#outstandingQuestions .badge').length){
-        $('#outstandingQuestions .badge').html('<span class="badge" style="margin-left: 5px">' + json.count + '</span>');
-      }else{
-        $('#outstandingQuestions').append('<span class="badge" style="margin-left: 5px">' + json.count + '</span>');
-      }
-    }
-  })
-  .fail(function(jqxhr, textStatus, error){
-
-  });
-}
-
-function updateOutstandingQuestionsByUserBadge(){
-  $.getJSON( '/questions/outstandingFilter', {'user' : true, 'read' : false} )
-  .done(function(json){
-    if(json.count > 0){
-      if($('#outstandingQuestionsByUser .badge').length){
-        $('#outstandingQuestionsByUser .badge').html('<span class="badge" style="margin-left: 5px">' + json.count + '</span>');
-      }else{
-        $('#outstandingQuestionsByUser').append('<span class="badge" style="margin-left: 5px">' + json.count + '</span>');
-      }
-    }
-  })
-  .fail(function(jqxhr, textStatus, error){
-
-  });
 }
 
 function ask(){
@@ -387,14 +388,15 @@ function ask(){
   "type" : $('#systems').val()
   }, function(data, textStatus, jqXHR) {
     alertUser('success', i18n.t("main-page.messages.question-successful"));
-    refreshQuestions();
+    $('#question').val('');
+
+    initiateSearch();
+
     $('#btn-ask').popover('hide');
 
     io.emit('question-created');
 
-    $.get( '/counts', function(res){
-      updateBadges(res.data);
-    });
+    updateCounts();
   });
 }
 
@@ -431,6 +433,24 @@ function answer(){
   });
 }
 
+function updateCounts(){
+  $.get( '/counts', function(res){
+        updateBadges(res.data);
+      });
+}
+
+function initiateSearch(){
+  $(".side-nav").children(".active").removeClass('active');
+
+  $('#outstanding-questions').parent().addClass('active');
+
+  var pageNumber =  $('li.active > a', '.pagination').html();
+
+  searchFunction = getQuestionsByLink;
+
+  getOutstandingCountByFilter({filter : { criteria :{$or : [{"solutions.useful": 0}, {"solutions": {$size : 0}}], type : $('#filter').val()}, page : pageNumber }}, refreshQuestionsWith);
+}
+
 function registerAnswer(question){
   var selectedQuestion = $('.list-group-item.active');
 
@@ -443,7 +463,6 @@ function registerAnswer(question){
     type: "PUT",
     data: question,
     success: function (xhr, status, error) {
-      refreshQuestions();
       $('.text-area-answer', selectedQuestion).val('');
 
       io.emit('question-answered');
@@ -451,6 +470,8 @@ function registerAnswer(question){
       $.get( '/counts', function(res){
         updateBadges(res.data);
       });
+
+      searchFunction();
     }
   });
 }
@@ -476,7 +497,7 @@ function showAnswer(id){
     for (var i = 0; i < data.solutions.length; i++) {
 
       var answer = '<div class="panel panel-default">' +
-                      '<div class="panel-heading"><span class="badge">' + data.solutions[i].useful + '</span><label>' + data.solutions[i].user.username + '</label> ' + data.solutions[i].created + '<a onclick="rateDown(\'' + data.solutions[i]._id +'\')" class="answer-result red" href="#"><span class="glyphicon glyphicon-remove"></span></a><a onclick="rateUp(\'' + data.solutions[i]._id +'\')" class="answer-result green" href="#"><span class="glyphicon glyphicon-ok"></span></a></div>' +
+                      '<div class="panel-heading"><span class="badge">' + data.solutions[i].useful + '</span><label>' + data.solutions[i].user.username + '</label> ' + data.solutions[i].created + '<a onclick="rateUp(\'' + data.solutions[i]._id +'\')" class="answer-result green" href="#"><span class="glyphicon glyphicon-ok"></span></a></div>' +
                           '<div class="panel-body">'+
                             data.solutions[i].content +
                           '</div>' +
@@ -505,6 +526,8 @@ function rate(identifier, rate){
     data: { answer: identifier , rate: rate },
     success: function (data) {
       $('#' + data._id).html(data.useful);
+      io.emit('answer-rated');
+      updateCounts();
     }
   });
 }
@@ -551,9 +574,6 @@ function configureEventHandlers() {
                 answer.push('        <span class="badge">' + data.solutions[i].useful + '</span>');
                 answer.push('        <label>' + data.solutions[i].user.username + '</label>');
                 answer.push('        ' + data.solutions[i].created);
-                answer.push('        <a onclick="rateDown(\'' + data.solutions[i]._id +'\')" class="answer-result red" href="#">');
-                answer.push('            <span class="glyphicon glyphicon-remove"></span>');
-                answer.push('        </a>');
                 answer.push('        <a onclick="rateUp(\'' + data.solutions[i]._id +'\')" class="answer-result green" href="#">');
                 answer.push('            <span class="glyphicon glyphicon-ok"></span>');
                 answer.push('        </a>');
@@ -601,8 +621,6 @@ function getQuestion(question){
       html.push('<div class="panel-heading">');
       html.push('<span id="' + question.solutions[i]._id +  '" class="badge">' + question.solutions[i].useful + '</span>');
       html.push('<label>' + question.solutions[i].user.username + '</label>' + '  ' + question.solutions[i].created);
-      html.push('<button onclick="rateDown(\'' + question.solutions[i]._id +'\')" class="answer-result red" href="#">');
-      html.push('<span class="glyphicon glyphicon-remove"></span>');
       html.push('</button>');
       html.push('<button onclick="rateUp(\'' + question.solutions[i]._id +'\')" class="answer-result green" href="#">');
       html.push('<span class="glyphicon glyphicon-ok"></span>');
@@ -614,7 +632,7 @@ function getQuestion(question){
       html.push('</div>');
     }
 
-    if($('#systems').val() != 'hours'){
+    if($('#systems').val() != 'hours' && $('#systems').val() != 'peopleCare'){
       html.push(buildAnswerPanel());
     }else if($('#department').val() == 'administrative'){
       html.push(buildAnswerPanel());
@@ -666,9 +684,6 @@ function handleCollapsibleAnswers(elementEvent){
       answer.push('        <span class="badge">' + data.solutions[i].useful + '</span>');
       answer.push('        <label>' + data.solutions[i].user.username + '</label>');
       answer.push('        ' + data.solutions[i].created);
-      answer.push('        <a onclick="rateDown(\'' + data.solutions[i]._id +'\')" class="answer-result red" href="#">');
-      answer.push('            <span class="glyphicon glyphicon-remove"></span>');
-      answer.push('        </a>');
       answer.push('        <a onclick="rateUp(\'' + data.solutions[i]._id +'\')" class="answer-result green" href="#">');
       answer.push('            <span class="glyphicon glyphicon-ok"></span>');
       answer.push('        </a>');

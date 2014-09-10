@@ -7,6 +7,37 @@ var mongoose = require('mongoose'),
     config = require('../../config/config')
     uuid = require('node-uuid');
 
+    mongoose.Model.paginate = function(opts, callback) {
+
+     var criteria = opts.criteria || {};
+     var populate = opts.populate || {};
+     var limit = opts.limit || 10;
+     var page = opts.page || 1;
+     var Model = this;
+     console.log('criteriaaa da booosta', criteria);
+     Model.count(criteria, function (err, totalRecords) {
+      var query = Model.find(criteria)
+        .populate(populate)
+        .skip((page - 1) * limit)
+        .limit(limit);
+      query.exec(function(error, records) {
+        if (err) return callback(err);
+        var result = {
+          records: records,
+          pagination : {
+            totalRecords : totalRecords,
+            currentPage : page,
+            totalPages : Math.ceil(totalRecords / limit)
+          }
+        };
+
+        console.log('paaaaaaages', result);
+
+        callback(null, result);
+      });
+    });
+   }
+
 /**
  * Get Question
  */
@@ -19,6 +50,28 @@ exports.all = function(req, res) {
     } else {
       return res.status(500).send(err);
     }
+  });
+};
+
+exports.getOutstandingByFilter = function(req, res){
+
+var criteria = req.query.filter.criteria;
+
+if(criteria.user){
+  criteria.user = new mongoose.Types.ObjectId(req.user._id);
+}
+
+var page = (req.query.filter.page > 0 ? req.query.filter.page : 1);
+  var perPage = 1;
+  var options = {
+    perPage: perPage,
+    page: page,
+    criteria : criteria,
+    populate : 'user solutions.user',
+  };
+
+return Question.paginate(options, function (err, questions){
+        return res.json(questions);
   });
 };
 
@@ -47,11 +100,15 @@ exports.counts = function(req, res) {
       }
       if(questions[i].solutions.length > 0){
         result.answeredOutstandingQuestions ++;
-
+        var useful = false;
         for (var j = 0; j < questions[i].solutions.length; j++) {
-          if(questions[i].solutions[j].useful == 0){
-            result.outstandingQuestions ++;
+          if(questions[i].solutions[j].useful > 0){
+            useful = true;
+            break;
           }
+        }
+        if(!useful){
+          result.outstandingQuestions ++;
         }
       }
       result.allQuestions ++;
@@ -63,16 +120,31 @@ exports.counts = function(req, res) {
 
 exports.search = function(req, res) {
 
-  var regex = new RegExp('^.*'+ req.params.search +'.*$', "i");
+  var criteria = req.query.filter.criteria;
 
-  Question.find({content: regex, type : req.user.filter }).sort('-views').exec(function(err, question){
+  var regex = new RegExp('^.*'+ 'o' +'.*$', "i");
 
-    if (!err) {
-        res.json({data: question});
-    } else {
-      return res.status(500).send(err);
-    }
+  var page = (req.query.filter.page > 0 ? req.query.filter.page : 1);
+  var perPage = 1;
+  var options = {
+    perPage: perPage,
+    page: page,
+    criteria : criteria,
+    populate : 'user solutions.user',
+  };
+
+return Question.paginate(options, function (err, questions){
+        return res.json(questions);
   });
+
+  // Question.find({content: regex, type : req.user.filter }).sort('-views').exec(function(err, question){
+
+  //   if (!err) {
+  //       res.json({data: question});
+  //   } else {
+  //     return res.status(500).send(err);
+  //   }
+  // });
 };
 
 exports.create = function (req, res) {
@@ -129,21 +201,6 @@ return Question.count({'user' : new mongoose.Types.ObjectId(req.user._id), 'read
     console.log(questions);
     if (!err) {
       return res.send(questions);
-    } else {
-      return console.log(err);
-    }
-  });
-};
-
-exports.getOutstandingByFilter = function(req, res){
-
-if(req.query.user){
-  req.query.user = new mongoose.Types.ObjectId(req.user._id);
-}
-console.log(req.query);
-return Question.find(req.query).populate('user solutions.user').exec(function (err, questions){
-    if (!err) {
-      return res.json(questions);
     } else {
       return console.log(err);
     }

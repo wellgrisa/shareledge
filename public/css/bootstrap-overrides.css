@@ -1,11 +1,7 @@
-html, body
-{
-    height: 99%;
-}
-
 body{
   background-color: #2d3033 !important;
-  padding-top: 70px;
+  padding-top: 30px;
+  overflow-x: hidden;
 }
 
 *[class*=col-] {
@@ -601,4 +597,18 @@ ul.alert-dropdown {
 
 .side-nav li.active{
   background-color: #000;
+}
+
+.numberCircle {
+background: #5178D0;
+border-radius: 0.8em;
+-moz-border-radius: 0.8em;
+-webkit-border-radius: 0.8em;
+color: #ffffff;
+display: inline-block;
+font-weight: bold;
+line-height: 1.6em;
+margin-right: 15px;
+text-align: center;
+width: 1.6em;
 }

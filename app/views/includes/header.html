@@ -2,7 +2,7 @@
 
   <ul class="nav navbar-nav navbar-right notifications">
 
-    
+
     <li class="dropdown">
       {% if user.google.picture == undefined  %}
       <img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="/img/unknown.png" alt="" />
@@ -50,6 +50,7 @@
     <select id="systems" name="systems" required class="form-control">
       <option value="hours">{{ t("main-page.header.system-hours") }}</option>
       <option value="ebs">{{ t("main-page.header.system-ebs") }}</option>
+      <option value="peopleCare">{{ t("main-page.header.system-people-care") }}</option>
     </select>
   </li>
 

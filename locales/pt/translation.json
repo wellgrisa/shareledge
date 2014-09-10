@@ -6,6 +6,7 @@
         "register" : "Registrar a questão?",
         "system-hours" : "horas",
         "system-ebs" : "ebs",
+        "system-people-care" : "people care",
         "sign-out" : "Sair",
         "outstanding-questions" : "Questões pendentes.",
         "your-questions" : "Suas questões. Um número aparece quando você recebe uma resposta.",
@@ -14,7 +15,7 @@
     "sidebar" : {
       "my-questions" : "Minhas Questões",
       "my-answered-questions" : "Respondidas",
-      "my-unread-questions" : "Minhas Não Lidas",      
+      "my-unread-questions" : "Minhas Não Lidas",
       "outstanding-questions" : "Pendentes",
       "answered-outstanding-questions" : "Respondidas",
       "all-questions" : "Todas as Questões"
@@ -48,8 +49,8 @@
       "administrative" : "Administrativo",
       "development" : "Desenvolvimento",
       "people-care" : "People Care",
-      "sign-up" : "Logar",
-      "sign-in" : "Registrar",
+      "sign-up" : "Registrar",
+      "sign-in" : "Logar",
       "or" : "ou"
     }
   }

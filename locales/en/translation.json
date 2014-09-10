@@ -6,6 +6,7 @@
         "register" : "Register the question?",
         "system-hours" : "hours",
         "system-ebs" : "ebs",
+        "system-people-care" : "people care",
         "sign-out" : "Sair",
         "outstanding-questions" : "Outstanding questions",
         "your-questions" : "Your Questions. It shows a number when you got an answer",
@@ -14,7 +15,7 @@
     "sidebar" : {
       "my-questions" : "My Questions",
       "my-answered-questions" : "My Answered Questions",
-      "my-unread-questions" : "My Unread Questions",      
+      "my-unread-questions" : "My Unread Questions",
       "outstanding-questions" : "Outstanding Questions",
       "answered-outstanding-questions" : "Answered Questions",
       "all-questions" : "All Questions"

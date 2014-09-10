@@ -33,7 +33,7 @@ var QuestionSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   },
-  type: { type: String, enum: ['hours', 'ebs'] },
+  type: { type: String, enum: ['hours', 'ebs', 'peopleCare'] },
   updated: {
     type: Date
   },

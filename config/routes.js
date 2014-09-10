@@ -17,7 +17,7 @@ module.exports = function(app, passport) {
   var question = require('../app/controllers/question');
   app.get('/question', question.all);
   app.get('/counts', question.counts);
-  app.get('/question/search/:search', question.search);
+  app.get('/question/search', question.search);
   app.post('/question', question.create);
   app.get('/question/:id', question.getById);
   app.put('/question/updateRead/:id', question.updateRead);
@@ -29,11 +29,15 @@ module.exports = function(app, passport) {
   app.put('/answer/:id', question.updateAnswer);
 
   app.io.route('question-created', function(req){
-    req.io.broadcast('update-general-badge');
+    req.io.broadcast('update-counts');
   });
 
   app.io.route('question-answered', function(req){
-    req.io.broadcast('update-user-badge');
+    req.io.broadcast('update-counts');
+  });
+
+  app.io.route('answer-rated', function(req){
+    req.io.broadcast('update-counts');
   });
 
   app.post('/uploadImage', question.uploadImage);
