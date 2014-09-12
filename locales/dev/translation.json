@@ -125,6 +125,9 @@
             "go": "main-page.header.go",
             "ask": "main-page.header.ask",
             "system-people-care": "main-page.header.system-people-care"
+        },
+        "sidebar": {
+            "my-unread-questions": "main-page.sidebar.my-unread-questions"
         }
     }
 }

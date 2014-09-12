@@ -14,10 +14,10 @@
     },
     "sidebar" : {
       "my-questions" : "My Questions",
-      "my-answered-questions" : "My Answered Questions",
-      "my-unread-questions" : "My Unread Questions",
-      "outstanding-questions" : "Outstanding Questions",
-      "answered-outstanding-questions" : "Answered Questions",
+      "my-answered-questions" : "My Solved",
+      "my-outstanding-questions" : "My Outstanding",
+      "outstanding-questions" : "All Outstanding",
+      "answered-outstanding-questions" : "All Solved",
       "all-questions" : "All Questions"
     },
     "question-panel" : {

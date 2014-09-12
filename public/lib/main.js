@@ -330,14 +330,14 @@ function getQuestionsByLink(){
 
   if(linkId == 'my-questions'){
    getOutstandingCountByFilter({filter : { criteria : {'user' : true, type : $('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
-  }else if(linkId == 'my-answered-questions'){
-    getOutstandingCountByFilter({filter : { criteria :{"solutions" : {$not : { $size : 0 }}, 'user' : true, type : $('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
-  }else if(linkId == 'my-unread-questions'){
+   }else if(linkId == 'my-outstanding-questions'){
     getOutstandingCountByFilter({filter : { criteria :{$or : [{"solutions.useful": 0}, {"solutions": {$size : 0}}], 'user' : true, type :$('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
+  }else if(linkId == 'my-answered-questions'){
+    getOutstandingCountByFilter({filter : { criteria :{"solutions.useful" : {$gt : 0 }, 'user' : true, type : $('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
   }else if(linkId == 'outstanding-questions'){
     getOutstandingCountByFilter({filter : { criteria :{$or : [{"solutions.useful": 0}, {"solutions": {$size : 0}}], type :$('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
   }else if(linkId == 'answered-outstanding-questions'){
-   getOutstandingCountByFilter({filter : { criteria :{"solutions" : {$not : { $size : 0 }}, type :$('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
+   getOutstandingCountByFilter({filter : { criteria :{"solutions.useful" : {$gt : 0 }, type :$('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
   }else if(linkId == 'all-questions'){
        getOutstandingCountByFilter({filter : { criteria :{type :$('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
   }
@@ -366,7 +366,7 @@ function updateBadge(name, value){
 function updateBadges(result){
   updateBadge('my-questions', result.myQuestions);
   updateBadge('my-answered-questions', result.myAnsweredQuestions);
-  updateBadge('my-unread-questions', result.myUnreadQuestions);
+  updateBadge('my-outstanding-questions', result.myOutstandingQuestions);
   updateBadge('outstanding-questions', result.outstandingQuestions);
   updateBadge('answered-outstanding-questions', result.answeredOutstandingQuestions);
   updateBadge('all-questions', result.allQuestions);

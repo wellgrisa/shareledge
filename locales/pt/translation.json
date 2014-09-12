@@ -14,10 +14,10 @@
     },
     "sidebar" : {
       "my-questions" : "Minhas Questões",
-      "my-answered-questions" : "Respondidas",
-      "my-unread-questions" : "Minhas Não Lidas",
-      "outstanding-questions" : "Pendentes",
-      "answered-outstanding-questions" : "Respondidas",
+      "my-answered-questions" : "Minhas Resolvidas",
+      "my-outstanding-questions" : "Minhas Pendentes",
+      "outstanding-questions" : "Todas Pendentes",
+      "answered-outstanding-questions" : "Todas Resolvidas",
       "all-questions" : "Todas as Questões"
     },
     "question-panel" : {

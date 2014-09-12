@@ -80,7 +80,7 @@ exports.counts = function(req, res) {
     var result = {
       myQuestions : 0,
       myAnsweredQuestions : 0,
-      myUnreadQuestions : 0,
+      myOutstandingQuestions : 0,
       outstandingQuestions : 0,
       answeredOutstandingQuestions : 0,
       allQuestions : 0
@@ -89,17 +89,15 @@ exports.counts = function(req, res) {
       if(questions[i].user._id.toString() == new mongoose.Types.ObjectId(req.user._id)){
         result.myQuestions ++;
       }
-      if(questions[i].user._id.toString() == new mongoose.Types.ObjectId(req.user._id) && questions[i].solutions.length > 0){
-        result.myAnsweredQuestions ++;
-      }
+      console.log('88888888888888888888888', questions[i].user._id.toString());
+      console.log('999999999999', new mongoose.Types.ObjectId(req.user._id));
       if(questions[i].user._id.toString() == new mongoose.Types.ObjectId(req.user._id) && questions[i].read == false){
-        result.myUnreadQuestions ++;
+        result.myOutstandingQuestions ++;
       }
       if(questions[i].solutions.length == 0){
         result.outstandingQuestions ++;
       }
       if(questions[i].solutions.length > 0){
-        result.answeredOutstandingQuestions ++;
         var useful = false;
         for (var j = 0; j < questions[i].solutions.length; j++) {
           if(questions[i].solutions[j].useful > 0){
@@ -109,6 +107,12 @@ exports.counts = function(req, res) {
         }
         if(!useful){
           result.outstandingQuestions ++;
+        }
+        if(useful){
+          result.answeredOutstandingQuestions ++;
+          if(questions[i].user._id.toString() == new mongoose.Types.ObjectId(req.user._id)){
+            result.myAnsweredQuestions ++;
+          }
         }
       }
       result.allQuestions ++;
