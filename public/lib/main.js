@@ -331,13 +331,13 @@ function getQuestionsByLink(){
   if(linkId == 'my-questions'){
    getOutstandingCountByFilter({filter : { criteria : {'user' : true, type : $('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
    }else if(linkId == 'my-outstanding-questions'){
-    getOutstandingCountByFilter({filter : { criteria :{$or : [{"solutions.useful": 0}, {"solutions": {$size : 0}}], 'user' : true, type :$('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
+    getOutstandingCountByFilter({filter : { criteria :{$or : [{"useful": 0}, {"solutions": {$size : 0}}], 'user' : true, type :$('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
   }else if(linkId == 'my-answered-questions'){
-    getOutstandingCountByFilter({filter : { criteria :{"solutions.useful" : {$gt : 0 }, 'user' : true, type : $('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
+    getOutstandingCountByFilter({filter : { criteria :{"useful" : {$gt : 0 }, 'user' : true, type : $('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
   }else if(linkId == 'outstanding-questions'){
     getOutstandingCountByFilter({filter : { criteria :{$or : [{"solutions.useful": 0}, {"solutions": {$size : 0}}], type :$('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
   }else if(linkId == 'answered-outstanding-questions'){
-   getOutstandingCountByFilter({filter : { criteria :{"solutions.useful" : {$gt : 0 }, type :$('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
+   getOutstandingCountByFilter({filter : { criteria :{"useful" : {$gt : 0 } , type :$('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
   }else if(linkId == 'all-questions'){
        getOutstandingCountByFilter({filter : { criteria :{type :$('#systems').val()}, page : pageNumber }}, refreshQuestionsWith);
   }

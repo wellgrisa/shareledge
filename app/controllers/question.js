@@ -235,20 +235,21 @@ exports.update = function(req, res){
 
 exports.updateRead = function(req, res){
   Question.findById(req.params.id).populate('user').exec(function (err, question){
+    question.views ++;
     if(question.user._id.toString() == new mongoose.Types.ObjectId(req.user._id)){
       question.read = true;
-
-      return question.save(function (err) {
-        if (!err) {
-          console.log("updated");
-        } else {
-          console.log(err);
-        }
-        return res.json(question);
-      });
     }else{
       console.log('-----------não o mesmo-------', req.user._id, question.user._id);
     }
+    return question.save(function (err) {
+      if (!err) {
+        console.log("updated");
+      } else {
+        console.log(err);
+      }
+      return res.json(question);
+    });
+
   });
 };
 
@@ -259,10 +260,10 @@ exports.updateAnswer = function(req, res){
       if(question.solutions[i]._id == req.body.answer){
         if(req.body.rate == 'up'){
           question.solutions[i].useful = question.solutions[i].useful  + 1;
-          question.views ++;
+          question.useful ++;
         }else{
           question.solutions[i].useful = question.solutions[i].useful  - 1;
-          question.views --;
+          question.useful --;
         }
         answerUpdated = question.solutions[i];
         console.log(question.solutions[i].useful);
