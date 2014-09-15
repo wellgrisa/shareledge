@@ -89,11 +89,11 @@ exports.counts = function(req, res) {
       if(questions[i].user._id.toString() == new mongoose.Types.ObjectId(req.user._id)){
         result.myQuestions ++;
       }
-      console.log('88888888888888888888888', questions[i].user._id.toString());
-      console.log('999999999999', new mongoose.Types.ObjectId(req.user._id));
-      if(questions[i].user._id.toString() == new mongoose.Types.ObjectId(req.user._id) && questions[i].read == false){
+
+      if(questions[i].user._id.toString() == new mongoose.Types.ObjectId(req.user._id) && questions[i].read == false && questions[i].useful == 0){
         result.myOutstandingQuestions ++;
       }
+
       if(questions[i].solutions.length == 0){
         result.outstandingQuestions ++;
       }
