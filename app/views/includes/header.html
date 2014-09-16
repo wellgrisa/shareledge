@@ -26,7 +26,7 @@
         </form>
       </div>
       {% else %}
-      <div class="dropdown-menu text-center" style="padding: 15px;">
+      <div class="dropdown-menu text-center" style="padding: 15px;z-index:9999;">
         <a href="\signout" class="btn btn-warning">{{ t("main-page.header.sign-out") }}</a>
       </div>
       <input type="hidden" id="user-id"  name="user-id" value="{{user._id}}">
