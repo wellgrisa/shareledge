@@ -7,6 +7,8 @@
         "system-hours" : "horas",
         "system-ebs" : "ebs",
         "system-people-care" : "people care",
+        "system-administrative" : "administrativo",
+        "system-sits" : "sits",
         "sign-out" : "Sair",
         "outstanding-questions" : "Questões pendentes.",
         "your-questions" : "Suas questões. Um número aparece quando você recebe uma resposta.",

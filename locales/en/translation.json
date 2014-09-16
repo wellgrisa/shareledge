@@ -7,6 +7,8 @@
         "system-hours" : "hours",
         "system-ebs" : "ebs",
         "system-people-care" : "people care",
+        "system-administrative" : "administrative",
+        "system-sits" : "sits",
         "sign-out" : "Sair",
         "outstanding-questions" : "Outstanding questions",
         "your-questions" : "Your Questions. It shows a number when you got an answer",
