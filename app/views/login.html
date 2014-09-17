@@ -22,15 +22,24 @@
           <img src="/img/gmail.jpg" />
           Acessar com Google
         </a> -->
+        <br>
+        <p class="home-title">Bravi Shareledge</p> 
+        <span class="home-subtitle">Share what you know!</span>
       </div>
-      <br>
+
       <div class="col-lg-12">
         <form class="form-signin" role="form" action="/signin" method="post">
-          <input type="username" name="username" class="form-control" placeholder="{{ t('main-page.sign-up.name') }}" required="" autofocus="">
-          <input type="password" name="password" class="form-control" placeholder="{{ t('main-page.sign-up.password') }}" required="">
-          <button class="btn btn-lg btn-primary" type="submit" data-gacategory="Login" data-gaaction="Submit" data-galabel="Regular login">{{ t('main-page.sign-up.sign-in') }}</button>
-          <label style="color: white">{{ t('main-page.sign-up.or') }}</label> <a href="#" data-toggle="modal" data-target="#sign-up-modal" class="btn btn-lg btn-warning" data-gacategory="Login" data-gaaction="Register" data-galabel="Register new user">{{ t('main-page.sign-up.sign-up') }}</a>
-          <label style="color: white">{{ t('main-page.sign-up.or') }}</label> <a href="/auth/google" class="btn btn-lg btn-danger" data-gacategory="Login" data-gaaction="Gmail" data-galabel="Enter with Gmail account">Gmail!</a>
+          <!-- Commented other logins authetication -->
+          <div style="display:none;">            
+            <input type="username" name="username" class="form-control" placeholder="{{ t('main-page.sign-up.name') }}" required="" autofocus="">
+            <input type="password" name="password" class="form-control" placeholder="{{ t('main-page.sign-up.password') }}" required="">
+            <button class="btn btn-lg btn-primary" type="submit" data-gacategory="Login" data-gaaction="Submit" data-galabel="Regular login">{{ t('main-page.sign-up.sign-in') }}</button>
+            <label style="color: white">{{ t('main-page.sign-up.or') }}</label> <a href="#" data-toggle="modal" data-target="#sign-up-modal" class="btn btn-lg btn-warning" data-gacategory="Login" data-gaaction="Register" data-galabel="Register new user">{{ t('main-page.sign-up.sign-up') }}</a>
+            <label style="color: white">{{ t('main-page.sign-up.or') }}</label> <a href="/auth/google" class="btn btn-lg btn-danger" data-gacategory="Login" data-gaaction="Gmail" data-galabel="Enter with Gmail account">Gmail!</a>
+          </div>
+
+          <br>
+          <a href="/auth/google" class="btn btn-lg btn-primary" data-gacategory="Login" data-gaaction="Gmail" data-galabel="Enter with Gmail account">{{ t('main-page.sign-up.sign-in-gmail') }}</a>
         </form>
 
     </div>

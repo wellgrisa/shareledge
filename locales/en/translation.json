@@ -53,7 +53,8 @@
       "people-care" : "People Care",
       "sign-up" : "Sign up",
       "sign-in" : "Sign in",
-      "or" : "or"
+      "or" : "or",
+      "sign-in-gmail" : "Sign in with your Gmail account"
     }
   }
 }
