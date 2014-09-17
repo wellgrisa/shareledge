@@ -19,7 +19,12 @@ function ga_event(category, action, opt_label){
     var action = $(this).data("gaaction");
     var label = $(this).data("galabel");
 
-    $(this).on("click", function() {
+    var defaultEvent = "click";
+    if ($(this).prop("tagName") == "SELECT"){
+       defaultEvent = "change";
+    }
+
+    $(this).on(defaultEvent, function() {
       ga_event(cat, action, label);
     });
 
