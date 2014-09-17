@@ -1,3 +1,12 @@
+function toDateTime (string_value) {
+  if (string_value == undefined) return "";
+
+  var d = new Date(string_value);
+  if (d == undefined) return "";
+
+  return d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes();
+}
+
 $(document).ready(function() {
 
 i18n.init(handleMultiSelect);
@@ -497,7 +506,8 @@ function showAnswer(id){
     for (var i = 0; i < data.solutions.length; i++) {
 
       var answer = '<div class="panel panel-default">' +
-                      '<div class="panel-heading"><span class="badge">' + data.solutions[i].useful + '</span><label>' + data.solutions[i].user.username + '</label> ' + data.solutions[i].created + '<a onclick="rateUp(\'' + data.solutions[i]._id +'\')" class="answer-result green" href="#"><span class="glyphicon glyphicon-ok"></span></a></div>' +
+                      '<div class="panel-heading"><span class="badge">' + data.solutions[i].useful + 
+                      '</span><label>' + data.solutions[i].user.username + '</label> ' + toDateTime(data.solutions[i].created) + '<a onclick="rateUp(\'' + data.solutions[i]._id +'\')" class="answer-result green" href="#"><span class="glyphicon glyphicon-ok"></span></a></div>' +
                           '<div class="panel-body">'+
                             data.solutions[i].content +
                           '</div>' +
@@ -542,9 +552,9 @@ function question(id, content, answers){
 function getShortAnswers(solutions){
   var solutionsString = '';
   for (var i = 0; i < solutions.length; i++) {
-    solutionsString += solutions[i].content.replace(/<img [^>]+>/g, "").replace(/<br>/g, "");
+    solutionsString += $($.parseHTML(solutions[i].content)).text()
   }
-  return solutionsString.substr(0, 500);
+  return solutionsString.substr(0, 120) + "...";
 }
 
 // Refactored Functions
@@ -573,7 +583,7 @@ function configureEventHandlers() {
                 answer.push('    <div class="panel-heading">');
                 answer.push('        <span class="badge">' + data.solutions[i].useful + '</span>');
                 answer.push('        <label>' + data.solutions[i].user.username + '</label>');
-                answer.push('        ' + data.solutions[i].created);
+                answer.push('        ' + toDateTime(data.solutions[i].created));
                 answer.push('        <a onclick="rateUp(\'' + data.solutions[i]._id +'\')" class="answer-result green" href="#">');
                 answer.push('            <span class="glyphicon glyphicon-ok"></span>');
                 answer.push('        </a>');
@@ -620,7 +630,7 @@ function getQuestion(question){
       html.push('<div class="panel panel-default">');
       html.push('<div class="panel-heading">');
       html.push('<span id="' + question.solutions[i]._id +  '" class="badge">' + question.solutions[i].useful + '</span>');
-      html.push('<label>' + question.solutions[i].user.username + '</label>' + '  ' + question.solutions[i].created);
+      html.push('<label>' + question.solutions[i].user.username + '</label>' + '  ' + toDateTime(question.solutions[i].created));
       html.push('</button>');
       html.push('<button onclick="rateUp(\'' + question.solutions[i]._id +'\')" class="answer-result green" href="#">');
       html.push('<span class="glyphicon glyphicon-ok"></span>');
@@ -683,7 +693,7 @@ function handleCollapsibleAnswers(elementEvent){
       answer.push('    <div class="panel-heading">');
       answer.push('        <span class="badge">' + data.solutions[i].useful + '</span>');
       answer.push('        <label>' + data.solutions[i].user.username + '</label>');
-      answer.push('        ' + data.solutions[i].created);
+      answer.push('        ' + toDateTime(data.solutions[i].created));
       answer.push('        <a onclick="rateUp(\'' + data.solutions[i]._id +'\')" class="answer-result green" href="#">');
       answer.push('            <span class="glyphicon glyphicon-ok"></span>');
       answer.push('        </a>');

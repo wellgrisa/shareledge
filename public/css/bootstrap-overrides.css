@@ -616,3 +616,18 @@ width: 1.6em;
   margin-left: 225px;
   padding-top: 15px;
 }
+
+.panel-heading > .badge{
+  margin-right: 5px;
+}
+
+.home-title, .home-subtitle{
+  color: white;
+  font-size: 12pt;
+  margin: 0;
+}
+
+.home-title{
+  font-size: 20pt;
+  font-weight: bold;
+}
