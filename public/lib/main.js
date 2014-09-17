@@ -236,7 +236,7 @@ function handleListGroup(){
    var questionIdentifier  = selectedQuestion.data("id");
 
    var urlUpdateRead = '/question/updateRead/' + questionIdentifier;
-     console.log(question);
+     //console.log(question);
      jQuery.ajax({
       url: urlUpdateRead,
       type: "PUT",
@@ -406,6 +406,9 @@ function ask(){
     io.emit('question-created');
 
     updateCounts();
+
+    // Registering Google Analytics event
+    ga_event('Question', 'Ask', 'Question saved as outstading');    
   });
 }
 
@@ -466,7 +469,7 @@ function registerAnswer(question){
   var questionIdentifier  = selectedQuestion.data("id");
 
   var url = '/question/' + questionIdentifier;
-  console.log(question);
+  //console.log(question);
   jQuery.ajax({
     url: url,
     type: "PUT",
@@ -489,7 +492,7 @@ function showAnswer(id){
   var questionIdentifier  = $('.list-group-item.active').data("id");
 
   var urlUpdateRead = '/question/updateRead/' + questionIdentifier;
-  console.log(question);
+  //console.log(question);
   jQuery.ajax({
     url: urlUpdateRead,
     type: "PUT",
@@ -567,8 +570,8 @@ function configureEventHandlers() {
         var question = $(event.currentTarget),
             url = '/question/' + question.data("id");
 
-        console.log(url);
-        console.log(question);
+        //console.log(url);
+        //console.log(question);
 
         $.get(url, function(data) {
             var answers = question.find('.answers'),
@@ -616,7 +619,7 @@ function getQuestion(question){
 
     var picture = question.user.google ? question.user.google.picture :"/img/unknown.png";
 
-    html.push('<a data-target="#' + questionCollapsibleId + '" class="list-group-item" ' + unreadStyle + ' data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'">');
+    html.push('<a data-target="#' + questionCollapsibleId + '" class="list-group-item" ' + unreadStyle + ' data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'" onclick="ga_event(\'Question\', \'Open-Question-' + question._id + '\', \'Show details from question\')">');
     html.push('<img data-toggle="dropdown" class="img-responsive panel-user navbar-right img-circle" src="' + picture + '" alt=""/>');
     html.push('  <h4 class="list-group-item-heading">' + question.content + '</h4>');
     if(question.solutions.length){
@@ -655,7 +658,7 @@ function getQuestion(question){
 
     var a = html.join('');
 
-    console.log(a);
+    //console.log(a);
 
     return html.join('');
 }
@@ -677,8 +680,8 @@ function handleCollapsibleAnswers(elementEvent){
   var id = question.data('id');
   var url = '/question/' + id;
 
-  console.log(url);
-  console.log(question);
+  //console.log(url);
+  //console.log(question);
 
   $.get(url, function(data) {
     var answers = question.find('#answer-for-' + data._id),

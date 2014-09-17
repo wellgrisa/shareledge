@@ -134,7 +134,7 @@ tl.pg.interval = {};
 
     // boilerplate markup for the toggle element.
     tl.pg.toggle_markup =
-        '<div class="tlypageguide_toggle" title="Launch Page Guide">' +
+        '<div class="tlypageguide_toggle" title="Launch Page Guide" onclick="ga_event(\'Tour\', \'Click-tour\', \'Click to init the tour\')">' +
             '<div><span class="tlypageguide_toggletitle"></span></div>' +
             '<a href="#" class="tlypageguide_close" title="close guide">X &raquo;</a>' +
         '</div>';
