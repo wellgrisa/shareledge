@@ -637,13 +637,31 @@ width: 1.6em;
 
 .container-fluid {
     padding-left: 0;
-    padding-top: 80px;
+    padding-top: 50px;
 }
 
 @media(min-width:768px) {
     .container-fluid {
         padding-left: 225px;
         padding-top: 20px;
+    }
+}
+
+@media(max-width:768px) {
+    #user-avatar {
+        height: 30px;
+        margin-top: 10px;
+    }
+
+    .systems-dropdown .btn{
+      font-size: 12px;
+    }
+
+    .navbar-right{
+      float: right;
+      margin-top: 10px;
+      padding: 0;
+      margin-left: -10px;
     }
 }
 
