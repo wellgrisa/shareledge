@@ -1,5 +1,5 @@
 body{
-  background-color: #2d3033 !important;  
+  background-color: #2d3033 !important;
   overflow-x: hidden;
 }
 
@@ -179,8 +179,7 @@ div[data-role="editor-toolbar"] {
 }
 
 .navbar-form{
-  margin-left:  -15px;
-  margin-right:  -15px;
+  margin-left:  15px;
 }
 
 .right-inner-addon {
@@ -613,7 +612,6 @@ width: 1.6em;
 }
 
 .container-fluid {
-  margin-left: 225px;
   padding-top: 15px;
 }
 
@@ -630,4 +628,20 @@ width: 1.6em;
 .home-title{
   font-size: 20pt;
   font-weight: bold;
+}
+
+.navbar-inverse .navbar-nav>li>a{
+    color: #428bca;
+}
+
+.container-fluid {
+    padding-left: 0;
+    padding-top: 80px;
+}
+
+@media(min-width:768px) {
+    .container-fluid {
+        padding-left: 225px;
+        padding-top: 20px;
+    }
 }
