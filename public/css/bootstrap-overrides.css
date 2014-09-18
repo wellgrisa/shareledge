@@ -650,3 +650,5 @@ width: 1.6em;
 .tlyPageGuideMessages{
   z-index: 1031;
 }
+
+img.attached{ max-width: 100%; }

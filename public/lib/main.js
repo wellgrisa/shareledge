@@ -26,7 +26,7 @@ function padLeft(value, character, quantity)
 
 $(document).ready(function() {
 
-//i18n.init(handleMultiSelect);
+if (i18n) i18n.init(handleMultiSelect);
 
 $("#menu-toggle").click(function(e) {
         e.preventDefault();
@@ -164,10 +164,10 @@ function systemChanged(element, checked){
   handleListGroup();
 
   $('.notifications span').tooltip();
-  window.addEventListener("paste",processEvent);
+  window.addEventListener("paste", processPasteEvent);
 });
 
-function processEvent(e) {
+function processPasteEvent(e) {
     for (var i = 0 ; i < e.clipboardData.items.length ; i++) {
 
         var clipboardItem = e.clipboardData.items[i];
@@ -195,8 +195,9 @@ jQuery.ajax({
     data: { img : imagePasted },
     success: function (data) {
 
-      var img= new Image();// : document.createElement('img');
-      img.src= data.imgSrc;
+      var img = new Image(); // : document.createElement('img');
+      img.src = data.imgSrc;
+      img.className  = "attached";
 
       doInsert(img);
     },
@@ -574,7 +575,12 @@ function getShortAnswers(solutions){
   for (var i = 0; i < solutions.length; i++) {
     solutionsString += $($.parseHTML(solutions[i].content)).text()
   }
-  return solutionsString.substr(0, 120) + "...";
+
+  var toBeContinued = "...";
+  if (solutionsString.length <= 120)
+    toBeContinued = "";
+
+  return solutionsString.substr(0, 120) + toBeContinued;
 }
 
 // Refactored Functions
@@ -636,7 +642,7 @@ function getQuestion(question){
 
     var picture = question.user.google ? question.user.google.picture :"/img/unknown.png";
 
-    html.push('<a data-target="#' + questionCollapsibleId + '" class="list-group-item" ' + unreadStyle + ' data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'" onclick="ga_event(\'Question\', \'Open-Question-' + question._id + '\', \'Show details from question\')">');
+    html.push('<div data-target="#' + questionCollapsibleId + '" class="list-group-item" ' + unreadStyle + ' data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'" onclick="ga_event(\'Question\', \'Open-Question-' + question._id + '\', \'Show details from question\')">');
     html.push('<img data-toggle="dropdown" class="img-responsive panel-user navbar-right img-circle" src="' + picture + '" alt=""/>');
     html.push('  <h4 class="list-group-item-heading">' + question.content + '</h4>');
     if(question.solutions.length){
@@ -669,7 +675,7 @@ function getQuestion(question){
     }
 
     html.push('</div>');
-    html.push('</a>');
+    html.push('</div>');
 
 
 
