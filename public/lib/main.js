@@ -4,7 +4,24 @@ function toDateTime (string_value) {
   var d = new Date(string_value);
   if (d == undefined) return "";
 
-  return d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear() + ' ' + d.getHours() + ':' + d.getMinutes();
+
+  return padLeft(d.getDate()) + '/' + padLeft(d.getMonth()) + '/' + d.getFullYear() + ' ' + 
+         padLeft(d.getHours()) + ':' + padLeft(d.getMinutes());
+}
+
+function padLeft(value, character, quantity)
+{
+  // default values
+  if (character == undefined) character = "0";
+  if (quantity == undefined) quantity = "2";
+
+  var pad = "";
+
+  for (var i = 0; i < quantity; i++) {
+    pad += character;
+  };
+
+  return pad.substring(0, pad.length - value.toString().length) + value;
 }
 
 $(document).ready(function() {
