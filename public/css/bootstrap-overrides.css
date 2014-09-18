@@ -178,10 +178,6 @@ div[data-role="editor-toolbar"] {
   z-index:  2000 !important;
 }
 
-.navbar-form{
-  margin-left:  15px;
-}
-
 .right-inner-addon {
     position: relative;
 }
@@ -644,4 +640,8 @@ width: 1.6em;
         padding-left: 225px;
         padding-top: 20px;
     }
+}
+
+.tlyPageGuideMessages{
+  z-index: 1031;
 }
