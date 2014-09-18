@@ -54,7 +54,8 @@
       "sign-up" : "Registrar",
       "sign-in" : "Logar",
       "or" : "ou",
-      "sign-in-gmail" : "Logar com sua conta do Gmail"
+      "sign-in-bravi" : "Logar com seu e-mail da Bravi",
+      "subtitle" : "Conte a todos o que você sabe!"
     }
   }
 }

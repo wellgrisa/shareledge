@@ -54,7 +54,8 @@
       "sign-up" : "Sign up",
       "sign-in" : "Sign in",
       "or" : "or",
-      "sign-in-gmail" : "Sign in with your Gmail account"
+      "sign-in-bravi" : "Sign in with your Bravi account",
+      "subtitle" : "Share what you know!"
     }
   }
 }

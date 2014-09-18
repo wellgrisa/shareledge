@@ -2,29 +2,27 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta charset="utf-8">
-
+  <meta charset="utf-8">  
+  <title>{% block title %}Bravi Shareledge - Login{% endblock %}</title>
 
   <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
   <link href="/css/custom-screens.css" rel="stylesheet" media="screen">
   <link href="/css/bootstrap-overrides.css" rel="stylesheet" media="screen">
   <link href="/css/signin.css" rel="stylesheet" media="screen">
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>  
+
 </head>
-<body>
+<body class="login">
 {% include 'components/modals/signup.html' %}
   <div class="parent">
   <div class="child">
     <div class="container">
       <div class="col-lg-12">
         <img class="img-responsive bravi-logo" src="/img/bravi.png" alt="" />
-        <!-- <a id="signin" href="/auth/google">
-          <img src="/img/gmail.jpg" />
-          Acessar com Google
-        </a> -->
+        
         <br>
-        <p class="home-title">Bravi Shareledge</p> 
-        <span class="home-subtitle">Share what you know!</span>
+        <p class="home-title">Bravi Shareledge</p>
+        <span class="home-subtitle">{{ t('main-page.sign-up.subtitle') }}</span>         
       </div>
 
       <div class="col-lg-12">
@@ -39,7 +37,7 @@
           </div>
 
           <br>
-          <a href="/auth/google" class="btn btn-lg btn-primary" data-gacategory="Login" data-gaaction="Gmail" data-galabel="Enter with Gmail account">{{ t('main-page.sign-up.sign-in-gmail') }}</a>
+          <a href="/auth/google" class="btn btn-lg btn-primary" data-gacategory="Login" data-gaaction="Gmail" data-galabel="Enter with Gmail account">{{ t('main-page.sign-up.sign-in-bravi') }}</a>
         </form>
 
     </div>

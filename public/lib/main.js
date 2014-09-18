@@ -26,7 +26,7 @@ function padLeft(value, character, quantity)
 
 $(document).ready(function() {
 
-i18n.init(handleMultiSelect);
+//i18n.init(handleMultiSelect);
 
 $("#menu-toggle").click(function(e) {
         e.preventDefault();
