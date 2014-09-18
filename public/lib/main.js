@@ -5,7 +5,7 @@ function toDateTime (string_value) {
   if (d == undefined) return "";
 
 
-  return padLeft(d.getDate()) + '/' + padLeft(d.getMonth()) + '/' + d.getFullYear() + ' ' + 
+  return padLeft(d.getDate()) + '/' + padLeft(d.getMonth()) + '/' + d.getFullYear() + ' ' +
          padLeft(d.getHours()) + ':' + padLeft(d.getMinutes());
 }
 
@@ -33,6 +33,13 @@ $("#menu-toggle").click(function(e) {
         $("#wrapper").toggleClass("active");
 });
 
+$('html').on('click', function (e) {
+    if ($(e.target).data('toggle') !== 'popover'
+      && $(e.target).parents('[data-toggle="popover"]').length === 0
+      && $(e.target).parents('.popover.in').length === 0) {
+      $('[data-toggle="popover"]').popover('hide');
+  }
+});
 
 $('.side-nav a').on('click', sidebarClicked);
 
@@ -426,7 +433,7 @@ function ask(){
     updateCounts();
 
     // Registering Google Analytics event
-    ga_event('Question', 'Ask', 'Question saved as outstading');    
+    ga_event('Question', 'Ask', 'Question saved as outstading');
   });
 }
 
@@ -527,7 +534,7 @@ function showAnswer(id){
     for (var i = 0; i < data.solutions.length; i++) {
 
       var answer = '<div class="panel panel-default">' +
-                      '<div class="panel-heading"><span class="badge">' + data.solutions[i].useful + 
+                      '<div class="panel-heading"><span class="badge">' + data.solutions[i].useful +
                       '</span><label>' + data.solutions[i].user.username + '</label> ' + toDateTime(data.solutions[i].created) + '<a onclick="rateUp(\'' + data.solutions[i]._id +'\')" class="answer-result green" href="#"><span class="glyphicon glyphicon-ok"></span></a></div>' +
                           '<div class="panel-body">'+
                             data.solutions[i].content +
