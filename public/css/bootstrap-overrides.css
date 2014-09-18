@@ -642,6 +642,24 @@ width: 1.6em;
     }
 }
 
+@media(max-width:768px) {
+    #user-avatar {
+        height: 30px;
+        margin-top: 10px;
+    }
+
+    .systems-dropdown .btn{
+      font-size: 12px;
+    }
+
+    .navbar-right{
+      float: right;
+      margin-top: 10px;
+      padding: 0;
+      margin-left: -10px;
+    }
+}
+
 .tlyPageGuideMessages{
   z-index: 1031;
 }
