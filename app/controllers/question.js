@@ -14,7 +14,7 @@ var mongoose = require('mongoose'),
      var limit = opts.limit || 10;
      var page = opts.page || 1;
      var Model = this;
-     console.log('criteriaaa da booosta', criteria);
+
      Model.count(criteria, function (err, totalRecords) {
       var query = Model.find(criteria)
         .populate(populate)
@@ -31,8 +31,6 @@ var mongoose = require('mongoose'),
           }
         };
 
-        console.log('paaaaaaages', result);
-
         callback(null, result);
       });
     });
@@ -42,9 +40,7 @@ var mongoose = require('mongoose'),
  * Get Question
  */
 exports.all = function(req, res) {
-  console.log('message');
   Question.find({ type : req.user.filter }).sort('-created').populate('user solutions.user').exec(function(err, question){
-    console.log(question);
     if (!err) {
         res.json({data: question});
     } else {
@@ -152,7 +148,6 @@ return Question.paginate(options, function (err, questions){
 };
 
 exports.create = function (req, res) {
-  console.log('create');
   var question = new Question(req.body);
 
   question.user = req.user;
@@ -170,7 +165,6 @@ exports.create = function (req, res) {
 
 exports.getById = function(req, res){
   return Question.findById(req.params.id).populate('user solutions.user').exec(function (err, question){
-    console.log(question);
     if (!err) {
       return res.send(question);
     } else {
@@ -181,7 +175,6 @@ exports.getById = function(req, res){
 
 exports.getByUser = function(req, res){
   return Question.find({'user' : new mongoose.Types.ObjectId(req.user._id), 'type' : req.user.filter}).populate('user solutions.user').exec(function (err, questions){
-    console.log(questions);
     if (!err) {
       return res.send(questions);
     } else {
@@ -202,7 +195,6 @@ return Question.find({$or : [{"solutions.useful": 0}, {"solutions": {$size : 0}}
 
 exports.getOutstandingQuestionsByUser = function(req, res){
 return Question.count({'user' : new mongoose.Types.ObjectId(req.user._id), 'read' : false}).populate('user solutions.user').exec(function (err, questions){
-    console.log(questions);
     if (!err) {
       return res.send(questions);
     } else {
@@ -214,12 +206,16 @@ return Question.count({'user' : new mongoose.Types.ObjectId(req.user._id), 'read
 exports.update = function(req, res){
   Question.findById(req.params.id).populate('solutions.user').exec(function (err, question){
 
+    console.log('soluuuutions', req.body.solutions);
+
     question.solutions = req.body.solutions;
 
     question.read = false;
 
     for (var i =0; i < question.solutions.length; i++) {
-      question.solutions[i].user = req.user;
+      if(!question.solutions[i].user){
+        question.solutions[i].user = req.user;
+      }
     }
 
     return question.save(function (err) {
@@ -238,9 +234,8 @@ exports.updateRead = function(req, res){
     question.views ++;
     if(question.user._id.toString() == new mongoose.Types.ObjectId(req.user._id)){
       question.read = true;
-    }else{
-      console.log('-----------não o mesmo-------', req.user._id, question.user._id);
     }
+
     return question.save(function (err) {
       if (!err) {
         console.log("updated");
@@ -266,7 +261,6 @@ exports.updateAnswer = function(req, res){
           question.useful --;
         }
         answerUpdated = question.solutions[i];
-        console.log(question.solutions[i].useful);
       }
     }
     return question.save(function (err) {
@@ -275,7 +269,7 @@ exports.updateAnswer = function(req, res){
       } else {
         console.log(err);
       }
-      console.log('answerupdated --- ', answerUpdated);
+
       return res.json(answerUpdated);
     });
   });
@@ -297,7 +291,6 @@ exports.uploadImage = function(req, res){
   var filePath = 'img/questions/' + uuid.v4() + '.jpeg';
 
   fs.writeFile('public/' + filePath, buff, function (err) {
-    console.log('uploaded with success');
     return res.json({ imgSrc : filePath});
   });
 }

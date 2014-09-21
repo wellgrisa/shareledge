@@ -670,3 +670,24 @@ width: 1.6em;
 }
 
 img.attached{ max-width: 100%; }
+
+.loading-modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .5 )
+                50% 50%
+                no-repeat;
+}
+
+#accordion.loading {
+    overflow: hidden;
+}
+
+#accordion.loading .loading-modal {
+    display: block;
+}

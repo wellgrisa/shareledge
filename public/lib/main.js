@@ -26,6 +26,16 @@ function padLeft(value, character, quantity)
 
 $(document).ready(function() {
 
+  $(document)
+  .ajaxStart(function () {
+    $('#accordion').addClass("loading");
+    NProgress.inc();
+  })
+  .ajaxStop(function () {
+    $('#accordion').removeClass("loading");
+    NProgress.done();
+  });
+
 if (i18n) i18n.init(handleMultiSelect);
 
 $("#menu-toggle").click(function(e) {
@@ -122,13 +132,29 @@ function getBySearch(){
     $('#all-questions').parent().addClass('active');
   }
 
-  $.getJSON( '/question/search', {filter : { criteria : { content: { $regex: '^.*'+  $('#question').val() +'.*$', $options: 'i' }, type : $('#systems').val() }, page : pageNumber }})
-  .done(function(json){
-    refreshQuestionsWith(json);
-  })
-  .fail(function(jqxhr, textStatus, error){
+  var searchData = {
+    filter :
+    {
+      criteria : { content: { $regex: '^.*'+  $('#question').val() +'.*$', $options: 'i' }, type : $('#systems').val() },
+      page : pageNumber }
+    };
 
+  $.ajax({
+    url: "/question/search",
+    data: searchData,
+    global: false,
+  })
+  .done(function( result ) {
+    refreshQuestionsWith(result);
   });
+
+  // $.getJSON( '/question/search', {filter : { criteria : { content: { $regex: '^.*'+  $('#question').val() +'.*$', $options: 'i' }, type : $('#systems').val() }, page : pageNumber }})
+  // .done(function(json){
+  //   refreshQuestionsWith(json);
+  // })
+  // .fail(function(jqxhr, textStatus, error){
+
+  // });
 }
 
 function handleMultiSelect(){
@@ -156,6 +182,7 @@ function systemChanged(element, checked){
  jQuery.ajax({
     url: '/updateFilter',
     type: "PUT",
+    global: false,
     data : { filter : $('#systems').val() },
     success: function (xhr, status, error) {
       console.log('sucess');
@@ -199,6 +226,7 @@ function createImage(imagePasted){
 jQuery.ajax({
     url: 'uploadImage',
     type: "POST",
+    global: false,
     data: { img : imagePasted },
     success: function (data) {
 
@@ -243,6 +271,12 @@ function handleListGroup(){
 
     textarea.wysiwyg();
 
+    textarea.keyup(function(e){
+      if (e.ctrlKey && e.keyCode == 13) {
+        answer();
+      }
+    });
+
     textarea.eq(0).focus();
   });
 
@@ -261,9 +295,10 @@ function handleListGroup(){
    var questionIdentifier  = selectedQuestion.data("id");
 
    var urlUpdateRead = '/question/updateRead/' + questionIdentifier;
-     //console.log(question);
+
      jQuery.ajax({
       url: urlUpdateRead,
+      global: false,
       type: "PUT",
       success: function (xhr, status, error) {
         console.log('sucess');
@@ -287,6 +322,7 @@ function finishTour(){
   var finishTour = '/finishTour/' + $('#user-id').val();
   jQuery.ajax({
     url: finishTour,
+    global: false,
     type: "PUT",
     success: function (xhr, status, error) {
       console.log('sucess');
@@ -303,6 +339,7 @@ function refreshQuestions(){
       $('.list-group').append(getQuestion(questions[i]));
     }
   });
+
 }
 
 function refreshQuestionsWith(result){
@@ -471,9 +508,13 @@ function answer(){
 }
 
 function updateCounts(){
-  $.get( '/counts', function(res){
-        updateBadges(res.data);
-      });
+  $.ajax({
+    url: "/counts",
+    global: false,
+  })
+  .done(function( result ) {
+    updateBadges(result.data);
+  });
 }
 
 function initiateSearch(){
@@ -560,6 +601,7 @@ function rate(identifier, rate){
 
   jQuery.ajax({
     url: url,
+    global: false,
     type: "PUT",
     data: { answer: identifier , rate: rate },
     success: function (data) {
