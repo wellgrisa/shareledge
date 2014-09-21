@@ -18,15 +18,15 @@ module.exports = function(app, passport) {
   app.get('/question', question.all);
   app.get('/counts', question.counts);
   app.get('/question/search', question.search);
-  app.post('/question', question.create);
+  app.post('/question', middlewares.ensureAuthenticated, question.create);
   app.get('/question/:id', question.getById);
-  app.put('/question/updateRead/:id', question.updateRead);
+  app.put('/question/updateRead/:id', middlewares.ensureAuthenticated, question.updateRead);
   app.get('/questionByUser', question.getByUser);
   app.get('/questions/outstanding', question.getOutstandingQuestions);
   app.get('/questions/outstandingByUser', question.getOutstandingQuestionsByUser);
   app.get('/questions/outstandingFilter', question.getOutstandingByFilter);
-  app.put('/question/:id', question.update);
-  app.put('/answer/:id', question.updateAnswer);
+  app.put('/question/:id', middlewares.ensureAuthenticated, question.update);
+  app.put('/answer/:id', middlewares.ensureAuthenticated, question.updateAnswer);
 
   app.io.route('question-created', function(req){
     req.io.broadcast('update-counts');

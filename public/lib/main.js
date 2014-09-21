@@ -34,6 +34,11 @@ $(document).ready(function() {
   .ajaxStop(function () {
     $('#accordion').removeClass("loading");
     NProgress.done();
+  })
+  .ajaxError(function(event, jqxhr, settings, thrownError){
+    if(thrownError == "Not Found"){
+      window.location = "/";
+    }
   });
 
 if (i18n) i18n.init(handleMultiSelect);
@@ -302,9 +307,7 @@ function handleListGroup(){
       type: "PUT",
       success: function (xhr, status, error) {
         console.log('sucess');
-
         updateCounts();
-
       }
     });
   });
