@@ -72,10 +72,10 @@
     <div class="navbar-form" >
       <div class="form-group" style="display:inline;">
         <div id="nav-input-wonder" class="input-group left-inner-addon">
-              <!--<a href="#">
-              <i  class="glyphicon glyphicon-list-alt"></i>
-            </a>-->
-            <input type="text" id="question" id="question" name="question" class="form-control" placeholder="What's your question?">
+            <span class="input-group-btn">
+            <button class="btn btn-info" onclick="askDetailedQuestion()" type="button"><i  class="glyphicon glyphicon-list-alt"></i></button>
+            </span>
+            <input type="text" id="question" id="question" name="question" title="What's your question?" class="form-control" placeholder="What's your question?">
             <span class="input-group-btn">
               <button id="btn-ask" type="button" class="btn btn-info" data-container="body" data-toggle="popover" data-placement="bottom" data-content='<label>{{ t("main-page.header.register") }}</label><button onclick="ask()" style="margin-left:10px" class="btn btn-info btn-ask" >{{ t("main-page.header.go") }}</button>' data-original-title="" title="" data-gacategory="Question" data-gaaction="First-ask" data-galabel="Asking a question but it was not confirmed yet.">
               {{ t('main-page.header.ask') }}

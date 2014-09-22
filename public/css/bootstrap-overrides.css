@@ -691,3 +691,12 @@ img.attached{ max-width: 100%; }
 #accordion.loading .loading-modal {
     display: block;
 }
+
+.panel-bottom-question{
+  padding-top:  15px;
+}
+
+[contentEditable=true]:empty:not(:focus):before{
+  content:attr(data-ph);
+  color:grey;
+}
