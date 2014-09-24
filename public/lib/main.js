@@ -401,7 +401,7 @@ function updateBadges(result){
   updateBadge('all-questions', result.allQuestions);
 }
 
-function ask(){
+function ask(hidePopover){
 
   var question = getQuestionMade();
 
@@ -422,7 +422,9 @@ function ask(){
     alertUser('success', i18n.t("main-page.messages.question-successful"));
     $('#question').val('');
     $('.detailed-question').html('');
-    $('#question').popover('destroy');
+    if(hidePopover){
+      $('#question').popover('hide');
+    }
 
     initiateSearch();
 
@@ -714,7 +716,7 @@ function buildQuestionPanel(width){
   answerPanel.push('<div class="panel-detailed-question">');
   answerPanel.push('<div class="detailed-question textarea" data-ph="Your question goes here..."></div>');
   answerPanel.push('<div class="panel-bottom-question">');
-  answerPanel.push('<button onclick="ask()" class="btn btn-info btn-answer" type="submit">'+ i18n.t("main-page.header.ask") + '</button>');
+  answerPanel.push('<button onclick="ask(true)" class="btn btn-info btn-answer" type="submit">'+ i18n.t("main-page.header.ask") + '</button>');
   answerPanel.push('</div>');
   answerPanel.push('</div>');
   return answerPanel.join('');
@@ -793,7 +795,7 @@ function handleDetailedQuestionPopover(){
       var evtobj = window.event? event : e
 
       if (e.ctrlKey && e.keyCode == 13) {
-        ask();
+        ask(true);
         return;
       }
 
