@@ -4,8 +4,15 @@ function askDetailedQuestion(){
 
   var questionWidth = detailedPopover.width();
 
+  var popoverTemplate = ['<div class="timePickerWrapper popover" style="width:' + questionWidth + 'px">',
+        '<div class="arrow"></div>',
+        '<div class="popover-content">',
+        '</div>',
+        '</div>'].join('');
+
   detailedPopover.popover({
     content: buildQuestionPanel(questionWidth),
+    template: popoverTemplate,
     placement: 'bottom',
     html: true,
     trigger: 'manual'
@@ -415,7 +422,7 @@ function ask(){
     alertUser('success', i18n.t("main-page.messages.question-successful"));
     $('#question').val('');
     $('.detailed-question').html('');
-    $('#question').popover('hide');
+    $('#question').popover('destroy');
 
     initiateSearch();
 
@@ -704,7 +711,7 @@ function buildAnswerPanel(){
 
 function buildQuestionPanel(width){
   var answerPanel = []
-  answerPanel.push('<div style="width: ' + width + 'px" class="panel-detailed-question">');
+  answerPanel.push('<div class="panel-detailed-question">');
   answerPanel.push('<div class="detailed-question textarea" data-ph="Your question goes here..."></div>');
   answerPanel.push('<div class="panel-bottom-question">');
   answerPanel.push('<button onclick="ask()" class="btn btn-info btn-answer" type="submit">'+ i18n.t("main-page.header.ask") + '</button>');
