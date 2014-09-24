@@ -84,6 +84,10 @@ $('.side-nav a').on('click', sidebarClicked);
     updateCounts();
   });
 
+  io.on('question-created', function() {
+    notificate();
+  });
+
   var questionInput = $('#question');
 
   questionInput.focus();
@@ -835,4 +839,27 @@ function getBySearch(){
   .done(function( result ) {
     refreshQuestionsWith(result);
   });
+}
+
+function notificate() {
+  if (!("Notification" in window)) {
+    alert("This browser does not support desktop notification");
+  }
+
+  else if (Notification.permission === "granted") {
+    var notification = new Notification("New question created!");
+  }
+
+  else if (Notification.permission !== 'denied') {
+    Notification.requestPermission(function (permission) {
+
+      if(!('permission' in Notification)) {
+        Notification.permission = permission;
+      }
+
+      if (permission === "granted") {
+        var notification = new Notification("New question created!");
+      }
+    });
+  }
 }

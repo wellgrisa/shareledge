@@ -30,6 +30,7 @@ module.exports = function(app, passport) {
 
   app.io.route('question-created', function(req){
     req.io.broadcast('update-counts');
+    req.io.broadcast('question-created');
   });
 
   app.io.route('question-answered', function(req){
