@@ -410,7 +410,7 @@ function ask(hidePopover){
 
     initiateSearch();
 
-    $('#group-ask').popover('hide');
+    $('#nav-input-wonder').popover('hide');
 
     io.emit('question-created');
 
@@ -709,11 +709,11 @@ function buildQuestionPanel(width){
 
 function buildTagPanel(){
   var answerPanel = []
-  answerPanel.push('<div>');
+  answerPanel.push('<div class="input-group">');
   answerPanel.push('<input type="text" class="tokenfield" name="question" title="Tag here" class="form-control" placeholder="Tag here">');
-  answerPanel.push('<div style="float: right; margin-top: 10px; margin-bottom: 10px">');
-  answerPanel.push('<label>' + i18n.t("main-page.header.register") + '</label><button onclick="ask()" style="margin-left:10px" class="btn btn-info btn-ask" >' + i18n.t("main-page.header.go") + '</button>');
-  answerPanel.push('</div>');
+
+  answerPanel.push('<span class="input-group-btn"><button onclick="ask()" class="btn btn-info btn-ask">'+ i18n.t("main-page.question-panel.register") +'?</button></span>')
+  //answerPanel.push('<button onclick="ask()" style="margin-left:10px" class="btn btn-info btn-ask" >' + i18n.t("main-page.question-panel.register") + '</button>');
   answerPanel.push('</div>');
   return answerPanel.join('');
 }
@@ -790,8 +790,8 @@ function handleDetailedQuestionPopover(){
     $('#btn-ask').removeAttr('disabled', 'disabled').toggleClass('btn-info').toggleClass('btn-default');
   })
   .on('shown.bs.popover', function(e){
-    if($('#group-ask').next().hasClass('popover')){
-       $('#group-ask').popover('hide');
+    if($('#nav-input-wonder').next().hasClass('popover')){
+       $('#nav-input-wonder').popover('hide');
     }
     var detailedQuestion = $('.detailed-question');
 
@@ -893,22 +893,22 @@ function notificate() {
 function askDetailedQuestion(){
   var questionElement = $('#question');
 
-  var questionWidth = questionElement.width();
+  var questionWidth = $('#nav-input-wonder').width();
 
   createPopover(questionElement, buildQuestionPanel(questionWidth), questionWidth);
 }
 
 function tagging(){
-  var questionElement = $('#question');
+  var questionElement = $('#nav-input-wonder');
 
   var questionWidth = questionElement.width();
 
-  createPopover($('#group-ask'), buildTagPanel(), questionWidth);
+  createPopover($('#nav-input-wonder'), buildTagPanel(), questionWidth);
 }
 
 function createPopover(elementPopover, content, width){
 
-  var popoverWidth = width ? 'style="width :' + width + 'px"' : "";
+  var popoverWidth = width ? 'style="max-width : ' + width + 'px; width :' + width + 'px"' : "";
 
   var popoverDiv = '<div class="timePickerWrapper popover"' + popoverWidth + '>';
 
