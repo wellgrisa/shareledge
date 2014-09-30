@@ -408,9 +408,11 @@ function ask(hidePopover){
       $('#question').popover('hide');
     }
 
-    initiateSearch();
+    if($('#nav-input-wonder').next().hasClass('popover')){
+      $('#nav-input-wonder').popover('hide');
+    }
 
-    $('#nav-input-wonder').popover('hide');
+    initiateSearch();
 
     io.emit('question-created');
 
