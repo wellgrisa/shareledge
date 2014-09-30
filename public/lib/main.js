@@ -643,10 +643,19 @@ function getQuestion(question){
     html.push('<div data-target="#' + questionCollapsibleId + '" class="list-group-item" ' + unreadStyle + ' data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'" onclick="ga_event(\'Question\', \'Open-Question-' + question._id + '\', \'Show details from question\')">');
     html.push('<img data-toggle="dropdown" class="img-responsive panel-user navbar-right img-circle" src="' + picture + '" alt=""/>');
     html.push('  <h4 class="list-group-item-heading">' + question.content + '</h4>');
-    if(question.solutions.length){
-        html.push('  <p class="list-group-item-text answer-preview-text">' + getShortAnswers(question.solutions) + '</p>');
+
+    if(question.tags.length){
+      html.push('<div class="tags">');
+      for (var i = 0; i < question.tags.length; i++) {
+        html.push('<div class="token"><span class="token-label" style="max-width: 941px;">'+ question.tags[i] + ' </span></div>');
+      }
+      html.push('</div>');
     }else{
+      if(question.solutions.length){
+        html.push('  <p class="list-group-item-text answer-preview-text">' + getShortAnswers(question.solutions) + '</p>');
+      }else{
         html.push('<br>');
+      }
     }
 
     html.push('  <div class="answer-collapsible collapse"  id="' + questionCollapsibleId + '">');
