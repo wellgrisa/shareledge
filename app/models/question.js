@@ -43,6 +43,7 @@ var QuestionSchema = new Schema({
     default: Date.now
   },
   views:{ type: Number, default : 0 },
+  tags: [String],
   useful:{ type: Number, default : 0 }
 });
 

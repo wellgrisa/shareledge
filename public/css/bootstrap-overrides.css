@@ -696,6 +696,10 @@ img.attached{ max-width: 100%; }
   padding-top:  15px;
 }
 
+.btn-answer{
+  margin-top: 10px;
+}
+
 [contentEditable=true]:empty:not(:focus):before{
   content:attr(data-ph);
   color:grey;
