@@ -405,7 +405,7 @@ function ask(hidePopover){
     $('.token').remove();
     $('.detailed-question').html('');
     if(hidePopover){
-      $('#question').popover('hide');
+      $('#main-navbar').popover('hide');
     }
 
     if($('#nav-input-wonder').next().hasClass('popover')){
@@ -700,10 +700,9 @@ function buildQuestionPanel(width){
   answerPanel.push('<div class="panel-detailed-question">');
   answerPanel.push('<div class="detailed-question textarea" data-ph="Your question goes here..."></div>');
   answerPanel.push('<div class="panel-bottom-question">');
-  answerPanel.push('<div>');
+  answerPanel.push('<div class="input-group">');
   answerPanel.push('<input type="text" id="tags" class="tokenfield" title="Tag here" class="form-control" placeholder="Tag here">');
-  answerPanel.push('</div>');
-  answerPanel.push('<button onclick="ask(true)" class="btn btn-info btn-answer" type="submit">'+ i18n.t("main-page.header.ask") + '</button>');
+  answerPanel.push('<span class="input-group-btn"><button onclick="ask(true)" class="btn btn-info" type="submit">'+ i18n.t("main-page.header.ask") + '</button></span>');
   answerPanel.push('</div>');
   answerPanel.push('</div>');
   return answerPanel.join('');
@@ -715,7 +714,6 @@ function buildTagPanel(){
   answerPanel.push('<input type="text" class="tokenfield" name="question" title="Tag here" class="form-control" placeholder="Tag here">');
 
   answerPanel.push('<span class="input-group-btn"><button onclick="ask()" class="btn btn-info btn-ask">'+ i18n.t("main-page.question-panel.register") +'?</button></span>')
-  //answerPanel.push('<button onclick="ask()" style="margin-left:10px" class="btn btn-info btn-ask" >' + i18n.t("main-page.question-panel.register") + '</button>');
   answerPanel.push('</div>');
   return answerPanel.join('');
 }
@@ -758,7 +756,7 @@ function handleCollapsibleAnswers(elementEvent){
 }
 
 function getQuestionMade(){
-  if($('#question').next('div.popover.in').length){
+  if($('#main-navbar').next('div.popover.in').length){
     return {
       content : $('.detailed-question').html(),
       tags : $('.panel-bottom-question .tokenfield').length ? $('.panel-bottom-question .tokenfield').tokenfield('getTokensList').split(',') : ""
@@ -771,36 +769,31 @@ function getQuestionMade(){
   }
 }
 
-function getTags(){
-  if($('#question').next('div.popover.in').length){
-    return $('.panel-bottom-question .tokenfield').tokenfield('getTokensList').split(',');
-  }else{
-    return $('.tokenfield').tokenfield('getTokensList').split(',');
-  }
-}
-
 function handleDetailedQuestionPopover(){
+  var mainNavbar = $('#main-navbar');
   var questionInput = $('#question');
 
-  questionInput.on("show.bs.popover", function(e){
-    questionInput.data()["bs.popover"].$tip.css("max-width", ($('#question').width() + 35) + 'px');
-    questionInput.attr('disabled', 'disabled');
-    $('#btn-ask').attr('disabled', 'disabled').toggleClass('btn-info').toggleClass('btn-default');
-  })
-  .on('hidden.bs.popover', function(e){
-    questionInput.removeAttr('disabled');
-    $('#btn-ask').removeAttr('disabled', 'disabled').toggleClass('btn-info').toggleClass('btn-default');
+  mainNavbar
+  .on('hide.bs.popover', function(e){
+    if($('#main-navbar').next().hasClass('popover')){
+      questionInput.removeAttr('disabled');
+      $('#btn-ask').removeAttr('disabled', 'disabled').addClass('btn-info').removeClass('btn-default');
+    }
   })
   .on('shown.bs.popover', function(e){
-    if($('#nav-input-wonder').next().hasClass('popover')){
-       $('#nav-input-wonder').popover('hide');
+
+    if($('.panel-detailed-question').is(':visible')
+      && $('.panel-detailed-question').closest('.popover.in').length){
+      questionInput.attr('disabled', 'disabled');
+      $('#btn-ask').attr('disabled', 'disabled').toggleClass('btn-info').toggleClass('btn-default');
     }
+
     var detailedQuestion = $('.detailed-question');
 
     detailedQuestion.wysiwyg();
 
     if(questionInput.val() != ""){
-      detailedQuestion.html($('#question').val());
+      detailedQuestion.html(questionInput.val());
     }
 
     detailedQuestion.focus();
@@ -893,9 +886,13 @@ function notificate() {
 }
 
 function askDetailedQuestion(){
-  var questionElement = $('#question');
+  var questionElement = $('#main-navbar');
 
   var questionWidth = $('#nav-input-wonder').width();
+
+  if($('#nav-input-wonder').next().hasClass('popover')){
+     $('#nav-input-wonder').popover('hide');
+  }
 
   createPopover(questionElement, buildQuestionPanel(questionWidth), questionWidth);
 }
