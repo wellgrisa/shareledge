@@ -26,6 +26,15 @@ function padLeft(value, character, quantity)
 
 $(document).ready(function() {
 
+  $.ajaxSetup({
+    complete: function(jqXHR) { // when some of the requests completed it will splice from the array
+      var index = $.xhrPool.indexOf(jqXHR);
+      if (index > -1) {
+        $.xhrPool.splice(index, 1);
+      }
+    }
+  });
+
   $(document)
   .ajaxStart(function () {
     $('#accordion').addClass("loading");
@@ -768,14 +777,22 @@ function getQuestionMade(){
   if($('#main-navbar').next('div.popover.in').length){
     return {
       content : $('.detailed-question').html(),
-      tags : $('.panel-bottom-question .tokenfield').length ? $('.panel-bottom-question .tokenfield').tokenfield('getTokensList').split(',') : ""
+      tags : $('.panel-bottom-question .tokenfield').length ? tidyTagsUp($('.panel-bottom-question .tokenfield').tokenfield('getTokensList').split(',')) : ""
     };
   }else{
     return {
       content : $('#question').val(),
-      tags : $('.tokenfield').length ? $('.tokenfield').tokenfield('getTokensList').split(',') : ""
+      tags : $('.tokenfield').length ? tidyTagsUp($('.tokenfield').tokenfield('getTokensList').split(',')) : ""
     };
   }
+}
+
+function tidyTagsUp(tags){
+    for (var i = 0; i < tags.length; i++) {
+      tags[i] = $.trim(tags[i]);
+    }
+
+    return tags;
 }
 
 function handleDetailedQuestionPopover(){
@@ -845,30 +862,26 @@ function configureEvents(){
 }
 
 function getBySearch(){
-  var pageNumber =  $('li.active > a', '.pagination').html();
 
   if($('#question').val() == ""){
     $(".side-nav").children(".active").removeClass('active');
     $('#all-questions').parent().addClass('active');
   }
 
-  var question = getQuestionMade().content.replace(/<img [^>]+>/g, "").replace(/<br>/g, "");
+  if($.xhrPool.length){
+    $.xhrPool.abortAll();
+  }
 
-  var searchData = {
-    filter :
-    {
-      criteria : { content: { $regex: '^.*'+  question +'.*$', $options: 'i' }, type : $('#systems').val() },
-      page : pageNumber }
-    };
-
-  $.ajax({
+  var searchingAjax = $.ajax({
     url: "/question/search",
-    data: searchData,
+    data: buildSearchData(),
     global: false,
   })
   .done(function( result ) {
     refreshQuestionsWith(result);
   });
+
+  $.xhrPool.push(searchingAjax)
 }
 
 function notificate() {
@@ -935,4 +948,46 @@ function createPopover(elementPopover, content, width){
   });
 
   elementPopover.popover('toggle');
+}
+
+$.xhrPool = [];
+
+$.xhrPool.abortAll = function() { // our abort function
+    $(this).each(function(idx, jqXHR) {
+        jqXHR.abort();
+    });
+    $.xhrPool.length = 0
+};
+
+function getConditions(){
+  var question = getQuestionMade().content.replace(/<img [^>]+>/g, "").replace(/<br>/g, "");
+
+  var arrayOfSearches = question.split(' ');
+
+  var searchesConditions = [
+    {content: { $regex: '^.*'+  question +'.*$', $options: 'i' }},
+    {tags: {$in : $.grep(arrayOfSearches,function(n){return(n);})}}
+  ];
+
+  for (var i = 0; i < arrayOfSearches.length; i++) {
+    if(arrayOfSearches[i]){
+      searchesConditions.push({content: { $regex: '^.*'+  arrayOfSearches[i] +'.*$', $options: 'i' }});
+      searchesConditions.push({"solutions.content": { $regex: '^.*'+  arrayOfSearches[i] +'.*$', $options: 'i' }});
+    }
+  }
+  return searchesConditions;
+}
+
+function buildSearchData(){
+  var pageNumber =  $('li.active > a', '.pagination').html();
+
+  var searchesConditions = getConditions();
+
+  return {
+    filter : {
+      criteria :{
+        $or : searchesConditions,
+        type :$('#systems').val()
+      }, page : pageNumber }
+    };
 }

@@ -26,6 +26,7 @@ thumbs.db
 
 # Website Upload Files
 public/upload/*
+public/upload/img/questions/*
 !public/upload/.gitkeep
 
 # Build files
