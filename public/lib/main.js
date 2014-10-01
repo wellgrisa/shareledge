@@ -960,7 +960,7 @@ $.xhrPool.abortAll = function() { // our abort function
 };
 
 function getConditions(){
-  var question = getQuestionMade().content.replace(/<img [^>]+>/g, "").replace(/<br>/g, "");
+  var question = $.trim(getQuestionMade().content.replace(/<img [^>]+>/g, "").replace(/<br>/g, ""));
 
   var arrayOfSearches = question.split(' ');
 
