@@ -1,3 +1,13 @@
+function toDate (string_value) {
+  if (string_value == undefined) return "";
+
+  var d = new Date(string_value);
+  if (d == undefined) return "";
+
+
+  return padLeft(d.getDate()) + '/' + padLeft(d.getMonth()) + '/' + d.getFullYear() + ' ';
+}
+
 function toDateTime (string_value) {
   if (string_value == undefined) return "";
 
@@ -142,7 +152,6 @@ function systemChanged(element, checked){
   });
 }
 
-  //refreshQuestions();
 
   handleListGroup();
 
@@ -305,11 +314,66 @@ function refreshQuestionsWith(result){
         pagination.append('<li><a href="#">' + i + '</a></li>')
   }
 
-  $('.list-group').html('');
-  for (var i = 0; i < questions.length; i++) {
+    var html = [];
+    // html.push('<div class="panel-group" id="accordionTwo">');
+    // html.push('<div class="panel panel-primary">');
+    // html.push('<div class="panel-heading">');
+    // html.push('<h4 class="panel-title">');
+    // html.push('<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionTwo" href="#collapseFour">Example Section</a>');
+    // html.push('</h4>');
+    // html.push('</div>');
+    // html.push('<div class="panel-collapse collapse in" id="collapseFour">');
+    // html.push('<div id="test-grouping">');
+    // html.push('</div>');
+    // html.push('</div>');
+    // html.push('</div>');
+    // html.push('</div>');
 
-    $('.list-group').append(getQuestion(questions[i]));
+
+  // for (var i = 0; i < questions.length; i++) {
+  //   $('#test-grouping').append(getQuestion(questions[i]));
+  // }
+
+  var groupedQuestionsObjects = _.groupBy(questions, function(qu){ return toDate(qu.created); });
+
+  var groupedQuestions = _.sortBy(groupedQuestionsObjects);
+
+var html = [];
+
+  for (var i = 0; i < groupedQuestions.length; i++) {
+
+    html.push('<div class="panel-group" id="accordion-grouped-question' + i + '">');
+    html.push('<div class="panel panel-primary">');
+    html.push('<div class="panel-heading">');
+    html.push('<h4 class="panel-title">');
+    html.push('<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-grouped-question' + i + '" href="#collapse-grouped-question' + i + '">'+ toDate(groupedQuestions[i][0].created) + '</a>');
+    html.push('</h4>');
+    html.push('</div>');
+    html.push('<div class="panel-collapse collapse in" id="collapse-grouped-question' + i + '">');
+    html.push('<div id="test-grouping">');
+
+    var questionsTest = groupedQuestions[i];
+    for (var j = 0; j < questionsTest.length; j++) {
+      html.push(getQuestion(questionsTest[j]));
+    }
+
+    html.push('</div>');
+    html.push('</div>');
+    html.push('</div>');
+    html.push('</div>');
+
+
+    // var id = 'grouped' + i;
+    // html.push('<div id="' + id + '">');
+    // var questions = groupedQuestions[i];
+    // for (var j = 0; j < questions.length; i++) {
+    //   $('#' + id).append(getQuestion(questions[i]));
+    // }
   }
+
+  $('.list-group').html('');
+
+  $('.list-group').append(html.join(''));
 }
 
 function paginationClicked(){

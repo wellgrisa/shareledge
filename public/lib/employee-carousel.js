@@ -1,10 +1,10 @@
-/* Carousel
+under/* Carousel
 =============================*/
 var employeeCarousel = function() {
   var employees = [],
     employeePicturesBox = $("#employee"),
     employeeMessagesBox = $("#employee-text");
-   
+
    function getCenterThumb() {
        var $visible = employeePicturesBox.triggerHandler( 'currentVisible' );
        var center = $visible ? Math.floor($visible.length / 2) : 0;
