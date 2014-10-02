@@ -731,3 +731,12 @@ img.attached{ max-width: 100%; }
   vertical-align: top;
   cursor: default;
 }
+
+.tags .searched-tag {
+    border-color: #357ebd;
+    background-color: #428bca;
+}
+
+.searched-tag .token-label{
+    color:  white;
+}

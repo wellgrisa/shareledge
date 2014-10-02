@@ -656,7 +656,7 @@ function getQuestion(question){
     if(question.tags.length){
       html.push('<div class="tags">');
       for (var i = 0; i < question.tags.length; i++) {
-        html.push('<div class="token"><span class="token-label" style="max-width: 941px;">'+ question.tags[i] + ' </span></div>');
+        html.push('<div class="token ' + question.tags[i].replace(/\s/g, "-") + '"><span class="token-label" style="max-width: 941px;">'+ question.tags[i] + ' </span></div>');
       }
       html.push('</div>');
     }else{
@@ -879,6 +879,12 @@ function getBySearch(){
   })
   .done(function( result ) {
     refreshQuestionsWith(result);
+
+    var arrayOfTags = getTags();
+
+    for (var i = 0; i < arrayOfTags.length; i++) {
+      $('.' + arrayOfTags[i].replace(/\s/g, "-")).addClass('searched-tag');
+    }
   });
 
   $.xhrPool.push(searchingAjax)
@@ -964,9 +970,11 @@ function getConditions(){
 
   var arrayOfSearches = question.split(' ');
 
+  var arrayOfTags = $.grep(arrayOfSearches,function(n){return(n);});
+
   var searchesConditions = [
     {content: { $regex: '^.*'+  question +'.*$', $options: 'i' }},
-    {tags: {$in : $.grep(arrayOfSearches,function(n){return(n);})}}
+    {tags: {$in : arrayOfTags}}
   ];
 
   for (var i = 0; i < arrayOfSearches.length; i++) {
@@ -976,6 +984,12 @@ function getConditions(){
     }
   }
   return searchesConditions;
+}
+
+function getTags(){
+  var question = $.trim(getQuestionMade().content.replace(/<img [^>]+>/g, "").replace(/<br>/g, ""));
+
+  return $.grep(question.split(' '),function(n){return(n);});
 }
 
 function buildSearchData(){
