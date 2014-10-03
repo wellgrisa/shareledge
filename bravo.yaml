@@ -13,11 +13,11 @@ production:
     Tty: true
     Volumes:
       '/data/db': {}
-      # '/src/assets': {}
+      '/src/public/img/questions': {}
   run:
     Binds:
       - '/srv/shareledge/data/db:/data/db'
-      # - '/srv/shareledge/public:/src/assets'
+      - '/srv/shareledge/questions:/src/public/img/questions'
     PortBindings:
       '3000/tcp':
         - HostIp: '127.0.0.1'

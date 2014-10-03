@@ -26,8 +26,16 @@ thumbs.db
 
 # Website Upload Files
 public/upload/*
-public/upload/img/questions/*
 !public/upload/.gitkeep
+
+# Question Upload Files (Ignore any new image)
+public/img/questions/*
+!public/img/questions/.gitkeep
+!public/img/questions/524515d8-3658-4b34-9311-ec3188291217.jpeg
+!public/img/questions/865cb160-b518-4bcb-83c0-5a2622426b0a.jpeg
+!public/img/questions/d426fa82-9883-4422-95d9-63fda2050a60.jpeg
+!public/img/questions/6b11a65e-f873-4cd1-9305-61ebc89f7c5b.jpeg
+!public/img/questions/9b07c1a4-3c14-40f8-8bf3-ad7e57ad51c5.jpeg
 
 # Build files
 public_build
