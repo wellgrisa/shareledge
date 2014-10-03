@@ -912,6 +912,11 @@ function getBySearch(){
 }
 
 function requestPermission(){
+  if (!("Notification" in window)) {
+    alert("This browser does not support desktop notification");
+    return;
+  }
+
   if (Notification.permission !== 'denied'){
     Notification.requestPermission(function (status) {
       if (Notification.permission !== status) {

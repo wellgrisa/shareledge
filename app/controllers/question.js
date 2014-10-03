@@ -16,8 +16,6 @@ var mongoose = require('mongoose'),
      var page = opts.page || 1;
      var Model = this;
 
-     console.log('Criteria------------------', criteria.$or);
-
      Model.count(criteria, function (err, totalRecords) {
       var query = Model.find(criteria)
         .populate(populate)
