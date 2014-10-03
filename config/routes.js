@@ -31,11 +31,12 @@ module.exports = function(app, passport) {
 
   app.io.route('question-created', function(req){
     req.io.broadcast('update-counts');
-    req.io.broadcast('question-created');
+    req.io.broadcast('question-created', req.data);
   });
 
   app.io.route('question-answered', function(req){
     req.io.broadcast('update-counts');
+    req.io.broadcast('question-answered', req.data);
   });
 
   app.io.route('answer-rated', function(req){

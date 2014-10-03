@@ -5,7 +5,8 @@ var mongoose = require('mongoose'),
     Question = mongoose.model('Question'),
     fs = require('fs'),
     config = require('../../config/config')
-    uuid = require('node-uuid');
+    uuid = require('node-uuid'),
+    slack = require('slack-notify')("https://bravi.slack.com/services/hooks/incoming-webhook?token=MCpfwNh6FtmKPVrgKx8p81Zs");
 
     mongoose.Model.paginate = function(opts, callback) {
 
@@ -138,21 +139,19 @@ exports.search = function(req, res) {
 return Question.paginate(options, function (err, questions){
         return res.json(questions);
   });
-
-  // Question.find({content: regex, type : req.user.filter }).sort('-views').exec(function(err, question){
-
-  //   if (!err) {
-  //       res.json({data: question});
-  //   } else {
-  //     return res.status(500).send(err);
-  //   }
-  // });
 };
 
 exports.create = function (req, res) {
+
   var question = new Question(req.body);
 
   question.user = req.user;
+
+  slack.send({
+    channel: '#' + question.type,
+    text: 'New question created in the section [' + question.type + '] by ' + req.user.username,
+    username: 'Shareledge'
+  });
 
   question.save(function(err) {
     if (err) {
@@ -206,9 +205,7 @@ return Question.count({'user' : new mongoose.Types.ObjectId(req.user._id), 'read
 };
 
 exports.update = function(req, res){
-  Question.findById(req.params.id).populate('solutions.user').exec(function (err, question){
-
-    console.log('soluuuutions', req.body.solutions);
+  Question.findById(req.params.id).populate('user solutions.user').exec(function (err, question){
 
     question.solutions = req.body.solutions;
 
@@ -219,6 +216,12 @@ exports.update = function(req, res){
         question.solutions[i].user = req.user;
       }
     }
+
+    slack.send({
+      channel: '#' + question.type,
+      text: 'Question made by ' + question.user.username + ' answered in the section [' + question.type + '] by ' + req.user.username,
+      username: 'Shareledge'
+    });
 
     return question.save(function (err) {
       if (!err) {

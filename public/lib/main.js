@@ -26,6 +26,8 @@ function padLeft(value, character, quantity)
 
 $(document).ready(function() {
 
+  requestPermission();
+
   $.ajaxSetup({
     complete: function(jqXHR) { // when some of the requests completed it will splice from the array
       var index = $.xhrPool.indexOf(jqXHR);
@@ -80,8 +82,14 @@ $('.side-nav a').on('click', sidebarClicked);
     updateCounts();
   });
 
-  io.on('question-created', function() {
-    notificate();
+  io.on('question-created', function(data) {
+    var text ='New question created in the section [' + data.type + '] by ' + data.user;
+    notificate(text);
+  });
+
+  io.on('question-answered', function(data) {
+    var text = 'Question made by ' + data.createdBy + ' answered in the section [' + data.type + '] by ' + data.user;
+    notificate(text);
   });
 
   var questionInput = $('#question');
@@ -423,7 +431,10 @@ function ask(hidePopover){
 
     initiateSearch();
 
-    io.emit('question-created');
+    io.emit('question-created', {
+      user : $('#user-name').val(),
+      type : $('#systems').val()
+    });
 
     updateCounts();
 
@@ -498,10 +509,14 @@ function registerAnswer(question){
     url: url,
     type: "PUT",
     data: question,
-    success: function (xhr, status, error) {
+    success: function (questionUpdated, status, error) {
       $('.text-area-answer', selectedQuestion).val('');
 
-      io.emit('question-answered');
+      io.emit('question-answered', {
+        user : $('#user-name').val(),
+        createdBy : questionUpdated.user.username,
+        type : $('#systems').val()
+      });
 
       $.get( '/counts', function(res){
         updateBadges(res.data);
@@ -896,13 +911,23 @@ function getBySearch(){
   $.xhrPool.push(searchingAjax)
 }
 
-function notificate() {
+function requestPermission(){
+  if (Notification.permission !== 'denied'){
+    Notification.requestPermission(function (status) {
+      if (Notification.permission !== status) {
+        Notification.permission = status;
+      }
+    });
+  }
+}
+
+function notificate(message) {
   if (!("Notification" in window)) {
     alert("This browser does not support desktop notification");
   }
 
   else if (Notification.permission === "granted") {
-    var notification = new Notification("New question created!");
+    var notification = new Notification(message);
   }
 
   else if (Notification.permission !== 'denied') {
@@ -913,7 +938,7 @@ function notificate() {
       }
 
       if (permission === "granted") {
-        var notification = new Notification("New question created!");
+        var notification = new Notification(message);
       }
     });
   }
