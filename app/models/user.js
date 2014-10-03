@@ -73,7 +73,8 @@ var UserSchema = new Schema({
     type: String
   },
   department: { type: String, enum: ['administrative', 'development', 'peopleCare'] },
-  loginCount : { type : Number, default : 0 }
+  loginCount : { type : Number, default : 0 },
+  searches:{ type: Number, default : 0 }
 });
 
 /**

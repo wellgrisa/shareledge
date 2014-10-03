@@ -10,6 +10,7 @@ module.exports = function(app, passport) {
   app.post('/signup', admin.signup);
   app.put('/finishTour/:id', admin.finishTour);
   app.put('/updateFilter', admin.updateFilter);
+  app.put('/addSearchCount', admin.addSearchCount);
   app.post('/signin', admin.signin(passport));
   app.get('/signout', admin.signout);
   app.get('/login', admin.login);

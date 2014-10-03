@@ -882,6 +882,12 @@ function getBySearch(){
 
     var arrayOfTags = getTags();
 
+    jQuery.ajax({
+      url: '/addSearchCount',
+      type: "PUT",
+      global: false,
+    });
+
     for (var i = 0; i < arrayOfTags.length; i++) {
       $('.' + arrayOfTags[i].replace(/\s/g, "-")).addClass('searched-tag');
     }
