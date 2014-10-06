@@ -156,7 +156,7 @@
             dropRight: false,
             selectedClass: 'active',
             buttonWidth: 'auto',
-            buttonContainer: '<div class="btn-group" />',
+            buttonContainer: '<div id="systems-div" class="btn-group" />',
             // Maximum height of the dropdown menu.
             // If maximum height is exceeded a scrollbar will be displayed.
             maxHeight: false,

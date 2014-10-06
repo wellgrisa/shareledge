@@ -3,6 +3,7 @@
     "header" : {
         "ask" : "Perguntar",
         "go" : "Ir",
+        "whats" : "O que deseja saber?",
         "register" : "Registrar a questão?",
         "system-hours" : "Horas",
         "system-ebs" : "EBS",
@@ -33,11 +34,11 @@
       "page-help" : "Pág. Ajuda",
       "show-tips" : "Mostrar dicas",
       "go-ahead" : "Escreva sua resposta aqui...",
-      "step-one" : "A busca de questões é realizada automaticamente ao digitar qualquer letra, o sistema irá realizar uma busca pela palavra/frase digitada. Para realizar uma pergunta basta apenas escrevê-la e em seguida clicar no botão ASK, que irá abrir uma janela com uma confirmação.",
-      "step-two" : "Este ícone traz todas as questões pendentes no momento, mostrando um número referente à sua quantidade.",
-      "step-three" : "Este ícone traz todas as questões do usuário logado. O número aqui mostrado é referente as questões feitas pelo usuário que possuem uma nova resposta.",
-      "step-four" : "Essa área é responsável por exibir as questões existentes, de acordo com a pesquisa realizada, ou filtro executado.",
-      "step-five" : "Essa área também é responsável por mostrar as respostas. Ao clicar em uma pergunta, o sistema exibe as respostas de modo mais detalhado. Juntamente com uma área para também registrar uma resposta."
+      "step-ask" : "A busca é feita automaticamente enquanto o usuário digita. Depois da questão já digitada, você pode registrá-la apertando a tecla \"enter\" ou clicando no botão \"Perguntar\". Dica: você pode colar imagens aqui usando CTRL + V :)",
+      "step-questions" : "Esta área mostra todas as questões de acordo com a busca feita ou o menu lateral selecionado.",
+      "step-answers" : "Ela mostra também todas as respostas. Ao clicar numa questão, o sistema mostra as respostas relacionadas e também uma área para registrar uma nova resposta.",
+      "step-systems-select" : "Aqui você escolhe o sistema/área que deseja procurar por questões e respostas.",
+      "step-main-menu" : "Por aqui você pode filtrar o conteúdo por todas as questões respondidas, todas as pendentes e por aí vai :)"      
     },
     "messages" : {
       "question-required" : "Por favor, preencha o campo da Pergunta.",
