@@ -1,0 +1,44 @@
+<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Feedback Is King!</h4>
+      </div>
+      <div class="modal-body">
+        <form action="/feedback" method="post" class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="name" class="col-sm-2 control-label">Title</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="name" name="name" placeholder="Bug/Suggestion Title">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="desc" class="col-sm-2 control-label">Description</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="desc" name="desc" placeholder="Description">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password" class="col-sm-2 control-label">Section</label>
+            <div class="col-sm-10">
+              <select id="feedbacksection" name="feedbacksection" required class="form-control" data-gacategory="Header" data-gaaction="System-Select" data-galabel="Selecting a area">
+                <option value="ebs">{{ t("main-page.header.system-ebs") }}</option>
+                <option value="peopleCare">{{ t("main-page.header.system-people-care") }}</option>
+                <option value="administrative">{{ t("main-page.header.system-administrative") }}</option>
+                <option value="sits">{{ t("main-page.header.system-sits") }}</option>
+                <option value="solutions">{{ t("main-page.header.system-solutions") }}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-info">Send</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
