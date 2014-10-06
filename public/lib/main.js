@@ -649,6 +649,29 @@ function configureEventHandlers() {
     });
 }
 
+function getLastUpdate(questionLastUpdate){
+
+    var difference_ms = new Date().getTime() - questionLastUpdate;
+
+    difference_ms = difference_ms/1000;
+    var seconds = Math.floor(difference_ms % 60);
+    difference_ms = difference_ms/60;
+    var minutes = Math.floor(difference_ms % 60);
+    difference_ms = difference_ms/60;
+    var hours = Math.floor(difference_ms % 24);
+    var days = Math.floor(difference_ms/24);
+
+    if(days > 0){
+      return days + ' days';
+    }else if(hours > 0 && hours < 24){
+      return hours + ' hours';
+    }else if(minutes > 0 && minutes < 60){
+      return minutes + ' minutes';
+    }
+
+    return seconds + ' seconds';
+}
+
 function getQuestion(question){
 
     var html = [];
@@ -665,8 +688,13 @@ function getQuestion(question){
 
     var picture = question.user.google ? question.user.google.picture :"/img/unknown.png";
 
+    var questionLastUpdate = question.updated ? new Date(question.updated).getTime() : new Date(question.created).getTime();
+
     html.push('<div data-target="#' + questionCollapsibleId + '" class="list-group-item" ' + unreadStyle + ' data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'" onclick="ga_event(\'Question\', \'Open-Question-' + question._id + '\', \'Show details from question\')">');
-    html.push('<img data-toggle="dropdown" class="img-responsive panel-user navbar-right img-circle" src="' + picture + '" alt=""/>');
+    html.push('<div class="navbar-right">')
+    html.push('<span class="label label-success" style="margin-top: 5px; float: left;margin-right: 5px">' + getLastUpdate(questionLastUpdate) + '</span>')
+    html.push('<img data-toggle="dropdown" class="img-responsive panel-user img-circle" src="' + picture + '" alt=""/>');
+    html.push('</div>')
     html.push('  <h4 class="list-group-item-heading">' + question.content + '</h4>');
 
     if(question.tags.length){
@@ -926,6 +954,10 @@ function requestPermission(){
   }
 }
 
+function funcRef(){
+  alert('a');
+}
+
 function notificate(message) {
   if (!("Notification" in window)) {
     return;
@@ -933,6 +965,8 @@ function notificate(message) {
 
   else if (Notification.permission === "granted") {
     var notification = new Notification(message);
+
+    notification.onclick = funcRef;
   }
 
   else if (Notification.permission !== 'denied') {
@@ -944,6 +978,8 @@ function notificate(message) {
 
       if (permission === "granted") {
         var notification = new Notification(message);
+
+        notification.onclick = funcRef;
       }
     });
   }

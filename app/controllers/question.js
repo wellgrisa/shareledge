@@ -209,6 +209,10 @@ exports.update = function(req, res){
 
     question.read = false;
 
+    question.updated = new Date();
+
+    console.log(question);
+
     for (var i =0; i < question.solutions.length; i++) {
       if(!question.solutions[i].user){
         question.solutions[i].user = req.user;
