@@ -8,7 +8,7 @@
       <span class="icon-bar"></span>
     </button>
     <!-- <a class="navbar-brand" href="index.html">SB Admin</a> -->
-    <a style="float: left" href="www.bravi.com.br"><img class="img-responsive bravi-logo" src="/img/bravi.png" alt="" /></a>
+    <a style="float: left" href="/"><img class="img-responsive bravi-logo" src="/img/bravi.png" alt="" /></a>
     <div style="float: left; margin-top:14px; margin-left:3px">
       <a href="/?lang=pt" data-gacategory="Header" data-gaaction="Language" data-galabel="Change to pt-br"><img src="/img/bra.png" alt=""></a>
       <a href="/?lang=en" data-gacategory="Header" data-gaaction="Language" data-galabel="Change to en-uk"><img src="/img/uk.jpg" alt="" style="width:24px; margin-top: 0px"></a>
@@ -78,7 +78,7 @@
             <button class="btn btn-info" onclick="askDetailedQuestion()" type="button"><i  class="glyphicon glyphicon-list-alt"></i></button>
             <!-- <button class="btn btn-info" id="tag-button" onclick="tagging()" type="button"><i  class="glyphicon glyphicon-list-alt"></i></button> -->
             </span>
-            <input type="text" id="question" name="question" title="What's your question?" class="form-control" placeholder="What's your question?">
+            <input type="text" id="question" name="question" title="{{ t('main-page.header.whats') }}" class="form-control" placeholder="{{ t('main-page.header.whats') }}">
             <span id="group-ask" class="input-group-btn">
               <button id="btn-ask" type="button" class="btn btn-info" onclick="tagging()" data-gacategory="Question" data-gaaction="First-ask" data-galabel="Asking a question but it was not confirmed yet.">
               {{ t('main-page.header.ask') }}
@@ -90,7 +90,7 @@
   </div>
   <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
   <div class="collapse navbar-collapse navbar-ex1-collapse">
-   <ul class="nav navbar-nav side-nav">
+   <ul class="nav navbar-nav side-nav" id="main-menu">
     <li>
       <a href="#" id="outstanding-questions" data-gacategory="Menu" data-gaaction="Outstanding">
         <i class="fa fa-fw fa-dashboard"></i> {{t('main-page.sidebar.outstanding-questions')}}

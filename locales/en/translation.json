@@ -3,6 +3,7 @@
     "header" : {
         "ask" : "Ask",
         "go" : "Go",
+        "whats" : "What's your question?",
         "register" : "Register the question?",
         "system-hours" : "Hours",
         "system-ebs" : "EBS",
@@ -33,11 +34,11 @@
       "page-help" : "Page Help",
       "show-tips" : "Show tips",
       "go-ahead" : "Write your answer here...",
-      "step-one" : "The search is done automaticaly while the user is typing. The system will search for the word/sentence typed. For register the question you just have to type it and click in the button ask, which will open a confirmation window.",
-      "step-two" : "This icon brings all the outstanding questions at the moment. It shows a number related with the quantity.",
-      "step-three" : "This icon brings all the user's questions.",
-      "step-four" : "This area shows all the questions, according to the search or filter.",
-      "step-five" : "This area is also responsible to show the answers. When the question is clicked, the system shows the answers more detailed. Alongside with an area to register the answer."
+      "step-ask" : "The search is done automatically while the user is typing. After you have typed the question, you can also register it by hitting the \"enter\" key or clicking at the \"Ask\" button. Tip: you can paste images here by using the CTRL + V shortcut :)",
+      "step-questions" : "This area shows all the questions according to the search or the selected side-menu.",
+      "step-answers" : "This area is also responsible to show the answers. When the question is clicked, the system shows the answers linked to it. Alongside with an area to register the a new answer.",
+      "step-systems-select" : "Here you can choose the system/area you wish to seek questions and answers.",
+      "step-main-menu" : "This is the main menu. You can filter by your questions, all answered, all outstanding and so on :)"
     },
     "messages" : {
       "question-required" : "Please, fill the field Question.",
