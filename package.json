@@ -29,6 +29,7 @@
     "node-uuid" : "*",
     "express.io" : "*",
     "i18next" : "*",
-    "slack-notify" : "*"
+    "slack-notify" : "*",
+    "node-trello" : "*"
   }
 }

@@ -26,6 +26,7 @@ function padLeft(value, character, quantity)
 
 $(document).ready(function() {
 
+
   requestPermission();
 
   $.ajaxSetup({

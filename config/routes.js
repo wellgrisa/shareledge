@@ -14,6 +14,7 @@ module.exports = function(app, passport) {
   app.post('/signin', admin.signin(passport));
   app.get('/signout', admin.signout);
   app.get('/login', admin.login);
+  app.post('/feedback', admin.feedback);
 
   var question = require('../app/controllers/question');
   app.get('/question', question.all);

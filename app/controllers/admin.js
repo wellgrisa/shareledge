@@ -96,12 +96,32 @@ exports.addSearchCount = function(req, res){
 };
 
 exports.signin = function(passport) {
-  console.log('---------------teste----------------------------');
-
   return passport.authenticate('local', {
       successRedirect : '/', // redirect to the secure profile section
       failureRedirect : '/login', // redirect back to the signup page if there is an error
       failureFlash : true // allow flash messages
     });
+};
+
+var Trello = require("node-trello");
+var t = new Trello("89cd2f7fe3a8d349f8a628fe84345dcb", "0ec10867c2a4bd3c2dfbad8041e95a9553ccb8456a665824bb2e5837da6b7ca8");
+
+exports.feedback = function(req, res) {
+
+  var card =  {
+   name: req.body.name + ' - by - ' + req.body.feedbacksection,
+   desc : req.body.desc
+ };
+
+  t.post('/1/lists/542ee0965cec27df9455e5b2/cards', card, function(err,data){
+    if (err) {
+      console.log("err " + err);
+    } else {
+     console.log(data);
+   }
+ });
+
+  res.redirect('/');
+
 };
 
