@@ -110,7 +110,7 @@ exports.feedback = function(req, res) {
 
   var card =  {
    name: req.body.name + ' - by - ' + req.body.feedbacksection,
-   desc : req.body.desc
+   desc : req.body.desc + ' - by - ' + req.user.username
  };
 
   t.post('/1/lists/542ee0965cec27df9455e5b2/cards', card, function(err,data){
