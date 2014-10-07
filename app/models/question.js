@@ -35,7 +35,8 @@ var QuestionSchema = new Schema({
   },
   type: { type: String, enum: ['hours', 'ebs', 'peopleCare', 'sits', 'administrative', 'solutions', 'test'] },
   updated: {
-    type: Date
+    type: Date,
+    default: Date.now
   },
   read: { type : Boolean, default : true },
   created: {
@@ -48,3 +49,8 @@ var QuestionSchema = new Schema({
 });
 
 mongoose.model('Question', QuestionSchema);
+
+QuestionSchema.virtual('test').get(function () {
+  console.log('-----------|||||||||||||||||||||');
+  return this.updated ?  this.updated : this.created;
+});

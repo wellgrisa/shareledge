@@ -224,6 +224,10 @@ function handleListGroup(){
     e.stopPropagation();
   });
 
+  // listGroup.delegate('span', 'click', function(e){
+  //   e.stopPropagation();
+  // });
+
   listGroup.delegate(".answer-collapsible", "shown.bs.collapse", function(){
     var textarea = $('.textarea', $('.list-group-item.active'));
 
@@ -693,6 +697,9 @@ function getQuestion(question){
     html.push('<div data-target="#' + questionCollapsibleId + '" class="list-group-item" ' + unreadStyle + ' data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'" onclick="ga_event(\'Question\', \'Open-Question-' + question._id + '\', \'Show details from question\')">');
     html.push('<div class="navbar-right">')
     html.push('<span class="label label-success" style="margin-top: 5px; float: left;margin-right: 5px">' + getLastUpdate(questionLastUpdate) + '</span>')
+    // if(question.user.username == $('#user-name').val()){
+    //   html.push('<span data-toggle="modal" data-target="#editQuestionModal" class="glyphicon glyphicon-pencil" style="float: left;font-size: 22px; pointer: hand"></span>');
+    // }
     html.push('<img data-toggle="dropdown" class="img-responsive panel-user img-circle" src="' + picture + '" alt=""/>');
     html.push('</div>')
     html.push('  <h4 class="list-group-item-heading">' + question.content + '</h4>');

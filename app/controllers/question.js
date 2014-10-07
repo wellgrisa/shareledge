@@ -19,7 +19,7 @@ var mongoose = require('mongoose'),
      Model.count(criteria, function (err, totalRecords) {
       var query = Model.find(criteria)
         .populate(populate)
-        .sort( { created: -1 } ) // Order by CreatedDate DESC
+        .sort( { updated: -1 } ) // Order by CreatedDate DESC
         .skip((page - 1) * limit)
         .limit(limit);
       query.exec(function(error, records) {
