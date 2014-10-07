@@ -218,7 +218,7 @@ function doInsert(element) {
 }
 
 function handleListGroup(){
-  var listGroup = $(".list-group");
+  var listGroup = $(".list-group-questions");
 
   listGroup.delegate('.answer-collapsible', 'click', function(e){
     e.stopPropagation();
@@ -252,7 +252,7 @@ function handleListGroup(){
     });
   });
   listGroup.delegate(".answer-collapsible", "shown.bs.collapse", function(){
-    var textarea = $('.textarea', $('.list-group-item.active'));
+    var textarea = $('.textarea', $('.list-group-item-question.active'));
 
     textarea.wysiwyg();
 
@@ -269,7 +269,7 @@ function handleListGroup(){
 
    $('#accordion .in').collapse('hide');
 
-   var selectedQuestion = $('.list-group-item.active');
+   var selectedQuestion = $('.list-group-item-question.active');
 
    var attr = selectedQuestion.attr('style');
 
@@ -292,8 +292,8 @@ function handleListGroup(){
     });
   });
 
-  listGroup.delegate(".list-group-item", "click", function(event) {
-    var previous = $(event.currentTarget).closest(".list-group").children(".active");
+  listGroup.delegate(".list-group-item-question", "click", function(event) {
+    var previous = $(event.currentTarget).closest(".list-group-questions").children(".active");
     previous.removeClass('active');
     $(event.currentTarget).addClass('active');
   });
@@ -316,10 +316,10 @@ function finishTour(){
 function refreshQuestions(){
 
   $.get( '/question', function(res){
-    $('.list-group').html('');
+    $('.list-group-questions').html('');
     var questions = res.data;
     for (var i = 0; i < questions.length; i++) {
-      $('.list-group').append(getQuestion(questions[i]));
+      $('.list-group-questions').append(getQuestion(questions[i]));
     }
   });
 
@@ -341,10 +341,10 @@ function refreshQuestionsWith(result){
         pagination.append('<li><a href="#">' + i + '</a></li>')
   }
 
-  $('.list-group').html('');
+  $('.list-group-questions').html('');
   for (var i = 0; i < questions.length; i++) {
 
-    $('.list-group').append(getQuestion(questions[i]));
+    $('.list-group-questions').append(getQuestion(questions[i]));
   }
 }
 
@@ -508,7 +508,7 @@ function buildPanel(type, message){
 }
 
 function answer(){
-  var selectedQuestion = $('.list-group-item.active');
+  var selectedQuestion = $('.list-group-item-question.active');
 
   var questionIdentifier  = selectedQuestion.data("id");
 
@@ -544,7 +544,7 @@ function initiateSearch(){
 }
 
 function registerAnswer(question){
-  var selectedQuestion = $('.list-group-item.active');
+  var selectedQuestion = $('.list-group-item-question.active');
 
   question.read = false;
 
@@ -575,7 +575,7 @@ function registerAnswer(question){
 }
 
 function showAnswer(id){
-  var questionIdentifier  = $('.list-group-item.active').data("id");
+  var questionIdentifier  = $('.list-group-item-question.active').data("id");
 
   var urlUpdateRead = '/question/updateRead/' + questionIdentifier;
   //console.log(question);
@@ -617,7 +617,7 @@ function rateDown(identifier){
 }
 
 function rate(identifier, rate){
-  var url = '/answer/' + $('.list-group-item.active').data("id");
+  var url = '/answer/' + $('.list-group-item-question.active').data("id");
 
   jQuery.ajax({
     url: url,
@@ -634,7 +634,7 @@ function rate(identifier, rate){
 
 
 function question(id, content, answers){
-  return '<a onclick="showAnswer(\'' + id +'\')" href="#" class="list-group-item ">' +
+  return '<a onclick="showAnswer(\'' + id +'\')" href="#" class="list-group-item-question ">' +
   '<h4 class="list-group-item-heading">' + content + '</h4>' +
   '<p class="list-group-item-text">' + answers + '</p></a>';
 }
@@ -656,9 +656,9 @@ function getShortAnswers(solutions){
 
 
 function configureEventHandlers() {
-    var questions = $(".list-group");
+    var questions = $(".list-group-questions");
 
-    questions.delegate(".list-group-item", "click", function(event) {
+    questions.delegate(".list-group-item-question", "click", function(event) {
         var question = $(event.currentTarget),
             url = '/question/' + question.data("id");
 
@@ -736,7 +736,7 @@ function getQuestion(question){
 
     var questionLastUpdate = question.updated ? new Date(question.updated).getTime() : new Date(question.created).getTime();
 
-    html.push('<div data-target="#' + questionCollapsibleId + '" class="list-group-item" ' + unreadStyle + ' data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'" onclick="ga_event(\'Question\', \'Open-Question-' + question._id + '\', \'Show details from question\')">');
+    html.push('<div data-target="#' + questionCollapsibleId + '" class="list-group-item list-group-item-question" ' + unreadStyle + ' data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'" onclick="ga_event(\'Question\', \'Open-Question-' + question._id + '\', \'Show details from question\')">');
     html.push('<div class="navbar-right">')
     html.push('<span class="label label-success" style="margin-top: 5px; float: left;margin-right: 5px">' + getLastUpdate(questionLastUpdate) + '</span>')
     html.push('<img data-toggle="dropdown" class="img-responsive panel-user img-circle" src="' + picture + '" alt=""/>');
@@ -775,6 +775,12 @@ function getQuestion(question){
       html.push(question.solutions[i].content);
       html.push('</div>');
       html.push('</div>');
+      // html.push('<div class="list-group">');
+      // html.push('<a href="#" class="list-group-item">');
+      // html.push('<h5 class="list-group-item-heading">' + question.solutions[i].user.username + ' '  + toDateTime(question.solutions[i].created) + '</h5>');
+      // html.push('<p class="list-group-item-text">' + question.solutions[i].content + '</p>');
+      // html.push('</a>');
+      // html.push('</div>');
     }
 
     if($('#systems').val() != 'hours' && $('#systems').val() != 'peopleCare'){
@@ -831,7 +837,7 @@ function buildTagPanel(){
 
 function handleCollapsibleAnswers(elementEvent){
 
-  var question = $(elementEvent.currentTarget).parent('.list-group-item');
+  var question = $(elementEvent.currentTarget).parent('.list-group-item-question');
   var id = question.data('id');
   var url = '/question/' + id;
 
