@@ -205,10 +205,20 @@ return Question.count({'user' : new mongoose.Types.ObjectId(req.user._id), 'read
 
 exports.update = function(req, res){
   Question.findById(req.params.id).populate('user solutions.user').exec(function (err, question){
+      console.log('|||||||||||||||||||', req.body);
+    if(req.body.solutions){
+      question.solutions = req.body.solutions;
+    }
 
-    question.solutions = req.body.solutions;
+    if(req.body.content){
+      question.content = req.body.content;
+    }
 
-    question.read = false;
+    if(req.body.tags){
+      question.tags = req.body.tags;
+    }
+
+    question.read = req.body.read;
 
     question.updated = new Date();
 

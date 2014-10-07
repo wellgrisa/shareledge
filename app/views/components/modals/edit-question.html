@@ -3,12 +3,19 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title">Feedback Is King!</h4>
+        <h4 class="modal-title">Edit Question</h4>
       </div>
       <div class="modal-body">
 
-
-
+        <div class="panel-detailed-question">
+          <div class="detailed-question textarea" data-ph="Your question goes here..."></div>
+          <div class="panel-bottom-question">
+            <div class="input-group">
+              <input type="text" class="tokenfield" title="Tag here" class="form-control" placeholder="Tag here">
+              <span class="input-group-btn"><button class="btn btn-info edit-question-btn-save" class="btn btn-info" type="submit">{{ t("main-page.header.save") }}</button></span>
+            </div>
+          </div>
+        </div>
 
       </div>
     </div>

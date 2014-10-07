@@ -224,10 +224,33 @@ function handleListGroup(){
     e.stopPropagation();
   });
 
-  // listGroup.delegate('span', 'click', function(e){
-  //   e.stopPropagation();
-  // });
+  listGroup.delegate('span', 'click', function(e){
+    e.stopPropagation();
+    $('#editQuestionModal').modal();
 
+    var identifier = $(e.currentTarget).parent().data('id');
+
+    $.ajax({
+      url: "/question/" + identifier,
+      global: false,
+    })
+    .done(function( result ) {
+        var editQuestionModal = $('.textarea', '#editQuestionModal');
+        editQuestionModal.wysiwyg();
+        editQuestionModal.html(result.content);
+
+        $('.tokenfield', '#editQuestionModal').tokenfield('setTokens', result.tags);
+        $('.edit-question-btn-save').on('click', function(){
+          updateQuestion({
+            id : result._id,
+            read : result.read,
+            content : $('.textarea', '#editQuestionModal').html(),
+            tags : tidyTagsUp($('.tokenfield', '#editQuestionModal').tokenfield('getTokensList').split(',')),
+            solutions : result.solutions
+          });
+        });
+    });
+  });
   listGroup.delegate(".answer-collapsible", "shown.bs.collapse", function(){
     var textarea = $('.textarea', $('.list-group-item.active'));
 
@@ -403,6 +426,23 @@ function updateBadges(result){
   updateBadge('all-questions', result.allQuestions);
 }
 
+function updateQuestion(question){
+
+  var url = '/question/' + question.id;
+
+  jQuery.ajax({
+    url: url,
+    type: "PUT",
+    data: question,
+    success: function (questionUpdated, status, error) {
+      $('.tokenfield', '#editQuestionModal').tokenfield('setTokens', '');
+      $('.textarea', '#editQuestionModal').html('');
+      $('#editQuestionModal').modal('hide');
+      searchFunction();
+    }
+  });
+}
+
 function ask(hidePopover){
 
   var question = getQuestionMade();
@@ -505,6 +545,8 @@ function initiateSearch(){
 
 function registerAnswer(question){
   var selectedQuestion = $('.list-group-item.active');
+
+  question.read = false;
 
   var questionIdentifier  = selectedQuestion.data("id");
 
@@ -697,11 +739,11 @@ function getQuestion(question){
     html.push('<div data-target="#' + questionCollapsibleId + '" class="list-group-item" ' + unreadStyle + ' data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'" onclick="ga_event(\'Question\', \'Open-Question-' + question._id + '\', \'Show details from question\')">');
     html.push('<div class="navbar-right">')
     html.push('<span class="label label-success" style="margin-top: 5px; float: left;margin-right: 5px">' + getLastUpdate(questionLastUpdate) + '</span>')
-    // if(question.user.username == $('#user-name').val()){
-    //   html.push('<span data-toggle="modal" data-target="#editQuestionModal" class="glyphicon glyphicon-pencil" style="float: left;font-size: 22px; pointer: hand"></span>');
-    // }
     html.push('<img data-toggle="dropdown" class="img-responsive panel-user img-circle" src="' + picture + '" alt=""/>');
     html.push('</div>')
+    if(question.user.username == $('#user-name').val()){
+      html.push('<span data-toggle="modal" data-target="#editQuestionModal" class="glyphicon glyphicon-pencil" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
+    }
     html.push('  <h4 class="list-group-item-heading">' + question.content + '</h4>');
 
     if(question.tags.length){
