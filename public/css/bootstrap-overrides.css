@@ -749,3 +749,7 @@ img.attached{ max-width: 100%; }
   float: left;
   background-color: #333;
 }
+
+.answer-collapsible .list-group-item-heading{
+  border-bottom:1px solid #ddd;
+}
