@@ -746,7 +746,7 @@ img.attached{ max-width: 100%; }
 }
 
 .answer-collapsible .list-group-item>.badge{
-  float: left;
+  float: right;
   background-color: #333;
 }
 

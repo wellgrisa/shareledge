@@ -297,7 +297,6 @@ function onEditAnswerClicked(e){
 
     editQuestionModal.html(_.first(solution).content);
 
-    $('.tokenfield', '#editAnswerModal').tokenfield('setTokens', result.tags);
     $('.edit-question-btn-save').on('click', function(){
 
       _.each(result.solutions, function(solution){
@@ -322,6 +321,8 @@ function onEditClicked(e){
 
   var identifier = $(e).parent().data('id');
 
+  $('.tokenfield', '#editQuestionModal').tokenfield('disable');
+
   $.ajax({
     url: "/question/" + identifier,
     global: false,
@@ -330,6 +331,8 @@ function onEditClicked(e){
     var editQuestionModal = $('.textarea', '#editQuestionModal');
     editQuestionModal.wysiwyg();
     editQuestionModal.html(result.content);
+
+    $('.tokenfield', '#editQuestionModal').tokenfield('enable');
 
     $('.tokenfield', '#editQuestionModal').tokenfield('setTokens', result.tags);
     $('.edit-question-btn-save').on('click', function(){
@@ -834,11 +837,11 @@ function getQuestion(question){
       html.push('<div class="list-group">');
       html.push('<div data-id="' + question.solutions[i]._id + '" class="list-group-item list-group-item-answer">');
       html.push('<span id="' + question.solutions[i]._id +  '" class="badge" style="margin-right: 5px">' + question.solutions[i].useful + '</span>');
-      html.push('<span data-toggle="modal" onclick="rateUp(\'' + question.solutions[i]._id +'\')" data-target="#editAnswerModal" class="glyphicon glyphicon-ok" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
+      html.push('<span data-toggle="modal" onclick="rateUp(\'' + question.solutions[i]._id +'\')" data-target="#editAnswerModal" class="glyphicon glyphicon-ok" style="float: right;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
       if(question.solutions[i].user.username == $('#user-name').val()){
         html.push('<span data-toggle="modal" onclick="onEditAnswerClicked(this)" data-target="#editAnswerModal" class="glyphicon glyphicon-pencil" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
       }
-      html.push('<h4 class="list-group-item-heading">' + question.solutions[i].user.username + ' '  + toDateTime(question.solutions[i].created) + '</h4>');
+      html.push('<label class="list-group-item-heading">' + question.solutions[i].user.username + ' '  + toDateTime(question.solutions[i].created) + '</label>');
       html.push('<p class="list-group-item-text">' + question.solutions[i].content + '</p>');
       html.push('</div>');
       html.push('</div>');
