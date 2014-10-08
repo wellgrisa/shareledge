@@ -218,7 +218,7 @@ function doInsert(element) {
 }
 
 function handleListGroup(){
-  var listGroup = $(".list-group");
+  var listGroup = $(".list-group-questions");
 
   listGroup.delegate('.answer-collapsible', 'click', function(e){
     e.stopPropagation();
@@ -228,7 +228,7 @@ function handleListGroup(){
 
   });
   listGroup.delegate(".answer-collapsible", "shown.bs.collapse", function(){
-    var textarea = $('.textarea', $('.list-group-item.active'));
+    var textarea = $('.textarea', $('.list-group-item-question.active'));
 
     textarea.wysiwyg();
 
@@ -245,7 +245,7 @@ function handleListGroup(){
 
    $('#accordion .in').collapse('hide');
 
-   var selectedQuestion = $('.list-group-item.active');
+   var selectedQuestion = $('.list-group-item-question.active');
 
    var attr = selectedQuestion.attr('style');
 
@@ -268,13 +268,52 @@ function handleListGroup(){
     });
   });
 
-  listGroup.delegate(".list-group-item", "click", function(event) {
-    var previous = $(event.currentTarget).closest(".list-group").children(".active");
+  listGroup.delegate(".list-group-item-question", "click", function(event) {
+    var previous = $(event.currentTarget).closest(".list-group-questions").children(".active");
     previous.removeClass('active');
     $(event.currentTarget).addClass('active');
   });
 
   $('.pagination').delegate('a', 'click', paginationClicked);
+}
+
+function onEditAnswerClicked(e){
+  this.event.stopPropagation();
+  $('#editAnswerModal').modal();
+
+  var identifier = $(e).closest('.list-group-item-question').data('id');
+
+  $(e).parent().addClass('selected');
+
+  $.ajax({
+    url: "/question/" + identifier,
+    global: false,
+  })
+  .done(function( result ) {
+    var editQuestionModal = $('.textarea', '#editAnswerModal');
+    editQuestionModal.wysiwyg();
+
+    var solution = _.where(result.solutions, {_id: $('.list-group-item-answer.selected').data('id')});
+
+    editQuestionModal.html(_.first(solution).content);
+
+    $('.tokenfield', '#editAnswerModal').tokenfield('setTokens', result.tags);
+    $('.edit-question-btn-save').on('click', function(){
+
+      _.each(result.solutions, function(solution){
+        if(solution._id == $('.list-group-item-answer.selected').data('id')){
+          solution.content = $('.textarea', '#editAnswerModal').html();
+        }
+      });
+
+      $('.list-group-item-answer.selected').removeClass('selected');
+
+      updateQuestion({
+        id : result._id,
+        solutions : result.solutions
+      }, onEditAnswerCompleted);
+    });
+  });
 }
 
 function onEditClicked(e){
@@ -300,7 +339,7 @@ function onEditClicked(e){
         content : $('.textarea', '#editQuestionModal').html(),
         tags : tidyTagsUp($('.tokenfield', '#editQuestionModal').tokenfield('getTokensList').split(',')),
         solutions : result.solutions
-      });
+      }, onEditQuestionCompleted);
     });
   });
 }
@@ -320,10 +359,10 @@ function finishTour(){
 function refreshQuestions(){
 
   $.get( '/question', function(res){
-    $('.list-group').html('');
+    $('.list-group-questions').html('');
     var questions = res.data;
     for (var i = 0; i < questions.length; i++) {
-      $('.list-group').append(getQuestion(questions[i]));
+      $('.list-group-questions').append(getQuestion(questions[i]));
     }
   });
 
@@ -345,10 +384,10 @@ function refreshQuestionsWith(result){
         pagination.append('<li><a href="#">' + i + '</a></li>')
   }
 
-  $('.list-group').html('');
+  $('.list-group-questions').html('');
   for (var i = 0; i < questions.length; i++) {
 
-    $('.list-group').append(getQuestion(questions[i]));
+    $('.list-group-questions').append(getQuestion(questions[i]));
   }
 }
 
@@ -430,8 +469,7 @@ function updateBadges(result){
   updateBadge('all-questions', result.allQuestions);
 }
 
-function updateQuestion(question){
-
+function updateQuestion(question, callback){
   var url = '/question/' + question.id;
 
   jQuery.ajax({
@@ -439,13 +477,25 @@ function updateQuestion(question){
     type: "PUT",
     data: question,
     success: function (questionUpdated, status, error) {
-      $('.tokenfield', '#editQuestionModal').tokenfield('setTokens', '');
-      $('.textarea', '#editQuestionModal').html('');
-      $('#editQuestionModal').modal('hide');
-      searchFunction();
-      $('.edit-question-btn-save').off('click');
+      callback();
     }
   });
+}
+
+function onEditQuestionCompleted(){
+  onEditCompleted('#editQuestionModal');
+}
+
+function onEditAnswerCompleted(){
+  onEditCompleted('#editAnswerModal');
+}
+
+function onEditCompleted(modal){
+  $('.tokenfield', modal).tokenfield('setTokens', '');
+  $('.textarea', modal).html('');
+  $(modal).modal('hide');
+  searchFunction();
+  $('.edit-question-btn-save').off('click');
 }
 
 function ask(hidePopover){
@@ -513,7 +563,7 @@ function buildPanel(type, message){
 }
 
 function answer(){
-  var selectedQuestion = $('.list-group-item.active');
+  var selectedQuestion = $('.list-group-item-question.active');
 
   var questionIdentifier  = selectedQuestion.data("id");
 
@@ -549,7 +599,7 @@ function initiateSearch(){
 }
 
 function registerAnswer(question){
-  var selectedQuestion = $('.list-group-item.active');
+  var selectedQuestion = $('.list-group-item-question.active');
 
   question.read = false;
 
@@ -580,7 +630,7 @@ function registerAnswer(question){
 }
 
 function showAnswer(id){
-  var questionIdentifier  = $('.list-group-item.active').data("id");
+  var questionIdentifier  = $('.list-group-item-question.active').data("id");
 
   var urlUpdateRead = '/question/updateRead/' + questionIdentifier;
   //console.log(question);
@@ -622,7 +672,7 @@ function rateDown(identifier){
 }
 
 function rate(identifier, rate){
-  var url = '/answer/' + $('.list-group-item.active').data("id");
+  var url = '/answer/' + $('.list-group-item-question.active').data("id");
 
   jQuery.ajax({
     url: url,
@@ -639,7 +689,7 @@ function rate(identifier, rate){
 
 
 function question(id, content, answers){
-  return '<a onclick="showAnswer(\'' + id +'\')" href="#" class="list-group-item ">' +
+  return '<a onclick="showAnswer(\'' + id +'\')" href="#" class="list-group-item-question ">' +
   '<h4 class="list-group-item-heading">' + content + '</h4>' +
   '<p class="list-group-item-text">' + answers + '</p></a>';
 }
@@ -661,9 +711,9 @@ function getShortAnswers(solutions){
 
 
 function configureEventHandlers() {
-    var questions = $(".list-group");
+    var questions = $(".list-group-questions");
 
-    questions.delegate(".list-group-item", "click", function(event) {
+    questions.delegate(".list-group-item-question", "click", function(event) {
         var question = $(event.currentTarget),
             url = '/question/' + question.data("id");
 
@@ -741,7 +791,7 @@ function getQuestion(question){
 
     var questionLastUpdate = question.updated ? new Date(question.updated).getTime() : new Date(question.created).getTime();
 
-    html.push('<div data-target="#' + questionCollapsibleId + '" class="list-group-item" ' + unreadStyle + ' data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'" onclick="ga_event(\'Question\', \'Open-Question-' + question._id + '\', \'Show details from question\')">');
+    html.push('<div data-target="#' + questionCollapsibleId + '" class="list-group-item list-group-item-question" ' + unreadStyle + ' data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'" onclick="ga_event(\'Question\', \'Open-Question-' + question._id + '\', \'Show details from question\')">');
     html.push('<div class="navbar-right">')
     html.push('<span class="label label-success" style="margin-top: 5px; float: left;margin-right: 5px">' + getLastUpdate(questionLastUpdate) + '</span>')
     html.push('<img data-toggle="dropdown" class="img-responsive panel-user img-circle" src="' + picture + '" alt=""/>');
@@ -767,17 +817,29 @@ function getQuestion(question){
 
     html.push('  <div class="answer-collapsible collapse"  id="' + questionCollapsibleId + '">');
     for (var i = 0; i < question.solutions.length; i++) {
-      html.push('<div class="panel panel-default">');
-      html.push('<div class="panel-heading">');
-      html.push('<span id="' + question.solutions[i]._id +  '" class="badge">' + question.solutions[i].useful + '</span>');
-      html.push('<label>' + question.solutions[i].user.username + '</label>' + '  ' + toDateTime(question.solutions[i].created));
-      html.push('</button>');
-      html.push('<button onclick="rateUp(\'' + question.solutions[i]._id +'\')" class="answer-result green" href="#">');
-      html.push('<span class="glyphicon glyphicon-ok"></span>');
-      html.push('</button>');
-      html.push('</div>');
-      html.push('<div class="panel-body">');
-      html.push(question.solutions[i].content);
+      // html.push('<div class="panel panel-default">');
+      // html.push('<div class="panel-heading">');
+      // html.push('<span id="' + question.solutions[i]._id +  '" class="badge">' + question.solutions[i].useful + '</span>');
+      // html.push('<label>' + question.solutions[i].user.username + '</label>' + '  ' + toDateTime(question.solutions[i].created));
+      // html.push('</button>');
+      // html.push('<button onclick="rateUp(\'' + question.solutions[i]._id +'\')" class="answer-result green" href="#">');
+      // html.push('<span class="glyphicon glyphicon-ok"></span>');
+      // html.push('</button>');
+      // html.push('</div>');
+      // html.push('<div class="panel-body">');
+      // html.push(question.solutions[i].content);
+      // html.push('</div>');
+      // html.push('</div>');
+
+      html.push('<div class="list-group">');
+      html.push('<div data-id="' + question.solutions[i]._id + '" class="list-group-item list-group-item-answer">');
+      html.push('<span id="' + question.solutions[i]._id +  '" class="badge" style="margin-right: 5px">' + question.solutions[i].useful + '</span>');
+      html.push('<span data-toggle="modal" onclick="rateUp(\'' + question.solutions[i]._id +'\')" data-target="#editAnswerModal" class="glyphicon glyphicon-ok" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
+      if(question.solutions[i].user.username == $('#user-name').val()){
+        html.push('<span data-toggle="modal" onclick="onEditAnswerClicked(this)" data-target="#editAnswerModal" class="glyphicon glyphicon-pencil" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
+      }
+      html.push('<h4 class="list-group-item-heading">' + question.solutions[i].user.username + ' '  + toDateTime(question.solutions[i].created) + '</h4>');
+      html.push('<p class="list-group-item-text">' + question.solutions[i].content + '</p>');
       html.push('</div>');
       html.push('</div>');
     }
@@ -836,7 +898,7 @@ function buildTagPanel(){
 
 function handleCollapsibleAnswers(elementEvent){
 
-  var question = $(elementEvent.currentTarget).parent('.list-group-item');
+  var question = $(elementEvent.currentTarget).parent('.list-group-item-question');
   var id = question.data('id');
   var url = '/question/' + id;
 
