@@ -275,17 +275,13 @@ exports.updateRead = function(req, res){
 };
 
 exports.updateAnswer = function(req, res){
-  Question.findById(req.params.id).populate('user').exec(function (err, question){
+  Question.findById(req.params.id).populate('user solutions.user').exec(function (err, question){
     var answerUpdated;
     for (var i = 0; i < question.solutions.length; i++) {
       if(question.solutions[i]._id == req.body.answer){
 
         if(!question.solutions[i].helpedUsers.length){
           question.solutions[i].helpedUsers.push(req.user);
-
-          req.user.points += 2;
-          req.user.save();
-
         }else{
           for (var j = 0; j < question.solutions[i].helpedUsers.length; j++) {
             if (!question.solutions[i].helpedUsers[j] == req.user._id) {
@@ -299,8 +295,8 @@ exports.updateAnswer = function(req, res){
           question.solutions[i].useful = question.solutions[i].useful  + 1;
           question.useful ++;
 
-          question.user.points += 5;
-          question.user.save();
+          question.solutions[i].user.points += 5;
+          question.solutions[i].user.save();
 
         }else{
           question.solutions[i].useful = question.solutions[i].useful  - 1;
@@ -309,9 +305,11 @@ exports.updateAnswer = function(req, res){
         answerUpdated = question.solutions[i];
       }
     }
-    return question.save(function (err) {
+    return question.save(function (err, savedQuestion) {
       if (!err) {
         console.log("updated");
+        question.user.points += 2;
+        question.user.save();
       } else {
         console.log(err);
       }

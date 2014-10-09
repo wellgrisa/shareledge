@@ -11,7 +11,7 @@
   "google": {
     "clientID": "574515769526-f1pl4anh069v4aut5p7obv8s1sn2nhdt.apps.googleusercontent.com",
     "clientSecret": "_5YjHt_eh7ecHTiB7cZ-5zNP",
-    "callbackURL": "https://shareledge.bravi.com.br/auth/google/callback",
+    "callbackURL": "https://knowhow.bravi.com.br/auth/google/callback",
     "scopes": "email profile"
   }
 }
