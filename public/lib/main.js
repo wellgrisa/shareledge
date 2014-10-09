@@ -321,6 +321,8 @@ function onEditClicked(e){
 
   var identifier = $(e).parent().data('id');
 
+  $('.tokenfield').tokenfield('destroy');
+
   $('.tokenfield', '#editQuestionModal').tokenfield('disable');
 
   $.ajax({
@@ -332,6 +334,7 @@ function onEditClicked(e){
     editQuestionModal.wysiwyg();
     editQuestionModal.html(result.content);
 
+    $('#edit-question-tokenfield').tokenfield();
     $('.tokenfield', '#editQuestionModal').tokenfield('enable');
 
     $('.tokenfield', '#editQuestionModal').tokenfield('setTokens', result.tags);
@@ -340,7 +343,7 @@ function onEditClicked(e){
         id : result._id,
         read : result.read,
         content : $('.textarea', '#editQuestionModal').html(),
-        tags : tidyTagsUp($('.tokenfield', '#editQuestionModal').tokenfield('getTokensList').split(',')),
+        tags : tidyTagsUp($('#edit-question-tokenfield').tokenfield('getTokensList').split(',')),
         solutions : result.solutions
       }, onEditQuestionCompleted);
     });
@@ -940,12 +943,12 @@ function getQuestionMade(){
   if($('#main-navbar').next('div.popover.in').length){
     return {
       content : $('.detailed-question').html(),
-      tags : $('.panel-bottom-question .tokenfield').length ? tidyTagsUp($('.panel-bottom-question .tokenfield').tokenfield('getTokensList').split(',')) : ""
+      tags : $('.detailed-question-popover .tokenfield').length ? tidyTagsUp($('.detailed-question-popover .tokenfield').tokenfield('getTokensList').split(',')) : ""
     };
   }else{
     return {
       content : $('#question').val(),
-      tags : $('.tokenfield').length ? tidyTagsUp($('.tokenfield').tokenfield('getTokensList').split(',')) : ""
+      tags : $('.simple-question-popover .tokenfield').length ? tidyTagsUp($('.simple-question-popover .tokenfield').tokenfield('getTokensList').split(',')) : ""
     };
   }
 }
@@ -1113,7 +1116,7 @@ function askDetailedQuestion(){
      $('#nav-input-wonder').popover('hide');
   }
 
-  createPopover(questionElement, buildQuestionPanel(questionWidth), questionWidth);
+  createPopover('detailed-question-popover', questionElement, buildQuestionPanel(questionWidth), questionWidth);
 }
 
 function tagging(){
@@ -1121,14 +1124,14 @@ function tagging(){
 
   var questionWidth = questionElement.width();
 
-  createPopover($('#nav-input-wonder'), buildTagPanel(), questionWidth);
+  createPopover('simple-question-popover', $('#nav-input-wonder'), buildTagPanel(), questionWidth);
 }
 
-function createPopover(elementPopover, content, width){
+function createPopover(popoverClassName, elementPopover, content, width){
 
   var popoverWidth = width ? 'style="max-width : ' + width + 'px; width :' + width + 'px"' : "";
 
-  var popoverDiv = '<div class="timePickerWrapper popover"' + popoverWidth + '>';
+  var popoverDiv = '<div class="'+ popoverClassName + ' timePickerWrapper popover"' + popoverWidth + '>';
 
   var popoverTemplate = [popoverDiv,
         '<div class="arrow"></div>',

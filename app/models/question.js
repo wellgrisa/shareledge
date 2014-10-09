@@ -13,6 +13,7 @@ var AnswerSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   },
+  helpedUsers: [Schema.Types.ObjectId],
   created: {
     type: Date,
     default: Date.now

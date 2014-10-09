@@ -74,6 +74,7 @@ var UserSchema = new Schema({
   },
   department: { type: String, enum: ['administrative', 'development', 'peopleCare'] },
   loginCount : { type : Number, default : 0 },
+  points : { type : Number, default : 100 },
   searches:{ type: Number, default : 0 }
 });
 

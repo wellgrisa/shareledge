@@ -3,7 +3,9 @@
  */
 var mongoose = require('mongoose'),
     Question = mongoose.model('Question'),
+    User = mongoose.model('User'),
     fs = require('fs'),
+    _ = require('underscore'),
     config = require('../../config/config')
     uuid = require('node-uuid'),
     slack = require('slack-notify')("https://bravi.slack.com/services/hooks/incoming-webhook?token=MCpfwNh6FtmKPVrgKx8p81Zs");
@@ -152,6 +154,9 @@ exports.create = function (req, res) {
     username: 'Shareledge'
   });
 
+  req.user.points += 1;
+  req.user.save();
+
   question.save(function(err) {
     if (err) {
       return res.send(400, {
@@ -205,9 +210,12 @@ return Question.count({'user' : new mongoose.Types.ObjectId(req.user._id), 'read
 
 exports.update = function(req, res){
   Question.findById(req.params.id).populate('user solutions.user').exec(function (err, question){
-      console.log('|||||||||||||||||||', req.body);
+
     if(req.body.solutions){
       question.solutions = req.body.solutions;
+
+      req.user.points += 2;
+      req.user.save();
     }
 
     if(req.body.content){
@@ -267,13 +275,33 @@ exports.updateRead = function(req, res){
 };
 
 exports.updateAnswer = function(req, res){
-  Question.findById(req.params.id, function (err, question){
+  Question.findById(req.params.id).populate('user').exec(function (err, question){
     var answerUpdated;
     for (var i = 0; i < question.solutions.length; i++) {
       if(question.solutions[i]._id == req.body.answer){
+
+        if(!question.solutions[i].helpedUsers.length){
+          question.solutions[i].helpedUsers.push(req.user);
+
+          req.user.points += 2;
+          req.user.save();
+
+        }else{
+          for (var j = 0; j < question.solutions[i].helpedUsers.length; j++) {
+            if (!question.solutions[i].helpedUsers[j] == req.user._id) {
+              question.solutions[i].helpedUsers.push(req.user);
+            }
+          }
+        }
+
         if(req.body.rate == 'up'){
+
           question.solutions[i].useful = question.solutions[i].useful  + 1;
           question.useful ++;
+
+          question.user.points += 5;
+          question.user.save();
+
         }else{
           question.solutions[i].useful = question.solutions[i].useful  - 1;
           question.useful --;
