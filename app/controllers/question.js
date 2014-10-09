@@ -148,11 +148,11 @@ exports.create = function (req, res) {
 
   question.user = req.user;
 
-  slack.send({
-    channel: '#' + question.type,
-    text: 'New question created in the section [' + question.type + '] by ' + req.user.username,
-    username: 'Shareledge'
-  });
+  // slack.send({
+  //   channel: '#' + question.type,
+  //   text: 'New question created in the section [' + question.type + '] by ' + req.user.username,
+  //   username: 'Shareledge'
+  // });
 
   req.user.points += 1;
   req.user.save();
@@ -238,11 +238,11 @@ exports.update = function(req, res){
       }
     }
 
-    slack.send({
-      channel: '#' + question.type,
-      text: 'Question made by ' + question.user.username + ' answered in the section [' + question.type + '] by ' + req.user.username,
-      username: 'Shareledge'
-    });
+    // slack.send({
+    //   channel: '#' + question.type,
+    //   text: 'Question made by ' + question.user.username + ' answered in the section [' + question.type + '] by ' + req.user.username,
+    //   username: 'Shareledge'
+    // });
 
     return question.save(function (err) {
       if (!err) {

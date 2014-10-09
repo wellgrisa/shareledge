@@ -753,3 +753,8 @@ img.attached{ max-width: 100%; }
 .answer-collapsible .list-group-item-heading{
   border-bottom:1px solid #ddd;
 }
+
+.list-group-item-highlighted {
+  background-color: #f0ad4e;
+  border-color: #faebcc;
+}

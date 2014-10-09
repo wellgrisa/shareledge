@@ -249,9 +249,7 @@ function handleListGroup(){
 
    var attr = selectedQuestion.attr('style');
 
-    if (typeof attr !== typeof undefined && attr !== false) {
-      selectedQuestion.removeAttr('style');
-    }
+   selectedQuestion.removeClass('list-group-item-highlighted');
 
    var questionIdentifier  = selectedQuestion.data("id");
 
@@ -789,11 +787,11 @@ function getQuestion(question){
 
     var questionCollapsibleId = 'answer-for-' + question._id;
 
-    var unreadStyle = "";
+    var highlightedItem = "";
 
     if(!question.read){
       if(question.user.username == $('#user-name').val()){
-        unreadStyle = 'style="background-color: #f0ad4e;"';
+        highlightedItem = 'list-group-item-highlighted';
       }
     }
 
@@ -801,7 +799,7 @@ function getQuestion(question){
 
     var questionLastUpdate = question.updated ? new Date(question.updated).getTime() : new Date(question.created).getTime();
 
-    html.push('<div data-target="#' + questionCollapsibleId + '" class="list-group-item list-group-item-question" ' + unreadStyle + ' data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'" onclick="ga_event(\'Question\', \'Open-Question-' + question._id + '\', \'Show details from question\')">');
+    html.push('<div data-target="#' + questionCollapsibleId + '" class="list-group-item list-group-item-question ' + highlightedItem + '" data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'" onclick="ga_event(\'Question\', \'Open-Question-' + question._id + '\', \'Show details from question\')">');
     html.push('<div class="navbar-right">')
     html.push('<span class="label label-success" style="margin-top: 5px; float: left;margin-right: 5px">' + getLastUpdate(questionLastUpdate) + '</span>')
     html.push('<img data-toggle="dropdown" class="img-responsive panel-user img-circle" src="' + picture + '" alt=""/>');
@@ -1081,7 +1079,7 @@ function requestPermission(){
 }
 
 function onNotificationClicked(questionIdentifier){
-  getOutstandingCountByFilter({filter : { criteria : { "_id" : questionIdentifier, type : $('#systems').val()}, page : "1" }}, refreshQuestionsWith);
+  $('[data-id="'+ questionIdentifier + '"]').addClass('list-group-item-highlighted');
   window.focus();
 }
 
