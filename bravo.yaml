@@ -3,7 +3,7 @@
 image: 'docker.bravi.com.br/shareledge'
 
 production:
-  serverName: 'shareledge.bravi.com.br'
+  serverName: 'knowhow.bravi.com.br'
   tag: '0.0.1'
   create:
     AttachStdin: true
