@@ -90,6 +90,9 @@ $('.side-nav a').on('click', sidebarClicked);
 
   io.on('question-answered', function(data) {
     var text = 'Question made by ' + data.question.createdBy + ' answered in the section [' + data.question.type + '] by ' + data.user;
+    if(data.question.createdBy == $('#user-name').val()){
+      text = "Your question has been answered.";
+    }
     notificate(text, data.question);
   });
 
