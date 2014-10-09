@@ -1077,7 +1077,7 @@ function requestPermission(){
 }
 
 function funcRef(){
-  alert('a');
+  window.focus();
 }
 
 function notificate(message) {
