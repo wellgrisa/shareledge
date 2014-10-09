@@ -85,12 +85,12 @@ $('.side-nav a').on('click', sidebarClicked);
 
   io.on('question-created', function(data) {
     var text ='New question created in the section [' + data.type + '] by ' + data.user;
-    notificate(text);
+    notificate(text, data.question);
   });
 
   io.on('question-answered', function(data) {
-    var text = 'Question made by ' + data.createdBy + ' answered in the section [' + data.type + '] by ' + data.user;
-    notificate(text);
+    var text = 'Question made by ' + data.question.createdBy + ' answered in the section [' + data.question.type + '] by ' + data.user;
+    notificate(text, data.question);
   });
 
   var questionInput = $('#question');
@@ -539,7 +539,8 @@ function ask(hidePopover){
 
     io.emit('question-created', {
       user : $('#user-name').val(),
-      type : $('#systems').val()
+      type : $('#systems').val(),
+      question : { id : data._id, type : data.type }
     });
 
     updateCounts();
@@ -622,8 +623,11 @@ function registerAnswer(question){
 
       io.emit('question-answered', {
         user : $('#user-name').val(),
-        createdBy : questionUpdated.user.username,
-        type : $('#systems').val()
+        question : {
+          id : questionUpdated._id,
+          type : questionUpdated.type,
+          createdBy : questionUpdated.user.username
+        }
       });
 
       $.get( '/counts', function(res){
@@ -1076,19 +1080,20 @@ function requestPermission(){
   }
 }
 
-function funcRef(){
+function onNotificationClicked(questionIdentifier){
+  getOutstandingCountByFilter({filter : { criteria : { "_id" : questionIdentifier, type : $('#systems').val()}, page : "1" }}, refreshQuestionsWith);
   window.focus();
 }
 
-function notificate(message) {
+function notificate(message, question) {
   if (!("Notification" in window)) {
     return;
   }
 
   else if (Notification.permission === "granted") {
-    var notification = new Notification(message);
-
-    notification.onclick = funcRef;
+    if($('#systems').val() == question.type){
+      showNotification(message, question);
+    }
   }
 
   else if (Notification.permission !== 'denied') {
@@ -1099,11 +1104,23 @@ function notificate(message) {
       }
 
       if (permission === "granted") {
-        var notification = new Notification(message);
-
-        notification.onclick = funcRef;
+        showNotification(message, question);
       }
     });
+  }
+}
+
+function showNotification(message, question){
+  if($('#systems').val() == question.type){
+    var notification = new Notification(message);
+
+    setTimeout(function(){
+      notification.close();
+    }, 3000);
+
+    notification.onclick = function(){
+      onNotificationClicked(question.id);
+    };
   }
 }
 
