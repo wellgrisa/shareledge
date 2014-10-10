@@ -85,15 +85,15 @@ $('.side-nav a').on('click', sidebarClicked);
 
   io.on('question-created', function(data) {
     var text ='New question created in the section [' + data.type + '] by ' + data.user;
-    notificate(text, data.question);
+    notificate(text, data.question, data.icon);
   });
 
   io.on('question-answered', function(data) {
     var text = 'Question made by ' + data.question.createdBy + ' answered in the section [' + data.question.type + '] by ' + data.user;
     if(data.question.createdBy == $('#user-name').val()){
-      text = "Your question has been answered.";
+      text = "Your question has been answered by " + data.question.updatedBy.username;
     }
-    notificate(text, data.question);
+    notificate(text, data.question, data.question.updatedBy.google ? data.question.updatedBy.google.picture : "");
   });
 
   var questionInput = $('#question');
@@ -284,13 +284,14 @@ function onEditAnswerClicked(e){
 
   var identifier = $(e).closest('.list-group-item-question').data('id');
 
-  $(e).parent().addClass('selected');
+  $(e).closest('.list-group-item-answer').addClass('selected');
 
   $.ajax({
     url: "/question/" + identifier,
     global: false,
   })
   .done(function( result ) {
+
     var editQuestionModal = $('.textarea', '#editAnswerModal');
     editQuestionModal.wysiwyg();
 
@@ -541,7 +542,8 @@ function ask(hidePopover){
     io.emit('question-created', {
       user : $('#user-name').val(),
       type : $('#systems').val(),
-      question : { id : data._id, type : data.type }
+      question : { id : data._id, type : data.type },
+      icon : $('#user-avatar').attr('src')
     });
 
     updateCounts();
@@ -619,15 +621,18 @@ function registerAnswer(question){
     url: url,
     type: "PUT",
     data: question,
-    success: function (questionUpdated, status, error) {
+    success: function (result, status, error) {
       $('.text-area-answer', selectedQuestion).val('');
+
+      var questionUpdated = result.question;
 
       io.emit('question-answered', {
         user : $('#user-name').val(),
         question : {
           id : questionUpdated._id,
           type : questionUpdated.type,
-          createdBy : questionUpdated.user.username
+          createdBy : questionUpdated.user.username,
+          updatedBy : result.updatedBy
         }
       });
 
@@ -1086,15 +1091,13 @@ function onNotificationClicked(questionIdentifier){
   window.focus();
 }
 
-function notificate(message, question) {
+function notificate(message, question, icon) {
   if (!("Notification" in window)) {
     return;
   }
 
   else if (Notification.permission === "granted") {
-    if($('#systems').val() == question.type){
-      showNotification(message, question);
-    }
+    showNotification(message, question, icon);
   }
 
   else if (Notification.permission !== 'denied') {
@@ -1105,15 +1108,15 @@ function notificate(message, question) {
       }
 
       if (permission === "granted") {
-        showNotification(message, question);
+        showNotification(message, question, icon);
       }
     });
   }
 }
 
-function showNotification(message, question){
+function showNotification(message, question, icon){
   if($('#systems').val() == question.type){
-    var notification = new Notification(message);
+    var notification = new Notification(message, {icon :  icon });
 
     setTimeout(function(){
       notification.close();

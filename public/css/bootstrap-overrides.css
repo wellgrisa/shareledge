@@ -758,3 +758,7 @@ img.attached{ max-width: 100%; }
   background-color: #f0ad4e;
   border-color: #faebcc;
 }
+
+.detailed-question-popover{
+  z-index: 1000000;
+}

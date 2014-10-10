@@ -250,7 +250,7 @@ exports.update = function(req, res){
       } else {
         console.log(err);
       }
-      return res.json(question);
+      return res.json( { question : question, updatedBy : req.user } );
     });
   });
 };
