@@ -2,14 +2,14 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta charset="utf-8">  
-  <title>{% block title %}Bravi Shareledge - Login{% endblock %}</title>
+  <meta charset="utf-8">
+  <title>{% block title %}Knowhow Bravi - Login{% endblock %}</title>
 
   <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
   <link href="/css/custom-screens.css" rel="stylesheet" media="screen">
   <link href="/css/bootstrap-overrides.css" rel="stylesheet" media="screen">
   <link href="/css/signin.css" rel="stylesheet" media="screen">
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>  
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
 
 </head>
 <body class="login">
@@ -19,16 +19,16 @@
     <div class="container">
       <div class="col-lg-12">
         <img class="img-responsive bravi-logo" src="/img/bravi.png" alt="" />
-        
+
         <br>
-        <p class="home-title">Bravi Shareledge</p>
-        <span class="home-subtitle">{{ t('main-page.sign-up.subtitle') }}</span>         
+        <p class="home-title">Knowhow Bravi</p>
+        <span class="home-subtitle">{{ t('main-page.sign-up.subtitle') }}</span>
       </div>
 
       <div class="col-lg-12">
         <form class="form-signin" role="form" action="/signin" method="post">
           <!-- Commented other logins authetication -->
-          <div style="display:none;">            
+          <div style="display:none;">
             <input type="username" name="username" class="form-control" placeholder="{{ t('main-page.sign-up.name') }}" required="" autofocus="">
             <input type="password" name="password" class="form-control" placeholder="{{ t('main-page.sign-up.password') }}" required="">
             <button class="btn btn-lg btn-primary" type="submit" data-gacategory="Login" data-gaaction="Submit" data-galabel="Regular login">{{ t('main-page.sign-up.sign-in') }}</button>
