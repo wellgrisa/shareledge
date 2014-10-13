@@ -1,5 +1,5 @@
 {
-  "db": "mongodb://ramon:pass123@ds045087.mongolab.com:45087/MongoLab-3m",
+  "db": "mongodb://admin:Pwd123@ds043170.mongolab.com:43170/kmanager-dev",
   "app": {
     "name": "Bravi Software - Development"
   },

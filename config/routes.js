@@ -18,6 +18,7 @@ module.exports = function(app, passport) {
 
   var question = require('../app/controllers/question');
   app.get('/question', question.all);
+  app.get('/tags', question.tags);
   app.get('/counts', question.counts);
   app.get('/question/search', question.search);
   app.post('/question', middlewares.ensureAuthenticated, question.create);

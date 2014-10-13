@@ -3,6 +3,7 @@
  */
 var mongoose = require('mongoose'),
     Question = mongoose.model('Question'),
+    Tag = mongoose.model('Tag'),
     User = mongoose.model('User'),
     fs = require('fs'),
     _ = require('underscore'),
@@ -49,6 +50,16 @@ exports.all = function(req, res) {
         res.json({data: question});
     } else {
       return res.status(500).send(err);
+    }
+  });
+};
+
+exports.tags = function(req, res) {
+  Tag.find({}, 'title', function (err, tags) {
+    if (!err) {
+      return res.send(tags);
+    } else {
+      return console.log(err);
     }
   });
 };
@@ -145,6 +156,14 @@ return Question.paginate(options, function (err, questions){
 exports.create = function (req, res) {
 
   var question = new Question(req.body);
+
+  for (var i = 0; i < question.tags.length; i++) {
+
+
+    Tag.update({title : question.tags[i]}, {$set: { title : question.tags[i] }}, {upsert : true}, function(err){
+      console.log('\n---->', require('util').inspect(err, { depth: null, colors: true }));
+    });
+  }
 
   question.user = req.user;
 

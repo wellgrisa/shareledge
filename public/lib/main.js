@@ -53,8 +53,17 @@ $(document).ready(function() {
     }
   });
 
-$('.tokenfield').tokenfield();
-
+updateTags(function(engine){
+  $('.tokenfield').tokenfield({
+    typeahead: [{
+      highlight: true,
+      minLength: 1
+    },
+    {
+      source: engine.ttAdapter()
+    }]
+  });
+});
 
 if (i18n) i18n.init(handleMultiSelect);
 
@@ -319,6 +328,9 @@ function onEditAnswerClicked(e){
 
 function onEditClicked(e){
   this.event.stopPropagation();
+
+  $('#edit-question-tokenfield').tokenfield();
+
   $('#editQuestionModal').modal();
 
   var identifier = $(e).parent().data('id');
@@ -335,11 +347,22 @@ function onEditClicked(e){
     var editQuestionModal = $('.textarea', '#editQuestionModal');
     editQuestionModal.wysiwyg();
     editQuestionModal.html(result.content);
+    updateTags(function(engine){
+      $('#edit-question-tokenfield').tokenfield({
+        typeahead: [{
+          highlight: true,
+          minLength: 1
+        },
+        {
+          source: engine.ttAdapter()
+        }]
+      });
 
-    $('#edit-question-tokenfield').tokenfield();
+      $('.tokenfield', '#editQuestionModal').tokenfield('setTokens', result.tags);
+    }, result.tags);
+
     $('.tokenfield', '#editQuestionModal').tokenfield('enable');
 
-    $('.tokenfield', '#editQuestionModal').tokenfield('setTokens', result.tags);
     $('.edit-question-btn-save').on('click', function(){
       updateQuestion({
         id : result._id,
@@ -349,6 +372,32 @@ function onEditClicked(e){
         solutions : result.solutions
       }, onEditQuestionCompleted);
     });
+  });
+}
+
+function updateTags(next, data){
+  $.ajax({
+    url: "/tags",
+    global: false,
+  })
+  .done(function( result ) {
+
+    var tags = [];
+    for (var i = 0; i < result.length; i++) {
+      tags.push({ value : result[i].title});
+    }
+
+    var engine = new Bloodhound({
+      local: tags,
+      datumTokenizer: function(d) {
+        return Bloodhound.tokenizers.whitespace(d.value);
+      },
+      queryTokenizer: Bloodhound.tokenizers.whitespace
+    });
+
+    engine.initialize();
+
+    next(engine, data);
   });
 }
 
@@ -1019,7 +1068,17 @@ function configureEvents(){
 
   $('.navbar-fixed-top')
   .on('shown.bs.popover', function(e){
-      $('.tokenfield').tokenfield();
+      updateTags(function(engine){
+        $('.tokenfield').tokenfield({
+          typeahead: [{
+            highlight: true,
+            minLength: 1
+          },
+          {
+            source: engine.ttAdapter()
+          }]
+        });
+      });
   });
 
   $( "#question" ).keyup(function(e) {
