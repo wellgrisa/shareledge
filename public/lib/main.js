@@ -113,6 +113,10 @@ $('.side-nav a').on('click', sidebarClicked);
     html:true
   });
 
+  $('body').tooltip({
+    selector: '.panel-user'
+});
+
 configureEvents();
 
 
@@ -597,9 +601,24 @@ function ask(hidePopover){
 
     updateCounts();
 
+    updateUserScore();
+
     // Registering Google Analytics event
     ga_event('Question', 'Ask', 'Question saved as outstading');
   });
+}
+
+function updateUserScore(){
+  $.get( '/score/' + $('#user-id').val(), function(res){
+    updateScore(res.points);
+    var pointsMade = res.points - $('#user-points').val();
+    $('#user-points').val(res.points);
+    showSimpleNotification('Congratulations, you have got ' + pointsMade + ' points.', 'img/star.png');
+  });
+}
+
+function updateScore(score){
+  $('.score').html(score);
 }
 
 function alertUser(type, message){
@@ -689,6 +708,8 @@ function registerAnswer(question){
         updateBadges(res.data);
       });
 
+      updateUserScore();
+
       searchFunction();
     }
   });
@@ -748,6 +769,7 @@ function rate(identifier, rate){
       $('#' + data._id).html(data.useful);
       io.emit('answer-rated');
       updateCounts();
+      updateUserScore();
     }
   });
 }
@@ -859,7 +881,8 @@ function getQuestion(question){
     html.push('<div data-target="#' + questionCollapsibleId + '" class="list-group-item list-group-item-question ' + highlightedItem + '" data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'" onclick="ga_event(\'Question\', \'Open-Question-' + question._id + '\', \'Show details from question\')">');
     html.push('<div class="navbar-right">')
     html.push('<span class="label label-success" style="margin-top: 5px; float: left;margin-right: 5px">' + getLastUpdate(questionLastUpdate) + '</span>')
-    html.push('<img data-toggle="dropdown" class="img-responsive panel-user img-circle" src="' + picture + '" alt=""/>');
+
+    html.push('<img data-toggle="dropdown" class="img-responsive panel-user img-circle" src="' + picture + '" alt="" data-toggle="tooltip" data-placement="left" title="'+ question.user.username +'" data-original-title="Tooltip on left"/>');
     html.push('</div>')
     if(question.user.username == $('#user-name').val()){
       html.push('<span data-toggle="modal" onclick="onEditClicked(this)" data-target="#editQuestionModal" class="glyphicon glyphicon-pencil" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
@@ -1179,12 +1202,24 @@ function showNotification(message, question, icon){
 
     setTimeout(function(){
       notification.close();
-    }, 3000);
+    }, 7000);
 
     notification.onclick = function(){
       onNotificationClicked(question.id);
     };
   }
+}
+
+function showSimpleNotification(message, icon){
+  var notification = new Notification(message, {icon :  icon });
+
+  setTimeout(function(){
+    notification.close();
+  }, 7000);
+
+  notification.onclick = function(){
+    onNotificationClicked(question.id);
+  };
 }
 
 function askDetailedQuestion(){

@@ -9,6 +9,7 @@ module.exports = function(app, passport) {
   var admin = require('../app/controllers/admin');
   app.post('/signup', admin.signup);
   app.put('/finishTour/:id', admin.finishTour);
+  app.get('/score/:id', admin.score);
   app.put('/updateFilter', admin.updateFilter);
   app.put('/addSearchCount', admin.addSearchCount);
   app.post('/signin', admin.signin(passport));

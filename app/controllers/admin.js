@@ -59,6 +59,12 @@ exports.finishTour = function(req, res){
   });
 };
 
+exports.score = function(req, res){
+  User.findById(req.user._id).exec(function (err, user){
+      return res.json( { points : req.user.points} );
+  });
+};
+
 exports.updateFilter = function(req, res){
 
   User.findById(req.user._id).exec(function (err, user){

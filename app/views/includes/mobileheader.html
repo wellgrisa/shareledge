@@ -1,12 +1,19 @@
 <nav id="main-navbar" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <!-- Brand and toggle get grouped for better mobile display -->
   <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
+    <div style="float: right">
+      <div class="hidden-md hidden-lg" style="font-size: 14px;float: left;">
+        <span class="label label-primary score" style="margin-top: 12px; float: left;margin-right: 5px;vertical-align: middle;font-size: 14PX;">{{user.points}}</span>
+        <img data-toggle="dropdown" class="img-responsive " src="img/star.png" alt="" style="float: left;">
+      </div>
+
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
     <!-- <a class="navbar-brand" href="index.html">SB Admin</a> -->
     <a style="float: left" href="/"><img class="img-responsive bravi-logo" src="/img/bravi.png" alt="" /></a>
     <div style="float: left; margin-top:14px; margin-left:3px">
@@ -17,6 +24,10 @@
   </div>
   <!-- Top Menu Items -->
   <ul class="nav navbar-right top-nav">
+    <li class="hidden-sm hidden-xs" style="font-size: 14px;">
+    <span class="label label-primary score" style="margin-top: 12px; float: left;margin-right: 5px;vertical-align: middle;font-size: 14PX;">{{user.points}}</span>
+      <img data-toggle="dropdown" class="img-responsive " src="img/star.png" alt="" style="float: left;">
+    </li>
     <li class="dropdown systems-dropdown" style="float: left;margin-top: 10px;">
       <select id="systems" name="systems" required class="form-control" data-gacategory="Header" data-gaaction="System-Select" data-galabel="Selecting a area">
         <option value="hours">{{ t("main-page.header.system-hours") }}</option>
@@ -119,6 +130,7 @@
   </div>
   <input type="hidden" id="user-id"  name="user-id" value="{{user._id}}">
   <input type="hidden" id="user-name"  name="user-name" value="{{user.username}}">
+  <input type="hidden" id="user-points"  name="user-points" value="{{user.points}}">
   <input type="hidden" id="showTour" value="{{showTour}}">
   <input type="hidden" id="filter" value="{{user.filter}}">
   <input type="hidden" id="department" value="{{user.department}}">
