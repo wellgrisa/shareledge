@@ -1211,6 +1211,10 @@ function showNotification(message, question, icon){
 }
 
 function showSimpleNotification(message, icon){
+  if (!("Notification" in window)) {
+    return;
+  }
+
   var notification = new Notification(message, {icon :  icon });
 
   setTimeout(function(){
