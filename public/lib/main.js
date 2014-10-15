@@ -92,6 +92,12 @@ $('.side-nav a').on('click', sidebarClicked);
     updateCounts();
   });
 
+  io.on('answer-rated', function(data) {
+    if(data.answeredBy._id == $('#user-id').val()){
+      updateUserScore(true);
+    }
+  });
+
   io.on('question-created', function(data) {
     var text ='New question created in the section [' + data.type + '] by ' + data.user;
     notificate(text, data.question, data.icon);
@@ -601,19 +607,22 @@ function ask(hidePopover){
 
     updateCounts();
 
-    updateUserScore();
+    updateUserScore(true);
 
     // Registering Google Analytics event
     ga_event('Question', 'Ask', 'Question saved as outstading');
   });
 }
 
-function updateUserScore(){
+function updateUserScore(showNotification){
   $.get( '/score/' + $('#user-id').val(), function(res){
     updateScore(res.points);
     var pointsMade = res.points - $('#user-points').val();
     $('#user-points').val(res.points);
-    showSimpleNotification('Congratulations, you have got ' + pointsMade + ' points.', 'img/star.png');
+
+    if(showNotification){
+      showSimpleNotification('Congratulations, you have got ' + pointsMade + ' points.', 'img/star.png');
+    }
   });
 }
 
@@ -708,9 +717,27 @@ function registerAnswer(question){
         updateBadges(res.data);
       });
 
-      updateUserScore();
+      updateUserScore(true);
 
       searchFunction();
+    }
+  });
+}
+
+function deleteQuestion(questionIdentifier){
+  this.event.stopPropagation();
+  var url = '/question/' + questionIdentifier;
+  jQuery.ajax({
+    url: url,
+    type: "DELETE",
+    data: question,
+    success: function (result, status, error) {
+
+      updateUserScore(false);
+
+      searchFunction();
+
+      io.emit('update-counts');
     }
   });
 }
@@ -767,9 +794,24 @@ function rate(identifier, rate){
     data: { answer: identifier , rate: rate },
     success: function (data) {
       $('#' + data._id).html(data.useful);
-      io.emit('answer-rated');
+      io.emit('answer-rated', { answeredBy : data.user});
       updateCounts();
-      updateUserScore();
+      updateUserScore(true);
+    }
+  });
+}
+
+function deleteAnswer(identifier){
+   var url = '/answer/' + $('.list-group-item-question.active').data("id");
+
+  jQuery.ajax({
+    url: url,
+    global: false,
+    type: "DELETE",
+    data: { answer: identifier },
+    success: function (data) {
+      updateCounts();
+      searchFunction();
     }
   });
 }
@@ -886,6 +928,7 @@ function getQuestion(question){
     html.push('</div>')
     if(question.user.username == $('#user-name').val()){
       html.push('<span data-toggle="modal" onclick="onEditClicked(this)" data-target="#editQuestionModal" class="glyphicon glyphicon-pencil" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
+      html.push('<span onclick="deleteQuestion(\'' + question._id +'\')" class="glyphicon glyphicon-trash" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
     }
     html.push('  <h4 class="list-group-item-heading">' + question.content + '</h4>');
 
@@ -925,7 +968,9 @@ function getQuestion(question){
       html.push('<span data-toggle="modal" onclick="rateUp(\'' + question.solutions[i]._id +'\')" data-target="#editAnswerModal" class="glyphicon glyphicon-ok" style="float: right;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
       if(question.solutions[i].user.username == $('#user-name').val()){
         html.push('<span data-toggle="modal" onclick="onEditAnswerClicked(this)" data-target="#editAnswerModal" class="glyphicon glyphicon-pencil" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
+        html.push('<span data-toggle="modal" onclick="deleteAnswer(\'' + question.solutions[i]._id +'\')" class="glyphicon glyphicon-trash" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
       }
+
       html.push('<label class="list-group-item-heading">' + question.solutions[i].user.username + ' '  + toDateTime(question.solutions[i].created) + '</label>');
       html.push('<p class="list-group-item-text">' + question.solutions[i].content + '</p>');
       html.push('</div>');

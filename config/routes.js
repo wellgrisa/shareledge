@@ -30,7 +30,9 @@ module.exports = function(app, passport) {
   app.get('/questions/outstandingByUser', question.getOutstandingQuestionsByUser);
   app.get('/questions/outstandingFilter', question.getOutstandingByFilter);
   app.put('/question/:id', middlewares.ensureAuthenticated, question.update);
+  app.delete('/question/:id', middlewares.ensureAuthenticated, question.delete);
   app.put('/answer/:id', middlewares.ensureAuthenticated, question.updateAnswer);
+  app.delete('/answer/:id', middlewares.ensureAuthenticated, question.deleteAnswer);
 
   app.io.route('question-created', function(req){
     req.io.broadcast('update-counts');
@@ -43,6 +45,11 @@ module.exports = function(app, passport) {
   });
 
   app.io.route('answer-rated', function(req){
+    req.io.broadcast('update-counts');
+    req.io.broadcast('answer-rated', req.data);
+  });
+
+  app.io.route('update-counts', function(req){
     req.io.broadcast('update-counts');
   });
 

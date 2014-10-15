@@ -293,6 +293,38 @@ exports.updateRead = function(req, res){
   });
 };
 
+exports.delete = function(req, res){
+  Question.findById(req.params.id).remove().exec(function(err){
+    if (!err) {
+      console.log("removed");
+      return res.send('');
+    } else {
+      console.log(err);
+    }
+  });
+};
+
+exports.deleteAnswer = function(req, res){
+  Question.findById(req.params.id).exec(function (err, question){
+    for (var i = 0; i < question.solutions.length; i++) {
+
+      if(question.solutions[i]._id.toString() === new mongoose.Types.ObjectId(req.body.answer).toString()){
+        console.log('eeee');
+        question.solutions.splice(question.solutions.indexOf(question.solutions[i]));
+      }
+    }
+
+    return question.save(function (err) {
+      if (!err) {
+        console.log("updated");
+      } else {
+        console.log(err);
+      }
+      return res.json( { question : question, updatedBy : req.user } );
+    });
+  });
+};
+
 exports.updateAnswer = function(req, res){
   Question.findById(req.params.id).populate('user solutions.user').exec(function (err, question){
     var answerUpdated;
