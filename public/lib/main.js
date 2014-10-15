@@ -85,10 +85,10 @@ $('.side-nav a').on('click', sidebarClicked);
   io = io.connect();
 
   io.on('update-counts', function() {
-    if(!$('.answer-collapsible .in').length && $('#question').val() == ""
-      && !$('#outstandingQuestionsByUser').hasClass('questions-selected')){
-      searchFunction();
-    }
+    // if(!$('.answer-collapsible .in').length && $('#question').val() == ""
+    //   && !$('#outstandingQuestionsByUser').hasClass('questions-selected')){
+    //   searchFunction();
+    // }
     updateCounts();
   });
 
