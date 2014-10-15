@@ -84,13 +84,16 @@ $('.side-nav a').on('click', sidebarClicked);
 
   io = io.connect();
 
+  //TODO: Refactor the auto refresh
+  /*
   io.on('update-counts', function() {
-    // if(!$('.answer-collapsible .in').length && $('#question').val() == ""
-    //   && !$('#outstandingQuestionsByUser').hasClass('questions-selected')){
-    //   searchFunction();
-    // }
+    if(!$('.answer-collapsible .in').length && $('#question').val() == ""
+      && !$('#outstandingQuestionsByUser').hasClass('questions-selected')){
+      searchFunction();
+    }
     updateCounts();
   });
+  */
 
   io.on('answer-rated', function(data) {
     if(data.answeredBy._id == $('#user-id').val()){
@@ -620,7 +623,7 @@ function updateUserScore(showNotification){
     var pointsMade = res.points - $('#user-points').val();
     $('#user-points').val(res.points);
 
-    if(showNotification){
+    if(showNotification && pointsMade > 0){
       showSimpleNotification('Congratulations, you have got ' + pointsMade + ' points.', 'img/star.png');
     }
   });
