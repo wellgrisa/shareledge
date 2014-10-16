@@ -1,3 +1,27 @@
+
+var Helper = {
+  ToRegex : function(string , column, type) {
+    if (type == undefined) type = "i";
+        
+    var defaultRgx = { "$regex": string, "$options" : type };
+    
+    if (column == undefined)
+        return defaultRgx;
+    
+    var rgx = {};
+    rgx[column] = defaultRgx;
+    return rgx; 
+  },
+  ToRegexArray : function ( baseArray , column ) {
+    var newArray = new Array(baseArray.length);
+    for (i = 0 ; i < baseArray.length ; i++){
+        newArray[i] = Helper.ToRegex(baseArray[i], column);
+    }
+    return newArray;    
+  }
+};
+
+
 function toDateTime (string_value) {
   if (string_value == undefined) return "";
 
@@ -1195,7 +1219,12 @@ function getBySearch(){
     });
 
     for (var i = 0; i < arrayOfTags.length; i++) {
-      $('.' + arrayOfTags[i].replace(/\s/g, "-")).addClass('searched-tag');
+      $('.tags').children().filter(function() {
+          var c = $(this).attr('class');
+          $(this).attr('class', c.toLowerCase());
+          return $(this).hasClass(arrayOfTags[i].replace(/\s/g, "-"));
+      })
+      .addClass('searched-tag');      
     }
   });
 
@@ -1326,29 +1355,29 @@ $.xhrPool.abortAll = function() { // our abort function
     $.xhrPool.length = 0
 };
 
+function getQuestionTrimmed(){
+  return $.trim(getQuestionMade().content.replace(/<img [^>]+>/g, "").replace(/<br>/g, ""))
+          .replace(/ +/g, " ")
+          .toLowerCase();
+}
+
 function getConditions(){
-  var question = $.trim(getQuestionMade().content.replace(/<img [^>]+>/g, "").replace(/<br>/g, ""));
+  var question = getQuestionTrimmed();    
 
-  var arrayOfSearches = question.split(' ');
+  var questionSplit = question.split(" ");
+  var contentSplitRg = Helper.ToRegexArray(questionSplit, "content");
+  var tagsSplitRg = Helper.ToRegexArray(questionSplit, "tags");
+  var rgSearchString = Helper.ToRegex(question);
 
-  var arrayOfTags = $.grep(arrayOfSearches,function(n){return(n);});
-
-  var searchesConditions = [
-    {content: { $regex: '^.*'+  question +'.*$', $options: 'i' }},
-    {tags: {$in : arrayOfTags}}
-  ];
-
-  for (var i = 0; i < arrayOfSearches.length; i++) {
-    if(arrayOfSearches[i]){
-      searchesConditions.push({content: { $regex: '^.*'+  arrayOfSearches[i] +'.*$', $options: 'i' }});
-      searchesConditions.push({"solutions.content": { $regex: '^.*'+  arrayOfSearches[i] +'.*$', $options: 'i' }});
-    }
-  }
-  return searchesConditions;
+  return [
+      { content : rgSearchString } 
+    , { $and : contentSplitRg } 
+    , { $or : tagsSplitRg } 
+  ];     
 }
 
 function getTags(){
-  var question = $.trim(getQuestionMade().content.replace(/<img [^>]+>/g, "").replace(/<br>/g, ""));
+  var question = getQuestionTrimmed();
 
   return $.grep(question.split(' '),function(n){return(n);});
 }
@@ -1360,9 +1389,12 @@ function buildSearchData(){
 
   return {
     filter : {
-      criteria :{
-        $or : searchesConditions,
+      criteria : {
+        $or : searchesConditions ,
         type :$('#systems').val()
-      }, page : pageNumber }
-    };
+      }, 
+      page : pageNumber ,
+      orderby : { useful: -1 , updated: -1 }
+    }    
+  };
 }

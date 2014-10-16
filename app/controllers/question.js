@@ -1,3 +1,11 @@
+var Default = {
+  Points : {
+    NewQuestion : 1,
+    NewAnswer : 2,
+    AnswerMarkedAsRight : 5
+  }
+};
+
 /*
  * Module dependencies.
  */
@@ -15,16 +23,18 @@ var mongoose = require('mongoose'),
 
      var criteria = opts.criteria || {};
      var populate = opts.populate || {};
-     var limit = opts.limit || 10;
+     var order = opts.orderby || { updated: -1 }; // Order by CreatedDate DESC
+     var limit = opts.limit || 10;     
      var page = opts.page || 1;
      var Model = this;
-
+console.log(opts);
      Model.count(criteria, function (err, totalRecords) {
       var query = Model.find(criteria)
         .populate(populate)
-        .sort( { updated: -1 } ) // Order by CreatedDate DESC
+        .sort(order) 
         .skip((page - 1) * limit)
         .limit(limit);
+
       query.exec(function(error, records) {
         if (err) return callback(err);
         var result = {
@@ -79,6 +89,7 @@ var page = (req.query.filter.page > 0 ? req.query.filter.page : 1);
     page: page,
     criteria : criteria,
     populate : 'user solutions.user',
+    orderby : req.query.filter.orderby
   };
 
 return Question.paginate(options, function (err, questions){
@@ -137,8 +148,6 @@ exports.search = function(req, res) {
 
   var criteria = req.query.filter.criteria;
 
-  var regex = new RegExp('^.*'+ 'o' +'.*$', "i");
-
   var page = (req.query.filter.page > 0 ? req.query.filter.page : 1);
   var perPage = 1;
   var options = {
@@ -146,6 +155,7 @@ exports.search = function(req, res) {
     page: page,
     criteria : criteria,
     populate : 'user solutions.user',
+    orderby : req.query.filter.orderby
   };
 
 return Question.paginate(options, function (err, questions){
@@ -173,7 +183,7 @@ exports.create = function (req, res) {
   //   username: 'Shareledge'
   // });
 
-  req.user.points += 1;
+  req.user.points += Default.Points.NewQuestion;
   req.user.save();
 
   question.save(function(err) {
@@ -233,7 +243,7 @@ exports.update = function(req, res){
     if(req.body.solutions){
       question.solutions = req.body.solutions;
 
-      req.user.points += 2;
+      req.user.points += Default.Points.NewAnswer;
       req.user.save();
     }
 
@@ -346,7 +356,7 @@ exports.updateAnswer = function(req, res){
           question.solutions[i].useful = question.solutions[i].useful  + 1;
           question.useful ++;
 
-          question.solutions[i].user.points += 5;
+          question.solutions[i].user.points += Default.Points.AnswerMarkedAsRight;
           question.solutions[i].user.save();
 
         }else{
@@ -358,8 +368,7 @@ exports.updateAnswer = function(req, res){
     }
     return question.save(function (err, savedQuestion) {
       if (!err) {
-        console.log("updated");
-        question.user.points += 2;
+        console.log("updated");        
         question.user.save();
       } else {
         console.log(err);
@@ -389,3 +398,4 @@ exports.uploadImage = function(req, res){
     return res.json({ imgSrc : filePath});
   });
 }
+
