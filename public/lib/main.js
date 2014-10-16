@@ -2,22 +2,22 @@
 var Helper = {
   ToRegex : function(string , column, type) {
     if (type == undefined) type = "i";
-        
+
     var defaultRgx = { "$regex": string, "$options" : type };
-    
+
     if (column == undefined)
         return defaultRgx;
-    
+
     var rgx = {};
     rgx[column] = defaultRgx;
-    return rgx; 
+    return rgx;
   },
   ToRegexArray : function ( baseArray , column ) {
     var newArray = new Array(baseArray.length);
     for (i = 0 ; i < baseArray.length ; i++){
         newArray[i] = Helper.ToRegex(baseArray[i], column);
     }
-    return newArray;    
+    return newArray;
   }
 };
 
@@ -49,6 +49,7 @@ function padLeft(value, character, quantity)
 }
 
 $(document).ready(function() {
+
 
 
   requestPermission();
@@ -109,15 +110,14 @@ $('.side-nav a').on('click', sidebarClicked);
   io = io.connect();
 
   //TODO: Refactor the auto refresh
-  /*
-  io.on('update-counts', function() {
-    if(!$('.answer-collapsible .in').length && $('#question').val() == ""
-      && !$('#outstandingQuestionsByUser').hasClass('questions-selected')){
-      searchFunction();
-    }
-    updateCounts();
-  });
-  */
+
+  // io.on('update-counts', function() {
+  //   if(!$('.answer-collapsible .in').length && $('#question').val() == ""
+  //     && !$('#outstandingQuestionsByUser').hasClass('questions-selected')){
+  //     searchFunction();
+  //   }
+  //   updateCounts();
+  // });
 
   io.on('answer-rated', function(data) {
     if(data.answeredBy._id == $('#user-id').val()){
@@ -483,6 +483,24 @@ function refreshQuestionsWith(result){
 
     $('.list-group-questions').append(getQuestion(questions[i]));
   }
+
+  var client = new ZeroClipboard($('.clip'));
+
+    client.on( 'ready', function(event) {
+  // console.log( 'movie is loaded' );
+
+  client.on( 'copy', function(event) {
+    var clipboard = event.clipboardData;
+
+    var question = $(event.target).parent().data('id');
+
+    clipboard.setData( "text/plain", "" + window.location + '?id=' + question);
+  } );
+
+  client.on( 'aftercopy', function(event) {
+    showSimpleNotification('Question copied to clipboard.', 'img/unknown.png');
+  } );
+} );
 }
 
 function paginationClicked(){
@@ -708,6 +726,11 @@ function initiateSearch(){
   var pageNumber =  $('li.active > a', '.pagination').html();
 
   searchFunction = getQuestionsByLink;
+
+  if(getParameterByName('id') != ''){
+    getOutstandingCountByFilter({filter : { criteria :{ '_id' : getParameterByName('id') }, page : pageNumber }}, refreshQuestionsWith);
+    return;
+  }
 
   getOutstandingCountByFilter({filter : { criteria :{$or : [{"solutions.useful": 0}, {"solutions": {$size : 0}}], type : $('#filter').val()}, page : pageNumber }}, refreshQuestionsWith);
 }
@@ -953,6 +976,7 @@ function getQuestion(question){
 
     html.push('<img data-toggle="dropdown" class="img-responsive panel-user img-circle" src="' + picture + '" alt="" data-toggle="tooltip" data-placement="left" title="'+ question.user.username +'" data-original-title="Tooltip on left"/>');
     html.push('</div>')
+    html.push('<span class="glyphicon glyphicon-comment clip" onclick="onCommentClicked()" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
     if(question.user.username == $('#user-name').val()){
       html.push('<span data-toggle="modal" onclick="onEditClicked(this)" data-target="#editQuestionModal" class="glyphicon glyphicon-pencil" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
       html.push('<span onclick="deleteQuestion(\'' + question._id +'\')" class="glyphicon glyphicon-trash" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
@@ -1202,6 +1226,9 @@ function getBySearch(){
     $.xhrPool.abortAll();
   }
 
+  $('i.glyphicon-search').addClass('hidden');
+  $('img.icon-loading ').removeClass('hidden');
+
   var searchingAjax = $.ajax({
     url: "/question/search",
     data: buildSearchData(),
@@ -1209,6 +1236,9 @@ function getBySearch(){
   })
   .done(function( result ) {
     refreshQuestionsWith(result);
+
+    $('i.glyphicon-search').removeClass('hidden');
+    $('img.icon-loading ').addClass('hidden');
 
     var arrayOfTags = getTags();
 
@@ -1224,7 +1254,7 @@ function getBySearch(){
           $(this).attr('class', c.toLowerCase());
           return $(this).hasClass(arrayOfTags[i].replace(/\s/g, "-"));
       })
-      .addClass('searched-tag');      
+      .addClass('searched-tag');
     }
   });
 
@@ -1362,7 +1392,7 @@ function getQuestionTrimmed(){
 }
 
 function getConditions(){
-  var question = getQuestionTrimmed();    
+  var question = getQuestionTrimmed();
 
   var questionSplit = question.split(" ");
   var contentSplitRg = Helper.ToRegexArray(questionSplit, "content");
@@ -1370,10 +1400,10 @@ function getConditions(){
   var rgSearchString = Helper.ToRegex(question);
 
   return [
-      { content : rgSearchString } 
-    , { $and : contentSplitRg } 
-    , { $or : tagsSplitRg } 
-  ];     
+      { content : rgSearchString }
+    , { $and : contentSplitRg }
+    , { $or : tagsSplitRg }
+  ];
 }
 
 function getTags(){
@@ -1392,9 +1422,20 @@ function buildSearchData(){
       criteria : {
         $or : searchesConditions ,
         type :$('#systems').val()
-      }, 
+      },
       page : pageNumber ,
       orderby : { useful: -1 , updated: -1 }
-    }    
+    }
   };
+}
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+function onCommentClicked(){
+  this.event.stopPropagation();
 }

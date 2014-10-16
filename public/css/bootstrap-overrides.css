@@ -202,12 +202,15 @@ div[data-role="editor-toolbar"] {
 .left-inner-addon input {
     padding-left: 30px;
 }
-.left-inner-addon a {
+.left-inner-addon i, .left-inner-addon img {
     position: absolute;
-    padding: 10px 12px;
+    padding: 8px 12px;
     pointer-events: none;
 }
 
+.hidden{
+  display: none;
+}
 
 /*#wrapper {
     padding-left: 70px;
@@ -770,3 +773,4 @@ img.attached{ max-width: 100%; }
   padding: 6px 12px;
   font-size: 14px;
 }
+
