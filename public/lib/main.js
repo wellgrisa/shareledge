@@ -1416,6 +1416,8 @@ function buildSearchData(){
 
   var searchesConditions = getConditions();
 
+  //type :$('#systems').val(), $text: { $search: getQuestionTrimmed() }
+
   return {
     filter : {
       criteria : {

@@ -1,5 +1,5 @@
 {
-  "db": "mongodb://admin:Pwd123@ds047030.mongolab.com:47030/kmanager-dev",
+  "db": "mongodb://localhost/NewDataBaseName",
   "app": {
     "name": "Bravi Software - Development"
   },
