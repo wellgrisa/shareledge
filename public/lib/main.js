@@ -486,21 +486,20 @@ function refreshQuestionsWith(result){
 
   var client = new ZeroClipboard($('.clip'));
 
-    client.on( 'ready', function(event) {
-  // console.log( 'movie is loaded' );
+  client.on( 'ready', function(event) {
 
-  client.on( 'copy', function(event) {
-    var clipboard = event.clipboardData;
+    client.on( 'copy', function(event) {
+      var clipboard = event.clipboardData;
 
-    var question = $(event.target).parent().data('id');
+      var question = $(event.target).parent().data('id');
 
-    clipboard.setData( "text/plain", "" + window.location + '?id=' + question);
+      clipboard.setData( "text/plain", "Knowhow wonder:" + $.trim($(event.target).next().text().replace(/<img [^>]+>/g, "").replace(/<br>/g, "")) + ' - in -' + window.location + '?id=' + question);
+    } );
+
+    client.on( 'aftercopy', function(event) {
+      showSimpleNotification('Question copied to clipboard.', 'img/unknown.png');
+    } );
   } );
-
-  client.on( 'aftercopy', function(event) {
-    showSimpleNotification('Question copied to clipboard.', 'img/unknown.png');
-  } );
-} );
 }
 
 function paginationClicked(){
