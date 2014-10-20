@@ -1,5 +1,5 @@
 {
-  "db": "mongodb://ramon:pass123@ds045087.mongolab.com:45087/MongoLab-3m",
+  "db": "mongodb://localhost/KnowhowDatabase",
   "app": {
     "name": "Bravi Software"
   },
