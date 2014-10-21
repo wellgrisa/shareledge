@@ -524,7 +524,7 @@ function refreshQuestionsWith(result){
 
       var question = $(event.target).parent().data('id');
 
-      clipboard.setData( "text/plain", "Knowhow wonder:" + $.trim($(event.target).next().text().replace(/<img [^>]+>/g, "").replace(/<br>/g, "")) + ' - in - ' + window.location + '?id=' + question);
+      clipboard.setData( "text/plain", "Knowhow wonder:" + $.trim($(event.target).next().text().replace(/<img [^>]+>/g, "").replace(/<br>/g, "")) + ' - in - ' + window.location.href.replace(/#/g, "") + '?id=' + question);
     } );
 
     client.on( 'aftercopy', function(event) {
