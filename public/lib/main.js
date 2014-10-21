@@ -229,7 +229,7 @@ function processPasteEvent(e) {
     }
 }
 
-function createImage(imagePasted){
+function createImage(imagePasted, next){
 jQuery.ajax({
     url: 'uploadImage',
     type: "POST",
@@ -240,6 +240,10 @@ jQuery.ajax({
       var img = new Image(); // : document.createElement('img');
       img.src = data.imgSrc;
       img.className  = "attached";
+
+      if(next){
+        next();
+      }
 
       doInsert(img);
     },
@@ -266,6 +270,31 @@ function doInsert(element) {
     }
 }
 
+function drop(e){
+  ignoreDrag(e);
+
+  var dt = e.originalEvent.dataTransfer;
+  var files = dt.files;
+
+  if(dt.files.length > 0){
+    var blob = files[0];
+    var reader = new FileReader();
+    reader.onload = function(event){
+      createImage(event.target.result);
+      var imgs = $('.textarea', '.list-group-item-question.active').find('img[src*=data]');
+      for (var i = 0; i < imgs.length; i++) {
+        imgs[i].remove();
+      }
+    };
+    reader.readAsDataURL(blob);
+  }
+}
+
+function ignoreDrag(e) {
+  e.originalEvent.stopPropagation();
+  e.originalEvent.preventDefault();
+}
+
 function handleListGroup(){
   var listGroup = $(".list-group-questions");
 
@@ -280,6 +309,8 @@ function handleListGroup(){
     var textarea = $('.textarea', $('.list-group-item-question.active'));
 
     textarea.wysiwyg();
+
+    textarea.on('drop', drop);
 
     textarea.keyup(function(e){
       if (e.ctrlKey && e.keyCode == 13) {
