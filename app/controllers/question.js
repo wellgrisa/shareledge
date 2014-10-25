@@ -17,6 +17,7 @@ var mongoose = require('mongoose'),
     _ = require('underscore'),
     config = require('../../config/config')
     uuid = require('node-uuid'),
+    mime = require('mime'),
     slack = require('slack-notify')("https://bravi.slack.com/services/hooks/incoming-webhook?token=MCpfwNh6FtmKPVrgKx8p81Zs");
 
     mongoose.Model.paginate = function(opts, callback) {
@@ -24,14 +25,14 @@ var mongoose = require('mongoose'),
      var criteria = opts.criteria || {};
      var populate = opts.populate || {};
      var order = opts.orderby || { updated: -1 }; // Order by CreatedDate DESC
-     var limit = opts.limit || 10;     
+     var limit = opts.limit || 10;
      var page = opts.page || 1;
      var Model = this;
 console.log(opts);
      Model.count(criteria, function (err, totalRecords) {
       var query = Model.find(criteria)
         .populate(populate)
-        .sort(order) 
+        .sort(order)
         .skip((page - 1) * limit)
         .limit(limit);
 
@@ -368,7 +369,7 @@ exports.updateAnswer = function(req, res){
     }
     return question.save(function (err, savedQuestion) {
       if (!err) {
-        console.log("updated");        
+        console.log("updated");
         question.user.save();
       } else {
         console.log(err);
@@ -388,14 +389,42 @@ exports.destroy = function(req, res){
   });
 };
 
-exports.uploadImage = function(req, res){
+exports.upload = function(req, res){
 
-  var buff = new Buffer(req.body.img.replace(/^data:image\/(png|gif|jpeg);base64,/,''), 'base64');
+  console.log(  require('util').inspect(req.body, { depth: null, colors: true }));
 
-  var filePath = 'img/questions/' + uuid.v4() + '.jpeg';
+  var file = req.body.img.split(';');
 
-  fs.writeFile('public/' + filePath, buff, function (err) {
-    return res.json({ imgSrc : filePath});
+  var buff = new Buffer(file[1].split(',')[1], 'base64');
+
+  var extension =  mime.extension(file[0].split(':')[1]);
+
+  var fileName = uuid.v4() + '.' + extension;
+
+  var folder = file[0].indexOf('image') > -1 ? 'img/questions/' : 'attachments/questions/';
+
+  var filePath = folder + fileName;
+
+  fs.writeFile('public/' + filePath, buff, 'binary', function (err) {
+    return res.json({ src : filePath, ext : extension, fileName : fileName });
   });
 }
 
+exports.download = function(req, res){
+  var http = require('http');
+
+  var path = require('path');
+  var file = require('path').normalize(__dirname + '../../..') +  '\\public\\attachments\\questions\\' + req.query.src;
+
+  console.log(  require('util').inspect(req, { depth: 3, colors: true }));
+
+  var filename = path.basename(file);
+  var mimetype = mime.lookup(file);
+
+  res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+  res.setHeader('Content-type', mimetype);
+
+  var filestream = fs.createReadStream(file);
+  filestream.pipe(res);
+
+}

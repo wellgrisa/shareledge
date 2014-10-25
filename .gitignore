@@ -30,6 +30,7 @@ public/upload/*
 
 # Question Upload Files (Ignore any new image)
 public/img/questions/*
+public/attachments/questions/
 !public/img/questions/.gitkeep
 !public/img/questions/524515d8-3658-4b34-9311-ec3188291217.jpeg
 !public/img/questions/865cb160-b518-4bcb-83c0-5a2622426b0a.jpeg

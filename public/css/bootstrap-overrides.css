@@ -774,3 +774,22 @@ img.attached{ max-width: 100%; }
   font-size: 14px;
 }
 
+.panel-answer [class^="flaticon-"]:before, [class*=" flaticon-"]:before, [class^="flaticon-"]:after, [class*=" flaticon-"]:after {
+  font-size: 40px !important;
+  margin-left:  0px;
+}
+
+.attachment-button{
+  overflow: visible;
+  height: 44px;
+  text-align: left;
+  vertical-align: middle;
+  background-color: #ecf0f3;
+  border: 1px solid #bec6cb;
+  min-width: 196px;
+  vertical-align:   top;
+  margin-top: 8px;
+}
+
+
+

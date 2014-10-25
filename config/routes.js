@@ -19,6 +19,7 @@ module.exports = function(app, passport) {
 
   var question = require('../app/controllers/question');
   app.get('/question', question.all);
+  app.get('/download', question.download);
   app.get('/tags', question.tags);
   app.get('/counts', question.counts);
   app.get('/question/search', question.search);
@@ -45,7 +46,6 @@ module.exports = function(app, passport) {
   });
 
   app.io.route('answer-rated', function(req){
-    req.io.broadcast('update-counts');
     req.io.broadcast('answer-rated', req.data);
   });
 
@@ -53,7 +53,7 @@ module.exports = function(app, passport) {
     req.io.broadcast('update-counts');
   });
 
-  app.post('/uploadImage', question.uploadImage);
+  app.post('/upload', question.upload);
 
   app.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
 

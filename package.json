@@ -31,6 +31,7 @@
     "i18next" : "*",
     "slack-notify" : "*",
     "node-trello" : "*",
-    "bower" : "*"
+    "bower" : "*",
+    "mime" : "*"
   }
 }

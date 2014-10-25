@@ -111,18 +111,19 @@ $('.side-nav a').on('click', sidebarClicked);
 
   //TODO: Refactor the auto refresh
 
-  // io.on('update-counts', function() {
-  //   if(!$('.answer-collapsible .in').length && $('#question').val() == ""
-  //     && !$('#outstandingQuestionsByUser').hasClass('questions-selected')){
-  //     searchFunction();
-  //   }
-  //   updateCounts();
-  // });
+  io.on('update-counts', function() {
+    if(!$('.answer-collapsible.in').length && getQuestionTrimmed() == ""
+      && !$('#outstandingQuestionsByUser').hasClass('questions-selected')){
+      searchFunction();
+    }
+    updateCounts();
+  });
 
   io.on('answer-rated', function(data) {
     if(data.answeredBy._id == $('#user-id').val()){
       updateUserScore(true);
     }
+    updateCounts();
   });
 
   io.on('question-created', function(data) {
@@ -156,13 +157,6 @@ configureEvents();
 updateCounts();
 
 initiateSearch();
-
-
-function updateCounts(){
-  $.get( '/counts', function(res){
-    updateBadges(res.data);
-  });
-}
 
 function handleMultiSelect(){
   var sections = $('#filter').val().split(',');
@@ -218,7 +212,7 @@ function processPasteEvent(e) {
           var blob = clipboardItem.getAsFile();
             var reader = new FileReader();
             reader.onload = function(event){
-                createImage(event.target.result); //event.target.results contains the base64 code to create the image.
+                uploadAttachment(event.target.result); //event.target.results contains the base64 code to create the image.
               };
             reader.readAsDataURL(blob);//Convert the blob from clipboard to base64
 
@@ -229,23 +223,38 @@ function processPasteEvent(e) {
     }
 }
 
-function createImage(imagePasted, next){
+function downloadFile(){
+  jQuery.ajax({
+    type: "POST",
+    url: "/download",
+    global: false,
+  })
+  .done(function( result ) {
+  });
+}
+
+function uploadAttachment(imagePasted, fileName){
 jQuery.ajax({
-    url: 'uploadImage',
+    url: 'upload',
     type: "POST",
     global: false,
     data: { img : imagePasted },
     success: function (data) {
 
-      var img = new Image(); // : document.createElement('img');
-      img.src = data.imgSrc;
-      img.className  = "attached";
+      var element;
 
-      if(next){
-        next();
+      if(data.ext == 'png' || data.ext == 'jpg' || data.ext == 'jpeg'){
+        element = new Image();
+        element.src = data.src;
+      }else{
+        var button = '<button contenteditable="false"  class="attachment-button" type="button" onclick="window.open(\'/download?src=' + data.fileName + '\',\'_top\'); return false;">'
+        + '<a class="en-ignore" href="/download?src=' + data.fileName + '" target="_blank">'
+        + '<img border="0" name="26e5ab31-64b1-4513-af11-a1f5610ba81d" src="img/attachment.png" align="left" style="margin-top: -1px;"> ' + fileName + '</a></button>';
+
+        element = $(document.createElement('div')).html(button)[0];
       }
 
-      doInsert(img);
+      doInsert(element);
     },
     error: function (xhr, status, error) {
 
@@ -279,14 +288,17 @@ function drop(e){
   if(dt.files.length > 0){
     var blob = files[0];
     var reader = new FileReader();
-    reader.onload = function(event){
-      createImage(event.target.result);
+    reader.onload = (  function(file) {
+     return function(evt) {
+      uploadAttachment(evt.target.result, file);
       var imgs = $('.textarea', '.list-group-item-question.active').find('img[src*=data]');
       for (var i = 0; i < imgs.length; i++) {
         imgs[i].remove();
       }
-    };
-    reader.readAsDataURL(blob);
+     };
+    })(blob.name);
+
+    reader.readAsDataURL(blob, "test");
   }
 }
 
@@ -310,7 +322,7 @@ function handleListGroup(){
 
     textarea.wysiwyg();
 
-    textarea.on('drop', drop);
+    textarea.off('drop').on('drop', drop);
 
     textarea.keyup(function(e){
       if (e.ctrlKey && e.keyCode == 13) {
