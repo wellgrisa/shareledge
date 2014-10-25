@@ -247,8 +247,10 @@ jQuery.ajax({
         element = new Image();
         element.src = data.src;
       }else{
-        var button = '<button contenteditable="false"  class="attachment-button" type="button" onclick="window.open(\'/download?src=' + data.fileName + '\',\'_top\'); return false;">'
-        + '<a class="en-ignore" href="/download?src=' + data.fileName + '" target="_blank">'
+        var fileNameButExtension = fileName.substr(0, fileName.lastIndexOf('.')) || fileName;
+
+        var button = '<button contenteditable="false"  class="attachment-button" type="button" onclick="window.open(\'/download?filename=' + fileNameButExtension + '&src=' + data.fileName + '\',\'_top\'); return false;">'
+        + '<a class="en-ignore" href="/download?filename=' + fileNameButExtension + '&src=' + data.fileName + '" target="_blank">'
         + '<img border="0" name="26e5ab31-64b1-4513-af11-a1f5610ba81d" src="img/attachment.png" align="left" style="margin-top: -1px;"> ' + fileName + '</a></button>';
 
         element = $(document.createElement('div')).html(button)[0];
