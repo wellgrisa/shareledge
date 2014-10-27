@@ -411,7 +411,6 @@ exports.upload = function(req, res){
 }
 
 exports.download = function(req, res){
-  var http = require('http');
 
   var path = require('path');
   var file = require('path').normalize(__dirname + '../../..') +  '\\public\\attachments\\questions\\' + req.query.src;
