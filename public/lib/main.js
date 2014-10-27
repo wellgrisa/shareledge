@@ -214,6 +214,7 @@ function processPasteEvent(e) {
             reader.onload = function(event){
                 uploadAttachment(event.target.result, cleanTextArea); //event.target.results contains the base64 code to create the image.
               };
+            insertLoadingTextarea();
             reader.readAsDataURL(blob);//Convert the blob from clipboard to base64
 
         } else {
@@ -238,7 +239,6 @@ function insertLoadingTextarea(){
 }
 
 function uploadAttachment(imagePasted, next, fileName){
-insertLoadingTextarea();
 jQuery.ajax({
     url: 'upload',
     type: "POST",
@@ -304,7 +304,7 @@ function drop(e){
       uploadAttachment(evt.target.result, cleanTextArea, file);
      };
     })(blob.name);
-
+    insertLoadingTextarea();
     reader.readAsDataURL(blob, "test");
   }
 }

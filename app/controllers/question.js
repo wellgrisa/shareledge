@@ -411,19 +411,7 @@ exports.upload = function(req, res){
 }
 
 exports.download = function(req, res){
-
   var path = require('path');
-  var file = require('path').normalize(__dirname + '../../..') +  '\\public\\attachments\\questions\\' + req.query.src;
-
-  console.log(  require('util').inspect(req, { depth: 3, colors: true }));
-
-  var filename = path.basename(file);
-  var mimetype = mime.lookup(file);
-
-  res.setHeader('Content-disposition', 'attachment; filename=' + req.query.filename);
-  res.setHeader('Content-type', mimetype);
-
-  var filestream = fs.createReadStream(file);
-  filestream.pipe(res);
-
-}
+    var file = path.normalize(path.join(__dirname, '../../', 'public/attachments/questions', req.query.src));
+    res.download(file, req.query.filename);
+  };
