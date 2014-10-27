@@ -212,7 +212,7 @@ function processPasteEvent(e) {
           var blob = clipboardItem.getAsFile();
             var reader = new FileReader();
             reader.onload = function(event){
-                uploadAttachment(event.target.result); //event.target.results contains the base64 code to create the image.
+                uploadAttachment(event.target.result, cleanTextArea); //event.target.results contains the base64 code to create the image.
               };
             reader.readAsDataURL(blob);//Convert the blob from clipboard to base64
 
@@ -233,7 +233,12 @@ function downloadFile(){
   });
 }
 
-function uploadAttachment(imagePasted, fileName){
+function insertLoadingTextarea(){
+  doInsert($(document.createElement('div')).html('<img class="icon-loading" src="/img/loading.gif" style="display: block;">')[0]);
+}
+
+function uploadAttachment(imagePasted, next, fileName){
+insertLoadingTextarea();
 jQuery.ajax({
     url: 'upload',
     type: "POST",
@@ -257,6 +262,10 @@ jQuery.ajax({
       }
 
       doInsert(element);
+
+      if(next){
+        next();
+      }
     },
     error: function (xhr, status, error) {
 
@@ -292,15 +301,20 @@ function drop(e){
     var reader = new FileReader();
     reader.onload = (  function(file) {
      return function(evt) {
-      uploadAttachment(evt.target.result, file);
-      var imgs = $('.textarea', '.list-group-item-question.active').find('img[src*=data]');
-      for (var i = 0; i < imgs.length; i++) {
-        imgs[i].remove();
-      }
+      uploadAttachment(evt.target.result, cleanTextArea, file);
      };
     })(blob.name);
 
     reader.readAsDataURL(blob, "test");
+  }
+}
+
+function cleanTextArea(){
+  var textarea = $('.textarea', '.list-group-item-question.active');
+
+  var imgs = textarea.find('img[src*=data], .icon-loading');
+  for (var i = 0; i < imgs.length; i++) {
+    imgs[i].remove();
   }
 }
 
@@ -704,7 +718,11 @@ function ask(hidePopover){
 }
 
 function updateUserScore(showNotification){
-  $.get( '/score/' + $('#user-id').val(), function(res){
+  $.ajax({
+    url: "/score/" + $('#user-id').val(),
+    global: false,
+  })
+  .done(function( res ) {
     updateScore(res.points);
     var pointsMade = res.points - $('#user-points').val();
     $('#user-points').val(res.points);

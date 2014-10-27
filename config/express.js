@@ -33,7 +33,8 @@ module.exports = function(app, passport){
       app.use(express.cookieParser());
       app.use(i18n.handle);
       //bodyParser should be above methodOverride
-      app.use(express.limit('3mb'));
+      app.use(express.limit('50mb'));
+      app.use(express.urlencoded({limit: '50mb'}));
       app.use(express.bodyParser());
       app.use(express.methodOverride());
 
