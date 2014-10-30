@@ -18,6 +18,10 @@ var Helper = {
         newArray[i] = Helper.ToRegex(baseArray[i], column);
     }
     return newArray;
+  },
+  getDomain : function() {
+    var domain = window.location.href;
+    return domain.substring(0, domain.indexOf('/', domain.indexOf('//') + 2) + 1);
   }
 };
 
@@ -545,18 +549,19 @@ function refreshQuestionsWith(result){
 
   var client = new ZeroClipboard($('.clip'));
 
-  client.on( 'ready', function(event) {
+  client.on('ready', function(event) {
 
     client.on( 'copy', function(event) {
       var clipboard = event.clipboardData;
-
       var question = $(event.target).parent().data('id');
+      var textQuestion = $(event.target).siblings('.list-group-item-heading').text().replace(/<img [^>]+>/g, "").replace(/<br>/g, "");
+      var domain = Helper.getDomain();
 
-      clipboard.setData( "text/plain", "Knowhow wonder:" + $.trim($(event.target).next().text().replace(/<img [^>]+>/g, "").replace(/<br>/g, "")) + ' - in - ' + window.location.href.replace(/#/g, "") + '?id=' + question);
+      clipboard.setData( "text/plain", $.trim(textQuestion) + ' ' + domain + '?id=' + question);
     } );
 
     client.on( 'aftercopy', function(event) {
-      showSimpleNotification('Question copied to clipboard.', 'img/unknown.png');
+      showSimpleNotification('Question copied to clipboard.', 'img/copy-icon.png');
     } );
   } );
 }
@@ -1038,7 +1043,7 @@ function getQuestion(question){
 
     html.push('<img data-toggle="dropdown" class="img-responsive panel-user img-circle" src="' + picture + '" alt="" data-toggle="tooltip" data-placement="left" title="'+ question.user.username +'" data-original-title="Tooltip on left"/>');
     html.push('</div>')
-    html.push('<span class="glyphicon glyphicon-comment clip" onclick="onCommentClicked()" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
+    html.push('<span class="glyphicon glyphicon-book clip" onclick="onCommentClicked()" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;" title="Copy to clipboard"></span>');
     if(question.user.username == $('#user-name').val()){
       html.push('<span data-toggle="modal" onclick="onEditClicked(this)" data-target="#editQuestionModal" class="glyphicon glyphicon-pencil" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
       html.push('<span onclick="deleteQuestion(\'' + question._id +'\')" class="glyphicon glyphicon-trash" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
