@@ -1,8 +1,9 @@
 var Default = {
   Points : {
     NewQuestion : 1,
+    UsefulQuestion : 1,
     NewAnswer : 2,
-    AnswerMarkedAsRight : 5
+    AnswerMarkedAsRight : 3
   }
 };
 
@@ -342,22 +343,26 @@ exports.updateAnswer = function(req, res){
     for (var i = 0; i < question.solutions.length; i++) {
       if(question.solutions[i]._id == req.body.answer){
 
-        if(!question.solutions[i].helpedUsers.length){
-          question.solutions[i].helpedUsers.push(req.user);
-        }else{
-          for (var j = 0; j < question.solutions[i].helpedUsers.length; j++) {
-            if (!question.solutions[i].helpedUsers[j] == req.user._id) {
-              question.solutions[i].helpedUsers.push(req.user);
+        if(req.body.rate == 'up'){
+
+          var extraPointToQuestionUser = question.solutions[i].user._id.toString() === req.user._id.toString();
+
+          if(question.solutions[i].helpedUsers.indexOf(req.user._id) == -1){
+            question.solutions[i].helpedUsers.push(req.user);
+
+            if(extraPointToQuestionUser){
+              question.solutions[i].user.points += Default.Points.UsefulQuestion;
+            }else{
+              req.user.points += Default.Points.UsefulQuestion;
+              req.user.save();
             }
           }
-        }
-
-        if(req.body.rate == 'up'){
 
           question.solutions[i].useful = question.solutions[i].useful  + 1;
           question.useful ++;
 
           question.solutions[i].user.points += Default.Points.AnswerMarkedAsRight;
+
           question.solutions[i].user.save();
 
         }else{

@@ -1043,7 +1043,7 @@ function getQuestion(question){
 
     html.push('<img data-toggle="dropdown" class="img-responsive panel-user img-circle" src="' + picture + '" alt="" data-toggle="tooltip" data-placement="left" title="'+ question.user.username +'" data-original-title="Tooltip on left"/>');
     html.push('</div>')
-    html.push('<span class="glyphicon glyphicon-book clip" onclick="onCommentClicked()" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;" title="Copy to clipboard"></span>');
+    html.push('<span class="glyphicon glyphicon-share-alt clip" onclick="onCommentClicked()" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;" title="Copy to clipboard"></span>');
     if(question.user.username == $('#user-name').val()){
       html.push('<span data-toggle="modal" onclick="onEditClicked(this)" data-target="#editQuestionModal" class="glyphicon glyphicon-pencil" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
       html.push('<span onclick="deleteQuestion(\'' + question._id +'\')" class="glyphicon glyphicon-trash" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
@@ -1082,8 +1082,9 @@ function getQuestion(question){
 
       html.push('<div class="list-group">');
       html.push('<div data-id="' + question.solutions[i]._id + '" class="list-group-item list-group-item-answer">');
+      html.push('<span onclick="rateDown(\'' + question.solutions[i]._id +'\')" class="glyphicon glyphicon-thumbs-down" style="float: right;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
       html.push('<span id="' + question.solutions[i]._id +  '" class="badge" style="margin-right: 5px">' + question.solutions[i].useful + '</span>');
-      html.push('<span data-toggle="modal" onclick="rateUp(\'' + question.solutions[i]._id +'\')" data-target="#editAnswerModal" class="glyphicon glyphicon-ok" style="float: right;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
+      html.push('<span onclick="rateUp(\'' + question.solutions[i]._id +'\')" class="glyphicon glyphicon-thumbs-up" style="float: right;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
       if(question.solutions[i].user.username == $('#user-name').val()){
         html.push('<span data-toggle="modal" onclick="onEditAnswerClicked(this)" data-target="#editAnswerModal" class="glyphicon glyphicon-pencil" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
         html.push('<span data-toggle="modal" onclick="deleteAnswer(\'' + question.solutions[i]._id +'\')" class="glyphicon glyphicon-trash" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
