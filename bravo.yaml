@@ -18,6 +18,7 @@ production:
     Binds:
       - '/srv/shareledge/data/db:/data/db'
       - '/srv/shareledge/questions:/src/public/img/questions'
+      - '/srv/shareledge/questions:/src/public\attachments\questions'
     PortBindings:
       '3000/tcp':
         - HostIp: '127.0.0.1'
