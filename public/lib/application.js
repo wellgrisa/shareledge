@@ -333,10 +333,10 @@ function handleListGroup(){
 //  listGroup.delegate('.answer-collapsible .trigger-action', 'click', function(e){
 //    e.stopPropagation();
 //  });
-
-  listGroup.delegate('span', 'click', function(e){
-
-  });
+//
+//  listGroup.delegate('span', 'click', function(e){
+//
+//  });
   listGroup.delegate(".answer-collapsible", "shown.bs.collapse", function(){
     var textarea = $('.textarea', $('.list-group-item-question.active'));
 
@@ -423,39 +423,11 @@ function openEditAnswerPopup(result, answerIdentifier){
 	});
 }
 
-function openEditQuestionPopup(){
- var editQuestionModal = $('.textarea', '#editAnswerModal');
-    editQuestionModal.wysiwyg();
-
-    var solution = _.where(result.solutions, {_id: $('.list-group-item-answer.selected').data('id')});
-
-    editQuestionModal.html(_.first(solution).content);
-
-    $('.edit-question-btn-save').on('click', function(){
-
-      _.each(result.solutions, function(solution){
-        if(solution._id == $('.list-group-item-answer.selected').data('id')){
-          solution.content = $('.textarea', '#editAnswerModal').html();
-        }
-      });
-
-      $('.list-group-item-answer.selected').removeClass('selected');
-
-      updateQuestion({
-        id : result._id,
-        solutions : result.solutions
-      }, onEditAnswerCompleted);
-    });
-}
-
-function onEditClicked(e){
-  this.event.stopPropagation();
-
+function openEditQuestionPopup(identifier){  
+	console.log(identifier);
   $('#edit-question-tokenfield').tokenfield();
 
   $('#editQuestionModal').modal();
-
-  var identifier = $(e).parent().data('id');
 
   $('.tokenfield').tokenfield('destroy');
 
@@ -583,13 +555,17 @@ function refreshQuestionsWith(result){
     $('.list-group-questions').append(getQuestion(questions[i]));
   }
 
+
+}
+
+function attachClipboardEvent(){
   var client = new ZeroClipboard($('.clip'));
 
   client.on('ready', function(event) {
 
     client.on( 'copy', function(event) {
       var clipboard = event.clipboardData;
-      var question = $(event.target).parent().data('id');
+      var question = $(event.target).closest('.list-group-item-question').data('id');
       var textQuestion = $(event.target).siblings('.list-group-item-heading').text().replace(/<img [^>]+>/g, "").replace(/<br>/g, "");
       var domain = Helper.getDomain();
 
@@ -599,7 +575,7 @@ function refreshQuestionsWith(result){
     client.on( 'aftercopy', function(event) {
       showSimpleNotification('Question copied to clipboard.', 'img/copy-icon.png');
     } );
-  } );
+  });
 }
 
 function paginationClicked(){
@@ -867,8 +843,7 @@ function registerAnswer(question){
   });
 }
 
-function deleteQuestion(questionIdentifier){
-  this.event.stopPropagation();
+function deleteQuestion(questionIdentifier){  
   var url = '/question/' + questionIdentifier;
   jQuery.ajax({
     url: url,
@@ -877,8 +852,6 @@ function deleteQuestion(questionIdentifier){
     success: function (result, status, error) {
 
       updateUserScore(false);
-
-      //searchFunction();
 
       io.emit('update-counts');
     }

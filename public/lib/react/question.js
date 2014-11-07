@@ -12,6 +12,7 @@ var QuestionsBox = React.createClass({
         this.setState({data: data.records});
 				updatePagination(data.pagination);
 				NProgress.done();
+				attachClipboardEvent();
       }.bind(this),
       error: function(xhr, status, err) {
         console.error(this.props.url, status, err.toString());
@@ -48,9 +49,7 @@ var QuestionList = React.createClass({
 });
 
 var Question = React.createClass({		
-  toggle: function(e) {
-    $(e.currentTarget).siblings('.answer-collapsible').collapse('toggle');
-  },
+  
 	render: function(){
 		var questionForAnswerObject = { 
 				id : this.props.question._id,
@@ -60,8 +59,8 @@ var Question = React.createClass({
 			<div className="list-group-item list-group-item-question" data-id={this.props.question._id} data-parent="#accordion" data-toggle="collapse">
 					<QuestionBy question={this.props.question}/>
 					<QuestionActions question={this.props.question}/>
-					<h4 onClick={this.toggle} className="list-group-item-heading">{this.props.question.content}</h4>
-					<QuestionTags />
+					<QuestionContent content={this.props.question.content}/>
+					<QuestionSubContent question={this.props.question}/>
 					<AnswersBox questionForAnswer={questionForAnswerObject}/>
 			</div>
 		);
@@ -69,20 +68,28 @@ var Question = React.createClass({
 });
 
 var QuestionActions = React.createClass({
-    render: function(){		
-				var floatLeft = { float : 'left' };
-        return (
-					<div style={floatLeft}>
-						<span className="glyphicon glyphicon-share-alt clip question-action-copy beautify-tooltip" onclick="onCommentClicked()" data-placement="right" title="Copy to clipboard"/>
-						<If condition={this.props.question.user.username == $('#user-name').val()}>
-                <span className="glyphicon glyphicon-pencil beautify-tooltip" onclick="onEditClicked(this)" data-placement="right" title="Edit this question?" data-toggle="modal" data-target="#editQuestionModal"/>								
-            </If>						
-						<If condition={this.props.question.user.username == $('#user-name').val()}>
-								<span className="glyphicon glyphicon-trash beautify-tooltip" data-placement="right" title="Delete this question?" onclick="deleteQuestion('545a596268e6f13200ac26f1')"/>	
-            </If>
-					</div>
-        );
-    }
+	handleQuestionEditClicked: function (questionId) {		
+		openEditQuestionPopup(questionId);
+	},
+	handleQuestionDeleteClicked: function (questionId) {		
+		deleteQuestion(questionId);
+	},
+	render: function(){		
+		var floatLeft = { float : 'left' },
+				isQuestionCreatedByCurrentUser = this.props.question.user.username == $('#user-name').val();
+
+		return (
+			<div style={floatLeft}>
+				<span className="glyphicon glyphicon-share-alt clip question-action-copy beautify-tooltip" onclick="onCommentClicked()" data-placement="right" title="Copy to clipboard"/>
+				<If condition={isQuestionCreatedByCurrentUser}>
+						<span className="glyphicon glyphicon-pencil beautify-tooltip" onClick={this.handleQuestionEditClicked.bind(this, this.props.question._id)} data-placement="right" title="Edit this question?"/>								
+				</If>						
+				<If condition={isQuestionCreatedByCurrentUser}>
+						<span className="glyphicon glyphicon-trash beautify-tooltip" data-placement="right" title="Delete this question?" onClick={this.handleQuestionDeleteClicked.bind(this, this.props.question._id)}/>	
+				</If>
+			</div>
+		);
+	}
 });
 
 var QuestionBy = React.createClass({
@@ -103,16 +110,55 @@ var QuestionBy = React.createClass({
     }
 });
 
-var QuestionTags = React.createClass({	
+var QuestionContent = React.createClass({
+	toggle: function(e) {
+		$(e.currentTarget).siblings('.answer-collapsible').collapse('toggle');
+	},
+	render: function(){	
+			return (
+				<h4 onClick={this.toggle} className="list-group-item-heading">{this.props.content}</h4>
+			);
+	}
+});
+
+var QuestionSubContent = React.createClass({	
     render: function(){
-        return (
-					<div className="tags">
-						<div className="token Tryout">
-							<span className="token-label">Tryout </span>
-						</div>
-					</div>
-        );
+			var question = this.props.question, subContent;
+			
+			if(question.tags.length){
+				return (
+					<QuestionTags tags={question.tags}/>
+				);
+			}else{
+				if(question.solutions.length){
+					return (
+						<p className="list-group-item-text answer-preview-text">{getShortAnswers(question.solutions)}</p>
+					);
+				}else{
+					return (
+						<br/>
+					);
+				}
+			}			
     }
+});
+
+var QuestionTags = React.createClass({
+	render: function(){
+		var tagsNodes = this.props.tags.map(function (tagNode) {
+			return (
+				<div className="token Tryout">
+					<span className={"token-label " + tagNode.replace(/\s/g, "-")}>{tagNode}</span>
+				</div>
+			);
+		});	
+			
+		return (
+			<div className="tags">
+				{tagsNodes}
+			</div>
+		);
+	}
 });
 
 var If = React.createClass({
