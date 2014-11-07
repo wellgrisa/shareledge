@@ -57,9 +57,15 @@ console.log(opts);
  * Get Question
  */
 exports.all = function(req, res) {
-  Question.find({ type : req.user.filter }).sort('-created').populate('user solutions.user').exec(function(err, question){
+	var criteria = {};
+	
+	if(req.user){
+		criteria = 	{ type : req.user  };
+	}
+	
+  Question.find(criteria).sort('-created').populate('user solutions.user').exec(function(err, question){
     if (!err) {
-        res.json({data: question});
+        res.json(question);
     } else {
       return res.status(500).send(err);
     }

@@ -26,7 +26,7 @@ exports.render = function(req, res) {
 exports.index = function(req, res) {
 
     set_lang(req, res, function(){
-      res.render('process', {
+      res.render('questions', {
         title: "title",
         user: req.user,
         action: req.params.action,
@@ -34,6 +34,7 @@ exports.index = function(req, res) {
         language: req.i18n.lng(),
         showTour: req.user.showTour
       });
+			//res.render('questions');
     });
 };
 
