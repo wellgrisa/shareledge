@@ -17,7 +17,8 @@
         "sign-out" : "Sign out",
         "outstanding-questions" : "Outstanding questions",
         "your-questions" : "Your Questions. It shows a number when you got an answer",
-        "system-select" : "Select a system"
+        "system-select" : "Select a system",
+        "dashboard" : "Dashboard"
     },
     "sidebar" : {
       "my-questions" : "My Questions",

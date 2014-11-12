@@ -2,8 +2,7 @@ var mongoose = require('mongoose'),
   User = mongoose.model('User');
 
 exports.login = function(req, res) {
-   console.log('---------------teste----------------------------', req.user);
-    res.render('login', { message: req.flash('loginMessage') });
+  res.render('login', { message: req.flash('loginMessage') });
 };
 
 exports.signout = function (req, res) {
@@ -127,7 +126,10 @@ exports.feedback = function(req, res) {
    }
  });
 
-  res.redirect('/');
+ res.redirect('/');
 
 };
 
+exports.dashboard = function(req, res) {
+  res.render('admin/dashboard');
+};
