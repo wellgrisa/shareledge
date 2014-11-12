@@ -1,8 +1,9 @@
-var AnswersBox = React.createClass({		
+var AnswersBox = React.createClass({
   render: function() {
     return (
 			<div className="answer-collapsible collapse" id={"answer-for-" + this.props.questionForAnswer.id}>
 				<AnswerList questionForAnswer={this.props.questionForAnswer}/>        
+				<AnswerPanel />
       </div>
     );
   }
@@ -17,14 +18,14 @@ var AnswerList = React.createClass({
 				data : answerNode
 			};
 			return (
-				<Answer answer={answerModel}/>
+				<Answer key={answerNode._id} answer={answerModel}/>
 			);
 		});
 		
     return (			
-			<div className="list-group">
+			<div className="list-group-answers">
 				{answerNodes}
-			</div>
+			</div>			
     );
   }
 });
@@ -32,10 +33,12 @@ var AnswerList = React.createClass({
 var Answer = React.createClass({		
     render: function(){				
         return (
-					<div data-id={this.props.answer.data._id} className="list-group-item list-group-item-answer">
-						<AnswerRating answer={this.props.answer}/>
-						<AnswerActions answer={this.props.answer}/>
-						<AnswerContent answer={this.props.answer}/>
+					<div className="list-group">
+						<div data-id={this.props.answer.data._id} className="list-group-item list-group-item-answer">
+							<AnswerRating answer={this.props.answer}/>
+							<AnswerActions answer={this.props.answer}/>
+							<AnswerContent answer={this.props.answer}/>
+						</div>
 					</div>
         );
     }
@@ -90,3 +93,19 @@ var AnswerContent = React.createClass({
         );
     }
 });
+
+var AnswerPanel = React.createClass({
+	handleAnswerClick: function(e){		
+		answer();
+	},
+	render: function(){
+		return (
+			<div className="panel-answer">
+				<div className="textarea" data-ph="Your answer goes here..." contenteditable="true"/>
+				<div className="panel-bottom-answer">
+					<button onClick={this.handleAnswerClick} className="btn btn-default btn-answer" type="submit">{ i18n.t('main-page.question-panel.register')}</button>
+				</div>
+			</div>
+		);
+	}
+}); 

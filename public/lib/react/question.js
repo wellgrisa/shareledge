@@ -1,16 +1,21 @@
 var QuestionsBox = React.createClass({
 	getInitialState: function() {
-    return {data: []};
+    return {
+			data: [],
+			page: 1
+		};
   },
-	componentDidMount: function() {
-		handleListGroup();
+	refreshQuestions :function(searchType){
+		console.log(this.state.page);
     $.ajax({
       url: '/questions/outstandingFilter',
-      dataType: 'json',
-			data: {filter : { criteria :{type :'ebs'}, page : 1 }},
+      dataType: 'json',			
+			data: { searchType : searchType, page : this.state.page },
       success: function(data) {
-        this.setState({data: data.records});
-				updatePagination(data.pagination);
+				var questions = this.state.restartData ? data.records : this.state.data.concat(data.records);				
+        this.setState({data: questions});								
+				this.state.page ++;
+				this.hasMoreItems(data.pagination.totalPages);
 				NProgress.done();
 				attachClipboardEvent();
       }.bind(this),
@@ -18,38 +23,59 @@ var QuestionsBox = React.createClass({
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });		
+	},
+	hasMoreItems: function(totalPages){
+		this.state.hasMore = this.state.page <= totalPages + 1;
+	},
+	componentDidMount: function() {		
+		window.addEventListener('scroll', this.handleScroll);
+		document.getElementById("main-menu").addEventListener("click", this.handleMainMenuClick);
+		document.addEventListener("refreshQuestions",this.restartData);
+		$('#accordion').delegate('.btn-answer', 'click', this.handleQuestionAnswered);
+		this.refreshQuestions('all-questions');
+		handleListGroup();
   },
+	handleScroll: function(e) {    
+		this.state.restartData = false;
+		if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100 && this.state.hasMore){			
+  		this.refreshQuestions($('#main-menu li.active a').attr('id'));
+    }
+  },
+	handleMainMenuClick: function(e){
+		this.restartData();
+	},
+	restartData : function(){		
+		this.state.restartData = true;
+		this.state.page = 1;
+		this.refreshQuestions($('#main-menu li.active a').attr('id'));
+	},
   render: function() {
     return (
-			<div className="panel panel-default" id="accordion">
-				<div id="questions-panel" className="panel-heading"> { i18n.t('main-page.question-panel.title')}</div>
-				<div className="panel-body">	
+			<div onScroll={this.handleScroll} id="accordion">
 					<QuestionList questions={this.state.data} />
-				</div>        
+					<div className="loading-modal"></div>
       </div>
     );
   }
 });
 
-var QuestionList = React.createClass({
-  render: function() {		
-
-		var questionNodes = this.props.questions.map(function (questionNode) {
+var QuestionList = React.createClass({	
+  render: function() {
+		var questionNodes = this.props.questions.map(function (questionNode, i) {
 			return (
-				<Question question={questionNode}/>
+				<Question key={questionNode._id} question={questionNode}/>
 			);
-		});		
+		}, this);		
 		 
     return (
       <div className="list-group-questions">
 				{questionNodes}
-      </div>
+      </div>			
     );
   }
 });
 
-var Question = React.createClass({		
-  
+var Question = React.createClass({  
 	render: function(){
 		var questionForAnswerObject = { 
 				id : this.props.question._id,
@@ -97,7 +123,7 @@ var QuestionBy = React.createClass({
 			
 				var question = this.props.question,
 						questionLastUpdate = question.updated ? new Date(question.updated).getTime() : new Date(question.created).getTime(),
-					  picture = "'" + question.user.google ? question.user.google.picture :"/img/unknown.png" + "'",
+					  picture = "'" + question.user && question.user.google ? question.user.google.picture :"img/unknown.png",
 						spanStyle = { 'margin-top': '5px', float: 'left', 'margin-right': '5px' };
 			
         return (
@@ -116,7 +142,7 @@ var QuestionContent = React.createClass({
 	},
 	render: function(){	
 			return (
-				<h4 onClick={this.toggle} className="list-group-item-heading">{this.props.content}</h4>
+				<h4 onClick={this.toggle} className="list-group-item-heading" dangerouslySetInnerHTML={{__html: this.props.content}}></h4>
 			);
 	}
 });
