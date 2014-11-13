@@ -1,38 +1,162 @@
- <div id="main-nav" class="main-menu narrow-menu">
-	<a href="/" id="logo" class="logo"></a>
-	<ul id="nav-items" class="main-menu-nav">
-		<li><a data-href="suggest" id="nav-search" class="spoticon-search-32 standard-menu-item"><span class="nav-text">Buscar</span></a></li>
-		<li><a data-href="browse" id="nav-browse" class="spoticon-browse-32 standard-menu-item "><span class="nav-text">Minhas Pendentes</span></a></li>
-		<li><a data-href="radio" id="nav-radio" class="spoticon-radio-32 standard-menu-item"><span class="nav-text">Rádio</span></a></li>
-		<li><a data-href="collection" id="nav-collection" class="spoticon-collection-32 standard-menu-item"><span class="nav-text">Suas músicas</span></a></li>
-		<li><a data-href="follow" id="nav-follow" class="spoticon-follow-32 standard-menu-item"><span class="nav-text">Seguir</span></a></li>
-		<li class="item-profile etched-top has-extra-bottom-row">
-			<a data-href="user" id="nav-profile" class="">
-				<span class="nav-text">
-					<div class="media simple user">
-						<div class="media-image">
-							<div class="media-placeholder">      <span class="icon"></span>    </div>
-							<div class="media-image-internal"></div>
-						</div>
-					</div>
-					<div class="name">wellgrisa</div>
-				</span>
-			</a>
-		</li>
-		<li class="messages-link"><a data-href="messages" id="nav-messages" class="spoticon-inbox-32">0</a></li>
-		<li class="item-notifications"><a data-href="notification-center" id="nav-notifications" class="spoticon-notifications-32">0</a></li>
-		<li class="settings-link clearfix"><a data-href="settings" id="nav-settings" class="spoticon-settings-16 active"><span class="nav-text"></span></a></li>
-	</ul>
-	<div id="core">
-		<div id="bridge"></div>
-		<object type="application/x-shockwave-flash" id="SPFBIn_3353_player" name="SPFBIn_3353_player" align="middle" data="https://play.spotify.edgekey.net/client/bff389a/flash/player.swf" width="1" height="1">
-			<param name="quality" value="high">
-			<param name="allowscriptaccess" value="always">
-			<param name="wmode" value="window">
-			<param name="bgcolor" value="#2c2c2d">
-			<param name="flashvars" value="playerType=FLASH_RTMPS&amp;valid=0&amp;id=SPFBIn_3353_player&amp;length=0&amp;instanceId=SPFBIn_3353&amp;logging=0">
-		</object>
-		<div id="html5audio"></div>
+<div class="navbar" role="navigation">
+	<div class="navbar-header">
+		<a style="float: left" href="/"><img class="img-responsive bravi-logo" src="/img/bravi.png" alt="" /></a>
 	</div>
-	<img id="tpx">
+	<ul class="nav navbar-nav navbar-actions navbar-left">
+<!--
+		<li class="visible-md visible-lg">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</li>		
+-->		
+		<li class="visible-xs visible-sm"><i class="toggle-icon"></i></li>
+		<li class="visible-xs visible-sm"><i class="toggle-icon glyphicon glyphicon-tasks" data-toggle="collapse" data-target=".sidebar"></i></li>
+	</ul>
+	<form class="navbar-form navbar-left">
+		<i class="glyphicon glyphicon-search"></i>
+		<input id="search" type="text" class="form-control" placeholder="Are you looking for something ?">
+	</form>
+	<ul class="nav navbar-nav navbar-right visible-md visible-lg">
+		<li><button class="btn btn-default">Preview</button></li>
+		<li><button class="btn btn-success">Launch</button></li>
+		<li><span class="timer"><i class="icon-clock"></i> <span id="clock">20:12:53</span></span></li>
+			<a href="index.html#" class="dropdown-toggle" data-toggle="dropdown"><img src="assets/ico/flags/USA.png" style="height:18px; margin-top:-4px;"></a>
+			<ul class="dropdown-menu">
+				<li><a href="index.html#"><img src="assets/ico/flags/USA.png" style="height:18px; margin-top:-2px;"> US</a></li>
+				<li><a href="index.html#"><img src="assets/ico/flags/Spain.png" style="height:18px; margin-top:-2px;"> Spanish</a></li>
+				<li><a href="index.html#"><img src="assets/ico/flags/Germany.png" style="height:18px; margin-top:-2px;"> German</a></li>
+				<li><a href="index.html#"><img src="assets/ico/flags/Poland.png" style="height:18px; margin-top:-2px;"> Polish</a></li>	
+			</ul>
+		</li>		
+		<li class="dropdown">
+			{% if user.google.picture == undefined  %}
+			<img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="/img/unknown.png" alt="" />
+			{% else %}
+			<img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="{{user.google.picture}}" alt="" />
+			{% endif %}
+
+			{% if user.username == undefined  %}
+			<div class="dropdown-menu drop-form" style="padding: 15px;">
+				<form action="/signin" method="post" role="form">
+					<div class="form-group">
+						<label for="username">User Name</label>
+						<input type="text" class="form-control" id="userame" name="username" placeholder="Enter user name">
+					</div>
+					<div class="form-group">
+						<label for="password">Password</label>
+						<input type="password" class="form-control" id="password" name="password" placeholder="Password">
+					</div>
+					<button type="submit" class="btn btn-info">Log in</button>
+					or <a href="#" data-toggle="modal" data-target="#sign-up-modal" class="btn btn-warning">Sign up!</a>
+				</form>
+			</div>
+			{% else %}
+			<ul class="dropdown-menu">
+				<li>
+					<a href="#" data-toggle="modal" data-target="#feedbackModal"><i class="fa fa-fw fa-envelope"></i> Feedback :)</a>
+				</li>
+				<li class="divider"></li>
+				<li>
+					<a href="\signout"><i class="fa fa-fw fa-power-off"></i> {{ t("main-page.header.sign-out") }}</a>
+				</li>
+			</ul>
+			{% endif %}
+
+		</li>
+		<!--
+<li class="dropdown visible-md visible-lg">
+<a href="index.html#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-settings"></i><span class="badge">!</span></a>
+<ul class="dropdown-menu">
+<li class="dropdown-menu-header text-center">
+<strong>Account</strong>
+</li>
+<li><a href="index.html#"><i class="fa fa-bell-o"></i> Updates <span class="label label-info">42</span></a></li>
+<li><a href="index.html#"><i class="fa fa-envelope-o"></i> Messages <span class="label label-success">42</span></a></li>
+<li><a href="index.html#"><i class="fa fa-tasks"></i> Tasks <span class="label label-danger">42</span></a></li>
+<li><a href="index.html#"><i class="fa fa-comments"></i> Comments <span class="label label-warning">42</span></a></li>
+<li class="dropdown-menu-header text-center">
+<strong>Settings</strong>
+</li>
+<li><a href="index.html#"><i class="fa fa-user"></i> Profile</a></li>
+<li><a href="index.html#"><i class="fa fa-wrench"></i> Settings</a></li>
+<li><a href="index.html#"><i class="fa fa-usd"></i> Payments <span class="label label-default">42</span></a></li>
+<li><a href="index.html#"><i class="fa fa-file"></i> Projects <span class="label label-primary">42</span></a></li>
+<li class="divider"></li>
+<li><a href="index.html#"><i class="fa fa-shield"></i> Lock Profile</a></li>
+<li><a href="index.html#"><i class="fa fa-lock"></i> Logout</a></li>	
+</ul>
+</li>
+-->
+	</ul>
+</div>
+
+<div id="main-sidebar" style="height: 100%; background-color: #2a2c36">
+<div class="sidebar">
+	<!--
+<div class="sidebar-header">
+
+{% if user.google.picture == undefined  %}
+<img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="/img/unknown.png" alt="" />
+{% else %}
+<img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="{{user.google.picture}}" alt="" />
+{% endif %}
+
+<h2>{{user.username}}</h2>		
+
+</div>
+-->
+	<div class="sidebar mm-current" id="mm-0">
+
+		<div class="sidebar-menu">	
+			<ul class="nav nav-sidebar">
+
+				<!--
+<li><a href="index.html"><i class="icon-speedometer"></i><span class="text"> Dashboard<span class="label label-info">NEW</span></span></a></li>	
+
+<li><a href="widgets.html"><i class="icon-calculator"></i><span class="text"> Widgets</span></a></li>
+-->
+				<li>
+					<a href="#" id="outstanding-questions" data-gacategory="Menu" data-gaaction="Outstanding">
+						<span class="text"> Dashboard<span class="label label-info">10</span></span>
+					</a>
+				</li>
+				<li>
+					<a href="#" id="outstanding-questions" data-gacategory="Menu" data-gaaction="Outstanding">
+						<i class="fa fa-fw fa-dashboard"></i> {{t('main-page.sidebar.outstanding-questions')}}
+					</a>
+				</li>
+				<li>
+					<a href="#" id="my-outstanding-questions" data-gacategory="Menu" data-gaaction="My-Outstanding">
+						<i class="fa fa-fw fa-dashboard"></i> {{t('main-page.sidebar.my-outstanding-questions')}}
+					</a>
+				</li>
+				<li>
+					<a href="#" id="answered-outstanding-questions" data-gacategory="Menu" data-gaaction="All-Answered">
+						<i class="fa fa-fw fa-dashboard"></i> {{t('main-page.sidebar.answered-outstanding-questions')}}
+					</a>
+				</li>
+				<li>
+					<a href="#" id="my-answered-questions" href="index.html" data-gacategory="Menu" data-gaaction="My-Answered">
+						<i class="fa fa-fw fa-dashboard"></i> {{t('main-page.sidebar.my-answered-questions')}}
+					</a>
+				</li>
+				<li>
+					<a href="#" id="all-questions" data-gacategory="Menu" data-gaaction="All-Questions">
+						<i class="fa fa-fw fa-dashboard"></i> {{t('main-page.sidebar.all-questions')}}
+					</a>
+				</li>
+				<li>
+					<a href="#" href="#" id="my-questions" href="index.html" data-gacategory="Menu" data-gaaction="All-My-Questions">
+						<i class="fa fa-fw fa-dashboard"></i> {{t('main-page.sidebar.my-questions')}}
+					</a>
+				</li>
+
+			</ul>
+		</div>
+	</div>
+</div>
 </div>

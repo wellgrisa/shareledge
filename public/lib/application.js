@@ -109,7 +109,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$('.side-nav a').on('click', sidebarClicked);
+	$('.sidebar a').on('click', sidebarClicked);
 
 	io = io.connect();
 
@@ -598,7 +598,7 @@ function sidebarClicked(){
 	searchFunction = getQuestionsByLink;
 
 	if(!$(this).hasClass("active")){
-		var lastActive = $(this).closest(".side-nav").children(".active");
+		var lastActive = $(this).parent().siblings('.active');
 		lastActive.removeClass("active");
 		$(this).parent().addClass("active");
 	}
@@ -630,12 +630,12 @@ function getOutstandingCountByFilter(filter, callback, done){
 }
 
 function updateBadge(name, value){
-	var elementName = '#' + name + ' .badge';
+	var elementName = '#' + name + ' .label';
 
 	if($(elementName).length){
 		$(elementName).text(value);
 	}else{
-		$('#' + name).append('<span class="badge" style="margin-left: 5px">' + value + '</span>');
+		$('#' + name).append('<span class="label label-primary">' + value + '</span>');		
 	}
 }
 
@@ -790,7 +790,7 @@ function updateCounts(){
 }
 
 function initiateSearch(){
-	$(".side-nav").children(".active").removeClass('active');
+	$(".sidebar").children(".active").removeClass('active');
 
 	$('#outstanding-questions').parent().addClass('active');
 
@@ -1298,7 +1298,7 @@ function configureEvents(){
 function getBySearch(){
 
 	if($('#question').val() == ""){
-		$(".side-nav").children(".active").removeClass('active');
+		$(".sidebar").children(".active").removeClass('active');
 		$('#all-questions').parent().addClass('active');
 	}
 

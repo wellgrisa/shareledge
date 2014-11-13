@@ -100,6 +100,7 @@
     </div>
   </div>
   <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+<!--
   <div class="collapse navbar-collapse navbar-ex1-collapse">
    <ul class="nav navbar-nav side-nav" id="main-menu">
     <li>
@@ -134,6 +135,48 @@
     </li>
   </ul>
   </div>
+-->
+	<div class="collapse navbar-collapse navbar-ex1-collapse">
+ 	<div class="sidebar">
+
+		<div class="sidebar-menu">	
+			<ul class="nav nav-sidebar" id="main-menu">				
+				<li>
+					<a href="#" id="outstanding-questions" data-gacategory="Menu" data-gaaction="Outstanding">
+						<span class="text"> {{t('main-page.sidebar.outstanding-questions')}}</span>
+					</a>
+				</li>
+				<li>
+					<a href="#" id="my-outstanding-questions" data-gacategory="Menu" data-gaaction="My-Outstanding">
+						<span class="text">{{t('main-page.sidebar.my-outstanding-questions')}}</span>
+					</a>
+				</li>
+				<li>
+					<a href="#" id="answered-outstanding-questions" data-gacategory="Menu" data-gaaction="All-Answered">
+						<span class="text">{{t('main-page.sidebar.answered-outstanding-questions')}}</span>
+					</a>
+				</li>
+				<li>
+					<a href="#" id="my-answered-questions" href="index.html" data-gacategory="Menu" data-gaaction="My-Answered">
+						<span class="text"> {{t('main-page.sidebar.my-answered-questions')}}</span>
+					</a>
+				</li>
+				<li>
+					<a href="#" id="all-questions" data-gacategory="Menu" data-gaaction="All-Questions">
+						<span class="text"> {{t('main-page.sidebar.all-questions')}}</span>
+					</a>
+				</li>
+				<li>
+					<a href="#" href="#" id="my-questions" href="index.html" data-gacategory="Menu" data-gaaction="All-My-Questions">
+						<span class="text"> {{t('main-page.sidebar.my-questions')}}</span>
+					</a>
+				</li>
+
+			</ul>
+		</div>
+	</div>
+	</div>
+
   <input type="hidden" id="user-id"  name="user-id" value="{{user._id}}">
   <input type="hidden" id="user-name"  name="user-name" value="{{user.username}}">
   <input type="hidden" id="user-points"  name="user-points" value="{{user.points}}">
