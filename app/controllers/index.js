@@ -32,7 +32,7 @@ exports.index = function(req, res) {
         action: req.params.action,
         wonder: req.params.wonder,
         language: req.i18n.lng(),
-        showTour: req.user.showTour
+        showTour: req.user.showTour				
       });
 			//res.render('questions');
     });

@@ -1,187 +1,154 @@
 <nav id="main-navbar" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-  <!-- Brand and toggle get grouped for better mobile display -->
-  <div class="navbar-header">
-    <div style="float: right">
-      <div class="hidden-md hidden-lg" style="font-size: 14px;float: left;">
-        <span class="label label-success score" style="margin-top: 15px; float: left;margin-right: -16px;vertical-align: middle;font-size: 14PX;">{{user.points}}</span>
-        <img data-toggle="dropdown" class="img-responsive " src="img/star.png" alt="" style="float: left;">
-      </div>
+	<!-- Brand and toggle get grouped for better mobile display -->
+	<div class="navbar-header">
+		<div style="float: right">
+			<div class="hidden-md hidden-lg" style="font-size: 14px;float: left;">
+				<span class="label label-success score" style="margin-top: 15px; float: left;margin-right: -16px;vertical-align: middle;font-size: 14PX;">{{user.points}}</span>
+				<img data-toggle="dropdown" class="img-responsive " src="img/star.png" alt="" style="float: left;">
+			</div>
 
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-    </div>
-    <!-- <a class="navbar-brand" href="index.html">SB Admin</a> -->
-    <a style="float: left" href="/"><img class="img-responsive bravi-logo" src="/img/bravi.png" alt="" /></a>
-    <div style="float: left; margin-top:14px; margin-left:3px">
-      <a href="/?lang=pt" data-gacategory="Header" data-gaaction="Language" data-galabel="Change to pt-br"><img src="/img/bra.png" alt=""></a>
-      <a href="/?lang=en" data-gacategory="Header" data-gaaction="Language" data-galabel="Change to en-uk"><img src="/img/uk.jpg" alt="" style="width:24px; margin-top: 0px"></a>
-    </div>
-
-  </div>
-  <!-- Top Menu Items -->
-  <ul class="nav navbar-right top-nav">
-    <li class="hidden-sm hidden-xs" style="font-size: 14px;">
-    <span class="label label-success score" style="margin-top: 15px; float: left;margin-right: -16px;vertical-align: middle;font-size: 14PX;">{{user.points}}</span>
-      <img data-toggle="dropdown" class="img-responsive " src="img/star.png" alt="" style="float: left;">
-    </li>
-    <li class="dropdown systems-dropdown" style="float: left;margin-top: 10px;">
-      <select id="systems" name="systems" required class="form-control" data-gacategory="Header" data-gaaction="System-Select" data-galabel="Selecting a area">
-        <option value="hours">{{ t("main-page.header.system-hours") }}</option>
-        <option value="ebs">{{ t("main-page.header.system-ebs") }}</option>
-        <option value="peopleCare">{{ t("main-page.header.system-people-care") }}</option>
-        <option value="administrative">{{ t("main-page.header.system-administrative") }}</option>
-        <option value="sits">{{ t("main-page.header.system-sits") }}</option>
-        <option value="solutions">{{ t("main-page.header.system-solutions") }}</option>
-        <option value="translation">{{ t("main-page.header.system-translation") }}</option>
-        <option value="test">{{ t("main-page.header.system-test") }}</option>
-      </select>
-    </li>
-    <li class="dropdown">
-      {% if user.google.picture == undefined  %}
-      <img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="/img/unknown.png" alt="" />
-      {% else %}
-      <img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="{{user.google.picture}}" alt="" />
-      {% endif %}
-
-      {% if user.username == undefined  %}
-      <div class="dropdown-menu drop-form" style="padding: 15px;">
-        <form action="/signin" method="post" role="form">
-          <div class="form-group">
-            <label for="username">User Name</label>
-            <input type="text" class="form-control" id="userame" name="username" placeholder="Enter user name">
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-          </div>
-          <button type="submit" class="btn btn-info">Log in</button>
-          or <a href="#" data-toggle="modal" data-target="#sign-up-modal" class="btn btn-warning">Sign up!</a>
-        </form>
-      </div>
-      {% else %}
-      <ul class="dropdown-menu">
-        <li>
-          <a href="#" data-toggle="modal" data-target="#feedbackModal"><i class="fa fa-fw fa-envelope"></i> Feedback :)</a>
-        </li>
-        <li class="divider"></li>
-        <li>
-          <a href="\signout"><i class="fa fa-fw fa-power-off"></i> {{ t("main-page.header.sign-out") }}</a>
-        </li>
-      </ul>
-      {% endif %}
-
-    </li>
-  </ul>
-  <div class="container">
-    <div class="navbar-form" >
-      <div class="form-group" style="display:inline;">
-        <div id="nav-input-wonder" class="input-group">
-            <span class="input-group-btn">
-            <button class="btn btn-info" onclick="askDetailedQuestion()" type="button"><i  class="glyphicon glyphicon-list-alt"></i></button>
-            <!-- <button class="btn btn-info" id="tag-button" onclick="tagging()" type="button"><i  class="glyphicon glyphicon-list-alt"></i></button> -->
-            </span>
-            <div class="left-inner-addon ">
-              <i class="glyphicon glyphicon-search"></i>
-              <img class="icon-loading hidden" src="/img/loading.gif" style="display: block;">
-              <input type="text" id="question" name="question" title="{{ t('main-page.header.whats') }}" class="form-control" placeholder="{{ t('main-page.header.whats') }}">
-            </div>
-
-            <span id="group-ask" class="input-group-btn">
-              <button id="btn-ask" type="button" data-clipboard-text="Fucke me!" class="btn btn-info" onclick="tagging()" data-gacategory="Question" data-gaaction="First-ask" data-galabel="Asking a question but it was not confirmed yet.">
-              {{ t('main-page.header.ask') }}
-            </button>
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
-<!--
-  <div class="collapse navbar-collapse navbar-ex1-collapse">
-   <ul class="nav navbar-nav side-nav" id="main-menu">
-    <li>
-      <a href="#" id="outstanding-questions" data-gacategory="Menu" data-gaaction="Outstanding">
-        <i class="fa fa-fw fa-dashboard"></i> {{t('main-page.sidebar.outstanding-questions')}}
-      </a>
-    </li>
-    <li>
-      <a href="#" id="my-outstanding-questions" data-gacategory="Menu" data-gaaction="My-Outstanding">
-        <i class="fa fa-fw fa-dashboard"></i> {{t('main-page.sidebar.my-outstanding-questions')}}
-      </a>
-    </li>
-    <li>
-      <a href="#" id="answered-outstanding-questions" data-gacategory="Menu" data-gaaction="All-Answered">
-        <i class="fa fa-fw fa-dashboard"></i> {{t('main-page.sidebar.answered-outstanding-questions')}}
-      </a>
-    </li>
-    <li>
-      <a href="#" id="my-answered-questions" href="index.html" data-gacategory="Menu" data-gaaction="My-Answered">
-        <i class="fa fa-fw fa-dashboard"></i> {{t('main-page.sidebar.my-answered-questions')}}
-      </a>
-    </li>
-    <li>
-      <a href="#" id="all-questions" data-gacategory="Menu" data-gaaction="All-Questions">
-        <i class="fa fa-fw fa-dashboard"></i> {{t('main-page.sidebar.all-questions')}}
-      </a>
-    </li>
-    <li>
-      <a href="#" href="#" id="my-questions" href="index.html" data-gacategory="Menu" data-gaaction="All-My-Questions">
-        <i class="fa fa-fw fa-dashboard"></i> {{t('main-page.sidebar.my-questions')}}
-      </a>
-    </li>
-  </ul>
-  </div>
--->
-	<div class="collapse navbar-collapse navbar-ex1-collapse">
- 	<div class="sidebar">
-
-		<div class="sidebar-menu">	
-			<ul class="nav nav-sidebar" id="main-menu">				
-				<li>
-					<a href="#" id="outstanding-questions" data-gacategory="Menu" data-gaaction="Outstanding">
-						<span class="text"> {{t('main-page.sidebar.outstanding-questions')}}</span>
-					</a>
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div>
+		<!-- <a class="navbar-brand" href="index.html">SB Admin</a> -->
+		<a style="float: left" href="/"><img class="img-responsive bravi-logo" src="/img/bravi.png" alt="" /></a>
+		<div style="float: left; margin-top:14px; margin-left:3px">
+			<ul style="list-style: none; margin-left: -40px">
+				<li id="language-selection" class="dropdown">
+					<a href="index.html#" class="dropdown-toggle" style="height:18px;" data-toggle="dropdown"><img class="img-circle" src="{% if language === 'pt' %}/img/bra.png {% else %}/img/uk.png {% endif %}"></a>
+					<ul class="dropdown-menu">
+						<li><a href="/?lang=pt"><img src="/img/bra.png"></a></li>
+						<li><a href="/?lang=en"><img src="/img/uk.png"></a></li>				
+					</ul>
 				</li>
-				<li>
-					<a href="#" id="my-outstanding-questions" data-gacategory="Menu" data-gaaction="My-Outstanding">
-						<span class="text">{{t('main-page.sidebar.my-outstanding-questions')}}</span>
-					</a>
-				</li>
-				<li>
-					<a href="#" id="answered-outstanding-questions" data-gacategory="Menu" data-gaaction="All-Answered">
-						<span class="text">{{t('main-page.sidebar.answered-outstanding-questions')}}</span>
-					</a>
-				</li>
-				<li>
-					<a href="#" id="my-answered-questions" href="index.html" data-gacategory="Menu" data-gaaction="My-Answered">
-						<span class="text"> {{t('main-page.sidebar.my-answered-questions')}}</span>
-					</a>
-				</li>
-				<li>
-					<a href="#" id="all-questions" data-gacategory="Menu" data-gaaction="All-Questions">
-						<span class="text"> {{t('main-page.sidebar.all-questions')}}</span>
-					</a>
-				</li>
-				<li>
-					<a href="#" href="#" id="my-questions" href="index.html" data-gacategory="Menu" data-gaaction="All-My-Questions">
-						<span class="text"> {{t('main-page.sidebar.my-questions')}}</span>
-					</a>
-				</li>
-
 			</ul>
 		</div>
 	</div>
+	<!-- Top Menu Items -->
+	<ul class="nav navbar-right top-nav">
+		<li class="hidden-sm hidden-xs" style="font-size: 14px;">
+			<span class="label label-success score" style="margin-top: 15px; float: left;margin-right: -16px;vertical-align: middle;font-size: 14PX;">{{user.points}}</span>
+			<img data-toggle="dropdown" class="img-responsive " src="img/star.png" alt="" style="float: left;">
+		</li>
+		<li class="dropdown systems-dropdown" style="float: left;margin-top: 10px;">
+			<select id="systems" name="systems" required class="form-control" data-gacategory="Header" data-gaaction="System-Select" data-galabel="Selecting a area">
+				<option value="hours">{{ t("main-page.header.system-hours") }}</option>
+				<option value="ebs">{{ t("main-page.header.system-ebs") }}</option>
+				<option value="peopleCare">{{ t("main-page.header.system-people-care") }}</option>
+				<option value="administrative">{{ t("main-page.header.system-administrative") }}</option>
+				<option value="sits">{{ t("main-page.header.system-sits") }}</option>
+				<option value="solutions">{{ t("main-page.header.system-solutions") }}</option>
+				<option value="translation">{{ t("main-page.header.system-translation") }}</option>
+				<option value="test">{{ t("main-page.header.system-test") }}</option>
+			</select>
+		</li>	
+		<li class="dropdown">
+			{% if user.google.picture == undefined  %}
+			<img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="/img/unknown.png" alt="" />
+			{% else %}
+			<img data-toggle="dropdown" id="user-avatar"class="img-responsive user navbar-right img-circle" src="{{user.google.picture}}" alt="" />
+			{% endif %}
+
+			{% if user.username == undefined  %}
+			<div class="dropdown-menu drop-form" style="padding: 15px;">
+				<form action="/signin" method="post" role="form">
+					<div class="form-group">
+						<label for="username">User Name</label>
+						<input type="text" class="form-control" id="userame" name="username" placeholder="Enter user name">
+					</div>
+					<div class="form-group">
+						<label for="password">Password</label>
+						<input type="password" class="form-control" id="password" name="password" placeholder="Password">
+					</div>
+					<button type="submit" class="btn btn-info">Log in</button>
+					or <a href="#" data-toggle="modal" data-target="#sign-up-modal" class="btn btn-warning">Sign up!</a>
+				</form>
+			</div>
+			{% else %}
+			<ul class="dropdown-menu">
+				<li>
+					<a href="#" data-toggle="modal" data-target="#feedbackModal"><i class="fa fa-fw fa-envelope"></i> Feedback :)</a>
+				</li>
+				<li class="divider"></li>
+				<li>
+					<a href="\signout"><i class="fa fa-fw fa-power-off"></i> {{ t("main-page.header.sign-out") }}</a>
+				</li>
+			</ul>
+			{% endif %}
+
+		</li>
+	</ul>
+	<div class="question-container">
+		<div class="navbar-form" >
+			<div class="form-group" style="display:inline;">
+				<div id="nav-input-wonder" class="input-group">
+					<div class="left-inner-addon ">
+						<i class="glyphicon glyphicon-search"></i>
+						<img class="icon-loading hidden" src="/img/loading.gif" style="display: block;">
+						<input type="text" id="question" name="question" title="{{ t('main-page.header.whats') }}" class="form-control" placeholder="{{ t('main-page.header.whats') }}">
+					</div>
+
+					<span id="group-ask" class="input-group-btn">
+						<button id="btn-ask" type="button" data-clipboard-text="Fucke me!" class="btn btn-info" onclick="tagging()" data-gacategory="Question" data-gaaction="First-ask" data-galabel="Asking a question but it was not confirmed yet.">
+							{{ t('main-page.header.ask') }}
+						</button>
+						<button class="btn btn-info" onclick="askDetailedQuestion()" type="button"><i  class="glyphicon glyphicon-list-alt"></i></button>
+					</span>
+				</div>
+			</div>
+		</div>
 	</div>
 
-  <input type="hidden" id="user-id"  name="user-id" value="{{user._id}}">
-  <input type="hidden" id="user-name"  name="user-name" value="{{user.username}}">
-  <input type="hidden" id="user-points"  name="user-points" value="{{user.points}}">
-  <input type="hidden" id="showTour" value="{{showTour}}">
-  <input type="hidden" id="filter" value="{{user.filter}}">
-  <input type="hidden" id="department" value="{{user.department}}">
-  <!-- /.navbar-collapse -->
+	<div class="collapse navbar-collapse navbar-ex1-collapse">
+		<div class="sidebar">
+
+			<div class="sidebar-menu">	
+				<ul class="nav nav-sidebar" id="main-menu">				
+					<li>
+						<a href="#" id="outstanding-questions" data-gacategory="Menu" data-gaaction="Outstanding">
+							<span class="text"> {{t('main-page.sidebar.outstanding-questions')}}</span>
+						</a>
+					</li>
+					<li>
+						<a href="#" id="my-outstanding-questions" data-gacategory="Menu" data-gaaction="My-Outstanding">
+							<span class="text">{{t('main-page.sidebar.my-outstanding-questions')}}</span>
+						</a>
+					</li>
+					<li>
+						<a href="#" id="answered-outstanding-questions" data-gacategory="Menu" data-gaaction="All-Answered">
+							<span class="text">{{t('main-page.sidebar.answered-outstanding-questions')}}</span>
+						</a>
+					</li>
+					<li>
+						<a href="#" id="my-answered-questions" href="index.html" data-gacategory="Menu" data-gaaction="My-Answered">
+							<span class="text"> {{t('main-page.sidebar.my-answered-questions')}}</span>
+						</a>
+					</li>
+					<li>
+						<a href="#" id="all-questions" data-gacategory="Menu" data-gaaction="All-Questions">
+							<span class="text"> {{t('main-page.sidebar.all-questions')}}</span>
+						</a>
+					</li>
+					<li>
+						<a href="#" href="#" id="my-questions" href="index.html" data-gacategory="Menu" data-gaaction="All-My-Questions">
+							<span class="text"> {{t('main-page.sidebar.my-questions')}}</span>
+						</a>
+					</li>
+
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<input type="hidden" id="user-id"  name="user-id" value="{{user._id}}">
+	<input type="hidden" id="user-name"  name="user-name" value="{{user.username}}">
+	<input type="hidden" id="user-points"  name="user-points" value="{{user.points}}">
+	<input type="hidden" id="showTour" value="{{showTour}}">
+	<input type="hidden" id="filter" value="{{user.filter}}">
+	<input type="hidden" id="department" value="{{user.department}}">
+	<!-- /.navbar-collapse -->
 </nav>
