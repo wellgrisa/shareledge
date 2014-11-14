@@ -52,12 +52,7 @@ function padLeft(value, character, quantity)
 	return pad.substring(0, pad.length - value.toString().length) + value;
 }
 
-$(document).ready(function() {
-
-
-
-	requestPermission();
-
+function setupAjax(){
 	$.ajaxSetup({
 		complete: function(jqXHR) { // when some of the requests completed it will splice from the array
 			var index = $.xhrPool.indexOf(jqXHR);
@@ -81,7 +76,9 @@ $(document).ready(function() {
 			window.location = "/";
 		}
 	});
+}
 
+function initializeTags(){
 	updateTags(function(engine){
 		$('.tokenfield').tokenfield({
 			typeahead: [{
@@ -93,14 +90,9 @@ $(document).ready(function() {
 									}]
 		});
 	});
+}
 
-	if (i18n) i18n.init(handleMultiSelect);
-
-	$("#menu-toggle").click(function(e) {
-		e.preventDefault();
-		$("#wrapper").toggleClass("active");
-	});
-
+function initializeClosePopoverOut(){
 	$('html').on('click', function (e) {
 		if ($(e.target).data('toggle') !== 'popover'
 				&& $(e.target).parents('[data-toggle="popover"]').length === 0
@@ -108,17 +100,19 @@ $(document).ready(function() {
 			$('[data-toggle="popover"]').popover('hide');
 		}
 	});
+}
 
+function initializeSidebar(){
 	$('.sidebar a').on('click', sidebarClicked);
+}
 
+function initializeIo(){
 	io = io.connect();
-
-	//TODO: Refactor the auto refresh
 
 	io.on('update-counts', function() {
 		if(!$('.answer-collapsible.in').length && getQuestionTrimmed() == ""
 			 && !$('#outstandingQuestionsByUser').hasClass('questions-selected')){
-			//searchFunction();
+			dispatchRefreshQuestions();
 		}
 		updateCounts();
 	});
@@ -142,68 +136,85 @@ $(document).ready(function() {
 		}
 		notificate(text, data.question, data.question.updatedBy.google ? data.question.updatedBy.google.picture : "");
 	});
+}
 
-	var questionInput = $('#question');
+function handleMultiSelect(){
+	var sections = $('#filter').val().split(',');
 
-	questionInput.focus();
+	var systems = $('#systems');
 
-	$('#btn-ask').popover({
-		html:true
+	initMultiSelect(systems);
+
+	systems.val(sections);
+
+	systems.multiselect('refresh');
+}
+
+function initMultiSelect(element){
+	element.multiselect({
+		buttonWidth: '100%',
+		buttonClass: 'btn btn-link',
+		nonSelectedText: i18n.t("main-page.header.system-select"),
+		onChange : systemChanged
+	});
+}
+
+function systemChanged(element, checked){
+	jQuery.ajax({
+		url: '/updateFilter',
+		type: "PUT",
+		global: false,
+		data : { filter : $('#systems').val() },
+		success: function (xhr, status, error) {
+			console.log('sucess');
+			$('#filter').val($('#systems').val());
+			initiateSearch();
+			updateCounts();
+			dispatchRefreshQuestions();
+		}
+	});
+}
+
+function initializeControls(){
+	$('#question').focus();
+
+	$('#btn-ask').popover({ html:true });
+
+	$('body').tooltip({ selector: '.beautify-tooltip'});
+	
+	//event used to hide the popover and make its display to none.
+	$('body').on('hidden.bs.popover', function() {
+		$('.popover:not(.in)').hide().detach();
 	});
 
-	$('body').tooltip({
-		selector: '.beautify-tooltip'
-	});
+	$('.notifications span').tooltip();
+}
+
+$(document).ready(function() {
+
+	requestPermission();
+
+	setupAjax();	
+
+	initializeTags();
+
+	if (i18n){
+		i18n.init(handleMultiSelect);
+	}
+
+	initializeClosePopoverOut();
+
+	initializeSidebar();
+
+	initializeIo();	
+
+	initializeControls();
 
 	configureEvents();
 
-
 	updateCounts();
 
-	initiateSearch();
-
-	function handleMultiSelect(){
-		var sections = $('#filter').val().split(',');
-
-		var systems = $('#systems');
-
-		initMultiSelect(systems);
-
-		systems.val(sections);
-
-		systems.multiselect('refresh');
-	}
-
-	function initMultiSelect(element){
-		element.multiselect({
-			buttonWidth: '100%',
-			buttonClass: 'btn btn-link',
-			nonSelectedText: i18n.t("main-page.header.system-select"),
-			onChange : systemChanged
-		});
-	}
-
-	function systemChanged(element, checked){
-		jQuery.ajax({
-			url: '/updateFilter',
-			type: "PUT",
-			global: false,
-			data : { filter : $('#systems').val() },
-			success: function (xhr, status, error) {
-				console.log('sucess');
-				$('#filter').val($('#systems').val());
-				initiateSearch();
-				updateCounts();
-			}
-		});
-	}
-
-	//refreshQuestions();
-
-	handleListGroup();
-
-	$('.notifications span').tooltip();
-	window.addEventListener("paste", processPasteEvent);
+	initiateSearch();			
 });
 
 function processPasteEvent(e) {
@@ -329,14 +340,7 @@ function ignoreDrag(e) {
 
 function handleListGroup(){
 	var listGroup = $(".list-group-questions");
-	//
-	//  listGroup.delegate('.answer-collapsible .trigger-action', 'click', function(e){
-	//    e.stopPropagation();
-	//  });
-	//
-	//  listGroup.delegate('span', 'click', function(e){
-	//
-	//  });
+
 	listGroup.delegate(".answer-collapsible", "shown.bs.collapse", function(){
 		var textarea = $('.textarea', $('.list-group-item-question.active'));
 
@@ -385,8 +389,6 @@ function handleListGroup(){
 		previous.removeClass('active');
 		$(event.currentTarget).addClass('active');
 	});
-
-	$('.pagination').delegate('a', 'click', paginationClicked);
 }
 
 function onEditAnswerClicked(identifier, answerIdentifier){
@@ -449,9 +451,9 @@ function openEditQuestionPopup(identifier){
 					highlight: true,
 					minLength: 1
 				},
-										{
-											source: engine.ttAdapter()
-										}]
+				{
+					source: engine.ttAdapter()
+				}]
 			});
 
 			$('.tokenfield', '#editQuestionModal').tokenfield('setTokens', result.tags);
@@ -580,18 +582,6 @@ function attachClipboardEvent(){
 	});
 }
 
-function paginationClicked(){
-	if(!$(this).hasClass("active")){
-		var lastActive = $(this).closest(".pagination").children(".active");
-		lastActive.removeClass("active");
-		$(this).parent().addClass("active");
-	}
-
-	//searchFunction();
-}
-
-var searchFunction;
-
 function sidebarClicked(){
 	var linkId = $(this).attr('id');
 
@@ -673,7 +663,7 @@ function onEditCompleted(modal){
 	$('.tokenfield', modal).tokenfield('setTokens', '');
 	$('.textarea', modal).html('');
 	$(modal).modal('hide');
-	//searchFunction();
+	dispatchRefreshQuestions();
 	$('.edit-question-btn-save').off('click');
 }
 
@@ -718,6 +708,8 @@ function ask(hidePopover){
 		});
 
 		updateCounts();
+
+		dispatchRefreshQuestions();
 
 		updateUserScore(true);
 
@@ -796,14 +788,10 @@ function initiateSearch(){
 
 	var pageNumber =  $('li.active > a', '.pagination').html();
 
-	searchFunction = getQuestionsByLink;
-
 	if(getParameterByName('id') != ''){
 		getOutstandingCountByFilter({filter : { criteria :{ '_id' : getParameterByName('id') }, page : pageNumber }}, refreshQuestionsWith);
 		return;
 	}
-
-	getOutstandingCountByFilter({filter : { criteria :{$or : [{"solutions.useful": 0}, {"solutions": {$size : 0}}], type : $('#filter').val()}, page : pageNumber }}, refreshQuestionsWith);
 }
 
 function registerAnswer(question){
@@ -820,7 +808,7 @@ function registerAnswer(question){
 		type: "PUT",
 		data: question,
 		success: function (result, status, error) {
-			//$('.textarea', selectedQuestion).val('');
+			$('.textarea', selectedQuestion).html('');
 			selectedQuestion.removeClass('active');
 			$('.answer-collapsible.in').collapse('toggle');
 
@@ -854,18 +842,18 @@ function deleteQuestion(questionIdentifier){
 			updateUserScore(false);
 
 			io.emit('update-counts');
-			
+
 			updateCounts();
-			
+
 			dispatchRefreshQuestions();
 		}
 	});
 }
 
 function dispatchRefreshQuestions(){
-	
+
 	var eventRefreshQuestions = document.createEvent("Event");
-	
+
 	eventRefreshQuestions.initEvent("refreshQuestions",true,true);
 
 	document.dispatchEvent(eventRefreshQuestions);
@@ -940,17 +928,11 @@ function onDeleteAnswerClicked(question, identifier){
 		data: { answer: identifier },
 		success: function (data) {
 			updateCounts();
-			//searchFunction();
+			dispatchRefreshQuestions();
 		}
 	});
 }
 
-
-function question(id, content, answers){
-	return '<a onclick="showAnswer(\'' + id +'\')" href="#" class="list-group-item-question ">' +
-		'<h4 class="list-group-item-heading">' + content + '</h4>' +
-		'<p class="list-group-item-text">' + answers + '</p></a>';
-}
 
 function getShortAnswers(solutions){
 	var solutionsString = '';
@@ -963,49 +945,6 @@ function getShortAnswers(solutions){
 		toBeContinued = "";
 
 	return solutionsString.substr(0, 120) + toBeContinued;
-}
-
-// Refactored Functions
-
-
-function configureEventHandlers() {
-	var questions = $(".list-group-questions");
-
-	questions.delegate(".list-group-item-question", "click", function(event) {
-		var question = $(event.currentTarget),
-				url = '/question/' + question.data("id");
-
-		//console.log(url);
-		//console.log(question);
-
-		$.get(url, function(data) {
-			var answers = question.find('.answers'),
-					answer;
-
-			answers.html('');
-
-			for (var i = 0; i < data.solutions.length; i++) {
-				answer = [];
-
-				answer.push('<div class="panel panel-default">');
-				answer.push('    <div class="panel-heading">');
-				answer.push('        <span class="badge">' + data.solutions[i].useful + '</span>');
-				answer.push('        <label>' + data.solutions[i].user.username + '</label>');
-				answer.push('        ' + toDateTime(data.solutions[i].created));
-				answer.push('        <a onclick="rateUp(\'' + data.solutions[i]._id +'\')" class="answer-result green" href="#">');
-				answer.push('            <span class="glyphicon glyphicon-ok"></span>');
-				answer.push('        </a>');
-				answer.push('    </div>');
-				answer.push('    <div class="panel-body">');
-				answer.push('   ' + data.solutions[i].content );
-				answer.push('    </div>');
-				answer.push('</div>');
-
-				answers.append(answer.join(''));
-			}
-		});
-
-	});
 }
 
 function getLastUpdate(questionLastUpdate){
@@ -1029,101 +968,6 @@ function getLastUpdate(questionLastUpdate){
 	}
 
 	return seconds + ' seconds';
-}
-
-function getQuestion(question){
-
-	var html = [];
-
-	var questionCollapsibleId = 'answer-for-' + question._id;
-
-	var highlightedItem = "";
-
-	if(!question.read){
-		if(question.user.username == $('#user-name').val()){
-			highlightedItem = 'list-group-item-highlighted';
-		}
-	}
-
-	var picture = question.user.google ? question.user.google.picture :"/img/unknown.png";
-
-	var questionLastUpdate = question.updated ? new Date(question.updated).getTime() : new Date(question.created).getTime();
-
-	html.push('<div data-target="#' + questionCollapsibleId + '" class="list-group-item list-group-item-question ' + highlightedItem + '" data-parent="#accordion" data-toggle="collapse" data-id="' + question._id +'" onclick="ga_event(\'Question\', \'Open-Question-' + question._id + '\', \'Show details from question\')">');
-	html.push('<div class="navbar-right">')
-	html.push('<span class="label label-success" style="margin-top: 5px; float: left;margin-right: 5px">' + getLastUpdate(questionLastUpdate) + '</span>')
-
-	html.push('<img data-toggle="dropdown" class="img-responsive panel-user img-circle" src="' + picture + '" alt="" data-toggle="tooltip" data-placement="left" title="'+ question.user.username +'" data-original-title="Tooltip on left"/>');
-	html.push('</div>')
-	html.push('<span class="glyphicon glyphicon-share-alt clip" onclick="onCommentClicked()" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;" title="Copy to clipboard"></span>');
-	if(question.user.username == $('#user-name').val()){
-		html.push('<span data-toggle="modal" onclick="onEditClicked(this)" data-target="#editQuestionModal" class="glyphicon glyphicon-pencil" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
-		html.push('<span onclick="deleteQuestion(\'' + question._id +'\')" class="glyphicon glyphicon-trash" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
-	}
-	html.push('  <h4 class="list-group-item-heading">' + question.content + '</h4>');
-
-	if(question.tags.length){
-		html.push('<div class="tags">');
-		for (var i = 0; i < question.tags.length; i++) {
-			html.push('<div class="token ' + question.tags[i].replace(/\s/g, "-") + '"><span class="token-label" style="max-width: 941px;">'+ question.tags[i] + ' </span></div>');
-		}
-		html.push('</div>');
-	}else{
-		if(question.solutions.length){
-			html.push('  <p class="list-group-item-text answer-preview-text">' + getShortAnswers(question.solutions) + '</p>');
-		}else{
-			html.push('<br>');
-		}
-	}
-
-	html.push('  <div class="answer-collapsible collapse"  id="' + questionCollapsibleId + '">');
-	for (var i = 0; i < question.solutions.length; i++) {
-		// html.push('<div class="panel panel-default">');
-		// html.push('<div class="panel-heading">');
-		// html.push('<span id="' + question.solutions[i]._id +  '" class="badge">' + question.solutions[i].useful + '</span>');
-		// html.push('<label>' + question.solutions[i].user.username + '</label>' + '  ' + toDateTime(question.solutions[i].created));
-		// html.push('</button>');
-		// html.push('<button onclick="rateUp(\'' + question.solutions[i]._id +'\')" class="answer-result green" href="#">');
-		// html.push('<span class="glyphicon glyphicon-ok"></span>');
-		// html.push('</button>');
-		// html.push('</div>');
-		// html.push('<div class="panel-body">');
-		// html.push(question.solutions[i].content);
-		// html.push('</div>');
-		// html.push('</div>');
-
-		html.push('<div class="list-group">');
-		html.push('<div data-id="' + question.solutions[i]._id + '" class="list-group-item list-group-item-answer">');
-		html.push('<span onclick="rateDown(\'' + question.solutions[i]._id +'\')" class="glyphicon glyphicon-thumbs-down" style="float: right;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
-		html.push('<span id="' + question.solutions[i]._id +  '" class="badge" style="margin-right: 5px">' + question.solutions[i].useful + '</span>');
-		html.push('<span onclick="rateUp(\'' + question.solutions[i]._id +'\')" class="glyphicon glyphicon-thumbs-up" style="float: right;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
-		if(question.solutions[i].user.username == $('#user-name').val()){
-			html.push('<span data-toggle="modal" onclick="onEditAnswerClicked(this)" data-target="#editAnswerModal" class="glyphicon glyphicon-pencil" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
-			html.push('<span data-toggle="modal" onclick="deleteAnswer(\'' + question.solutions[i]._id +'\')" class="glyphicon glyphicon-trash" style="float: left;font-size: 15px;cursor: pointer;margin-right: 5px;"></span>');
-		}
-
-		html.push('<label class="list-group-item-heading">' + question.solutions[i].user.username + ' '  + toDateTime(question.solutions[i].created) + '</label>');
-		html.push('<p class="list-group-item-text">' + question.solutions[i].content + '</p>');
-		html.push('</div>');
-		html.push('</div>');
-	}
-
-	if($('#systems').val() != 'hours' && $('#systems').val() != 'peopleCare'){
-		html.push(buildAnswerPanel());
-	}else if($('#department').val() == 'administrative'){
-		html.push(buildAnswerPanel());
-	}
-
-	html.push('</div>');
-	html.push('</div>');
-
-
-
-	var a = html.join('');
-
-	//console.log(a);
-
-	return html.join('');
 }
 
 function buildAnswerPanel(){
@@ -1158,43 +1002,6 @@ function buildTagPanel(){
 	answerPanel.push('<span class="input-group-btn"><button onclick="ask()" class="btn btn-info btn-ask">'+ i18n.t("main-page.question-panel.register") +'?</button></span>')
 	answerPanel.push('</div>');
 	return answerPanel.join('');
-}
-
-function handleCollapsibleAnswers(elementEvent){
-
-	var question = $(elementEvent.currentTarget).parent('.list-group-item-question');
-	var id = question.data('id');
-	var url = '/question/' + id;
-
-	//console.log(url);
-	//console.log(question);
-
-	$.get(url, function(data) {
-		var answers = question.find('#answer-for-' + data._id),
-				answer;
-
-		answers.html('');
-
-		for (var i = 0; i < data.solutions.length; i++) {
-			answer = [];
-
-			answer.push('<div class="panel panel-default">');
-			answer.push('    <div class="panel-heading">');
-			answer.push('        <span class="badge">' + data.solutions[i].useful + '</span>');
-			answer.push('        <label>' + data.solutions[i].user.username + '</label>');
-			answer.push('        ' + toDateTime(data.solutions[i].created));
-			answer.push('        <a onclick="rateUp(\'' + data.solutions[i]._id +'\')" class="answer-result green" href="#">');
-			answer.push('            <span class="glyphicon glyphicon-ok"></span>');
-			answer.push('        </a>');
-			answer.push('    </div>');
-			answer.push('    <div class="panel-body">');
-			answer.push('   ' + data.solutions[i].content );
-			answer.push('    </div>');
-			answer.push('</div>');
-
-			answers.append(answer.join(''));
-		}
-	});
 }
 
 function getQuestionMade(){
@@ -1256,7 +1063,7 @@ function handleDetailedQuestionPopover(){
 				return;
 			}
 
-			//getBySearch();
+			getBySearch();
 
 		});
 	});
@@ -1289,10 +1096,11 @@ function configureEvents(){
 			$('.btn-ask').focus();
 		}
 
-		searchFunction = getBySearch;
+		getBySearch();
 
-		//getBySearch();
 	});
+
+	window.addEventListener("paste", processPasteEvent);
 }
 
 function getBySearch(){
@@ -1492,9 +1300,8 @@ function getTags(){
 	return $.grep(question.split(' '),function(n){return(n);});
 }
 
-function buildSearchData(){
-	var pageNumber =  $('li.active > a', '.pagination').html();
-
+function buildSearchData(pageNumber){
+	
 	var searchesConditions = getConditions();
 
 	//type :$('#systems').val(), $text: { $search: getQuestionTrimmed() }

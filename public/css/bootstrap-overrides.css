@@ -733,6 +733,7 @@ img.attached{ max-width: 100%; }
 .tags .searched-tag {
 	border-color: #398439;
 	background-color: #449d44;
+	color: white;
 }
 
 .searched-tag .token-label{
