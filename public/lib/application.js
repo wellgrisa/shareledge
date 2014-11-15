@@ -1309,11 +1309,11 @@ function buildSearchData(pageNumber){
 	return {
 		filter : {
 			criteria : {
-				$or : searchesConditions ,
-				type :$('#systems').val()
+				type :$('#systems').val(), $text: { $search: getQuestionTrimmed()}
 			},
+			projection : {score: { $meta: "textScore" }},
 			page : pageNumber ,
-			orderby : { useful: -1 , updated: -1 }
+			orderby : { score: { $meta: "textScore" } }
 		}
 	};
 }
@@ -1328,3 +1328,4 @@ function getParameterByName(name) {
 function onCommentClicked(){
 	this.event.stopPropagation();
 }
+

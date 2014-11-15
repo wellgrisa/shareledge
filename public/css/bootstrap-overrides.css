@@ -889,6 +889,7 @@ browsemedia="all"
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
 	box-shadow: none;
+	border-right-width: 0;
 }
 
 .list-group-item.list-group-item-question.active{
@@ -909,6 +910,11 @@ browsemedia="all"
 .list-group-item:first-child {
 	border-top-right-radius: 0px;
 	border-top-left-radius: 0px;
+}
+
+.list-group-item:last-child {
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px;
 }
 
 #language-selection .dropdown-menu{

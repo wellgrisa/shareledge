@@ -53,7 +53,7 @@ var QuestionsBox = React.createClass({
 
 		$('i.glyphicon-search').addClass('hidden');
 		$('img.icon-loading ').removeClass('hidden');
-		
+
 		this.refreshQuestionsBySearch(true);
 	},
 	refreshQuestionsBySearch: function(restartData){
@@ -89,7 +89,10 @@ var QuestionsBox = React.createClass({
 				})
 				.addClass('searched-tag');
 			}
-		}.bind(this));
+		}.bind(this))
+		.error(function(){
+			debugger;
+		});
 		$.xhrPool.push(searchingAjax)
 	},
 	handleScroll: function(e) {    		
@@ -102,6 +105,7 @@ var QuestionsBox = React.createClass({
 		}
 	},
 	handleMainMenuClick: function(e){
+		$('#example').height(100);
 		this.state.textSearch = false;
 		this.restartData();
 	},
@@ -188,11 +192,14 @@ var QuestionBy = React.createClass({
 
 		return (
 			<div className="navbar-right">						
-			<span className="label label-success" style={spanStyle}>{getLastUpdate(questionLastUpdate)}</span>		
+			<If condition={question.score}>
+				<span className="label label-warning beautify-tooltip" style={spanStyle} title="Search's Score" data-placement="left">{question.score}</span>
+			</If>						
+			<span className="label label-success beautify-tooltip" style={spanStyle} title={"Created in: " + toDateTime(question.created)} data-placement="left">{getLastUpdate(questionLastUpdate)}</span>		
 	<img data-toggle="dropdown" className="img-responsive panel-user beautify-tooltip img-circle" src={picture}
-																	 alt="" data-placement="left" title={question.user.username} data-original-title="Tooltip on left"/>
-																	 </div>
-																	);
+		 alt="" data-placement="left" title={question.user.username} data-original-title="Tooltip on left"/>
+		 </div>
+		);
 }
 });
 
@@ -211,7 +218,7 @@ var QuestionSubContent = React.createClass({
 	render: function(){
 		var question = this.props.question, subContent;
 
-		if(question.tags.length){
+		if(question.tags && question.tags.length){
 			return (
 				<QuestionTags tags={question.tags}/>
 			);
@@ -229,23 +236,23 @@ var QuestionSubContent = React.createClass({
 				}
 				});
 
-			var QuestionTags = React.createClass({
-				render: function(){
-					var tagsNodes = this.props.tags.map(function (tagNode) {
-						return (
-							<div className="token Tryout">
-							<span className={"token-label " + tagNode.replace(/\s/g, "-")}>{tagNode}</span>
-																							</div>
-																						 );
-				});	
+var QuestionTags = React.createClass({
+	render: function(){
+		var tagsNodes = this.props.tags.map(function (tagNode) {
+			return (
+				<div className="token Tryout">
+					<span className={"token-label " + tagNode.replace(/\s/g, "-")}>{tagNode}</span>
+				</div>
+			);
+	});	
 
-				return (
-				<div className="tags">
-				{tagsNodes}
-																					 </div>
-																					);
-		}
-	});
+	return (
+		<div className="tags">
+			{tagsNodes}
+		 </div>
+	);
+	}
+});
 
 	var If = React.createClass({
 	render: function() {

@@ -23,23 +23,29 @@ var mongoose = require('mongoose'),
 		slack = require('slack-notify')("https://bravi.slack.com/services/hooks/incoming-webhook?token=MCpfwNh6FtmKPVrgKx8p81Zs");
 
 mongoose.Model.paginate = function(opts, callback) {
-
+	console.log('\n---->', require('util').inspect(opts, { depth: 2, colors: true }));
 	var criteria = opts.criteria || {};
 	var populate = opts.populate || {};
 	var order = opts.orderby || { updated: -1 }; // Order by CreatedDate DESC
 	var limit = opts.limit || 15;
 	var page = opts.page || 1;
+	var projection = opts.projection || {};
 	var Model = this;
 	console.log(opts);
 	Model.count(criteria, function (err, totalRecords) {
-		var query = Model.find(criteria)
-		.populate(populate)
+		var query = Model.find(criteria, projection)
+		.populate(populate)		
 		.sort(order)
 		.skip((page - 1) * limit)
 		.limit(limit);
+		
+		console.log('\n---->', require('util').inspect('count', { depth: 2, colors: true }));
 
 		query.exec(function(error, records) {
-			if (err) return callback(err);
+			if (error) {
+				console.log('\n---->', require('util').inspect(error, { depth: 2, colors: true }));
+				return callback(error);
+							 }
 			var result = {
 				records: records,
 				pagination : {
@@ -48,6 +54,8 @@ mongoose.Model.paginate = function(opts, callback) {
 					totalPages : Math.ceil(totalRecords / limit)
 				}
 			};
+			
+			
 
 			callback(null, result);
 		});
@@ -167,6 +175,7 @@ exports.search = function(req, res) {
 		page: page,
 		criteria : criteria,
 		populate : 'user solutions.user',
+		projection : req.query.filter.projection,
 		orderby : req.query.filter.orderby
 	};
 
