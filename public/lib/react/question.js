@@ -33,6 +33,7 @@ var QuestionsBox = React.createClass({
 		document.getElementById("main-menu").addEventListener("click", this.handleMainMenuClick);
 		document.addEventListener("refreshQuestions",this.restartData);
 		document.getElementById("question").addEventListener("keyup", this.handleQuestionKeyUp);
+		$('.detailed-question-popover').delegate('.detailed-question', 'keyup', function(){alert('a');});
 		$('#accordion').delegate('.btn-answer', 'click', this.handleQuestionAnswered);
 		this.refreshQuestions('all-questions');
 		handleListGroup();

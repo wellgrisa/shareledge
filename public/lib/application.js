@@ -1063,7 +1063,7 @@ function handleDetailedQuestionPopover(){
 				return;
 			}
 
-			getBySearch();
+			//getBySearch();
 
 		});
 	});
@@ -1096,7 +1096,7 @@ function configureEvents(){
 			$('.btn-ask').focus();
 		}
 
-		getBySearch();
+		//getBySearch();
 
 	});
 

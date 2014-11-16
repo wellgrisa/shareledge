@@ -920,3 +920,25 @@ browsemedia="all"
 #language-selection .dropdown-menu{
 	min-width: 20px;
 }
+
+.question-container .popover, .detailed-question-popover.popover{
+	background: #353844;
+	border:1px solid #bcbfc1;
+	border-radius: 0;
+}
+
+.detailed-question-popover.popover{
+	margin-left: 12px;
+}
+
+.question-container .popover-content, .detailed-question-popover .popover-content{
+	border-left: 3px solid #20a8d8;
+}
+
+.question-container .popover.bottom .arrow:after, .detailed-question-popover.popover.bottom .arrow:after{
+	border-bottom-color: #353844;
+}
+
+.question-container .popover.bottom .arrow, .detailed-question-popover.popover.bottom .arrow{
+	border-bottom-color: #bcbfc1;
+}
