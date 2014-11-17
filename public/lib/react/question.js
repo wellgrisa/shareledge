@@ -33,24 +33,25 @@ var QuestionsBox = React.createClass({
 		document.getElementById("main-menu").addEventListener("click", this.handleMainMenuClick);
 		document.addEventListener("refreshQuestions",this.restartData);
 		document.getElementById("question").addEventListener("keyup", this.handleQuestionKeyUp);
-		$('.detailed-question-popover').delegate('.detailed-question', 'keyup', function(){alert('a');});
+		$('body').delegate('.detailed-question', 'keyup', this.handleQuestionKeyUp);
 		$('#accordion').delegate('.btn-answer', 'click', this.handleQuestionAnswered);
 		this.refreshQuestions('all-questions');
 		handleListGroup();
 	},
-	handleQuestionKeyUp: function(){
-		this.state.restartData = true;
+	handleQuestionKeyUp: function(){		
 		this.state.page = 1;
 		this.state.textSearch = true;
-
-		if($('#question').val() == ""){
-			$(".sidebar").children(".active").removeClass('active');
-			$('#all-questions').parent().addClass('active');
-		}
 
 		if($.xhrPool.length){
 			$.xhrPool.abortAll();
 		}
+
+		if(getQuestionTrimmed() == ""){
+			$(".sidebar").children(".active").removeClass('active');
+			$('#all-questions').parent().addClass('active');
+			this.restartData();
+			return;
+		}		
 
 		$('i.glyphicon-search').addClass('hidden');
 		$('img.icon-loading ').removeClass('hidden');
@@ -140,14 +141,19 @@ var QuestionList = React.createClass({
 	}
 });
 
-var Question = React.createClass({  
+var Question = React.createClass({ 
+	toggle: function(e) {
+		if($(e.target).hasClass('collapsible-element')){
+			$(e.currentTarget).children('.answer-collapsible').collapse('toggle');
+		}		
+	},
 	render: function(){
 		var questionForAnswerObject = { 
 			id : this.props.question._id,
 			answers : this.props.question.solutions
 		};
 		return (
-			<div className="list-group-item list-group-item-question" data-id={this.props.question._id} data-parent="#accordion" data-toggle="collapse">
+			<div onClick={this.toggle} className="collapsible-element list-group-item list-group-item-question" data-id={this.props.question._id} data-parent="#accordion" data-toggle="collapse">
 			<QuestionBy question={this.props.question}/>
 			<QuestionActions question={this.props.question}/>
 			<QuestionContent content={this.props.question.content}/>
@@ -171,12 +177,12 @@ var QuestionActions = React.createClass({
 
 		return (
 			<div style={floatLeft}>
-			<span className="glyphicon glyphicon-share-alt clip question-action-copy beautify-tooltip" onclick="onCommentClicked()" data-placement="right" title="Copy to clipboard"/>
+			<span className="no-collapse glyphicon glyphicon-share-alt clip question-action-copy beautify-tooltip" onclick="onCommentClicked()" data-placement="right" title="Copy to clipboard"/>
 			<If condition={isQuestionCreatedByCurrentUser}>
-			<span className="glyphicon glyphicon-pencil beautify-tooltip" onClick={this.handleQuestionEditClicked.bind(this, this.props.question._id)} data-placement="right" title="Edit this question?"/>								
+			<span className="no-collapse glyphicon glyphicon-pencil beautify-tooltip" onClick={this.handleQuestionEditClicked.bind(this, this.props.question._id)} data-placement="right" title="Edit this question?"/>								
 	</If>						
 	<If condition={isQuestionCreatedByCurrentUser}>
-																				<span className="glyphicon glyphicon-trash beautify-tooltip" data-placement="right" title="Delete this question?" onClick={this.handleQuestionDeleteClicked.bind(this, this.props.question._id)}/>	
+																				<span className="no-collapse glyphicon glyphicon-trash beautify-tooltip" data-placement="right" title="Delete this question?" onClick={this.handleQuestionDeleteClicked.bind(this, this.props.question._id)}/>	
 </If>
 </div>
 );
@@ -192,25 +198,18 @@ var QuestionBy = React.createClass({
 				spanStyle = { 'margin-top': '5px', float: 'left', 'margin-right': '5px' };
 
 		return (
-			<div className="navbar-right">						
-			<If condition={question.score}>
-				<span className="label label-warning beautify-tooltip" style={spanStyle} title="Search's Score" data-placement="left">{question.score}</span>
-			</If>						
-			<span className="label label-success beautify-tooltip" style={spanStyle} title={"Created in: " + toDateTime(question.created)} data-placement="left">{getLastUpdate(questionLastUpdate)}</span>		
-	<img data-toggle="dropdown" className="img-responsive panel-user beautify-tooltip img-circle" src={picture}
-		 alt="" data-placement="left" title={question.user.username} data-original-title="Tooltip on left"/>
-		 </div>
+			<div className="navbar-right">			
+				<span className="no-collapse label pointer label-success beautify-tooltip" style={spanStyle} title={"Created in: " + toDateTime(question.created)} data-placement="left">{getLastUpdate(questionLastUpdate)}</span>		
+				<img data-toggle="dropdown" className="no-collapse img-responsive panel-user beautify-tooltip img-circle" src={picture} alt="" data-placement="left" title={question.user.username} data-original-title="Tooltip on left"/>
+		 	</div>
 		);
 }
 });
 
-var QuestionContent = React.createClass({
-	toggle: function(e) {
-		$(e.currentTarget).siblings('.answer-collapsible').collapse('toggle');
-	},
+var QuestionContent = React.createClass({	
 	render: function(){	
 		return (
-			<h4 onClick={this.toggle} className="list-group-item-heading" dangerouslySetInnerHTML={{__html: this.props.content}}></h4>
+			<h4 className="list-group-item-heading collapsible-element" dangerouslySetInnerHTML={{__html: this.props.content}}></h4>
 		);
 	}
 });
@@ -226,47 +225,69 @@ var QuestionSubContent = React.createClass({
 		}else{
 			if(question.solutions.length){
 				return (
-					<p className="list-group-item-text answer-preview-text">{getShortAnswers(question.solutions)}</p>
+					<p className="list-group-item-text answer-preview-text collapsible-element">{getShortAnswers(question.solutions)}</p>
 				);
-		}else{
-			return (
-				<br/>
-			);
-				}
-				}			
-				}
-				});
-
-var QuestionTags = React.createClass({
-	render: function(){
-		var tagsNodes = this.props.tags.map(function (tagNode) {
-			return (
-				<div className="token Tryout">
-					<span className={"token-label " + tagNode.replace(/\s/g, "-")}>{tagNode}</span>
-				</div>
-			);
-	});	
-
-	return (
-		<div className="tags">
-			{tagsNodes}
-		 </div>
-	);
+			}else{
+				return (
+					<br className="collapsible-element"/>
+				);
+			}
+		}			
 	}
 });
 
-	var If = React.createClass({
+var QuestionTags = React.createClass({
+				render: function(){
+					var tagsNodes = this.props.tags.map(function (tagNode) {
+						return (
+							<div className="token Tryout">
+							<span className={"token-label " + tagNode.replace(/\s/g, "-")}>{tagNode}</span>
+																							</div>
+																						 );
+				});	
+
+				return (
+				<div className="tags collapsible-element">
+				{tagsNodes}
+																					 </div>
+																					);
+		}
+	});
+
+var If = React.createClass({
 	render: function() {
-	if (this.props.condition) {
-	return this.props.children;
-}
-																					 else {
-																					 return false;
-																					 }
-																					 }
-																					 });
+		if (this.props.condition) {
+			return this.props.children;
+		}else {
+	 		return false;
+	 	}
+ 	}
+});
 
 React.render(
 	<QuestionsBox url="/question"/>,  
 	document.getElementById('example')
 );
+
+function getQuestionMade(){
+	if($('#main-navbar').next('div.popover.in').length){
+		return {
+			content : $('.detailed-question').html(),
+			tags : $('.detailed-question-popover .tokenfield').length ? tidyTagsUp($('.detailed-question-popover .tokenfield').tokenfield('getTokensList').split(',')) : ""
+		};
+	}else{
+		return {
+			content : $('#question').val(),
+			tags : $('.simple-question-popover .tokenfield').length ? tidyTagsUp($('.simple-question-popover .tokenfield').tokenfield('getTokensList').split(',')) : ""
+		};
+	}
+}
+
+function dispatchRefreshQuestions(){
+
+	var eventRefreshQuestions = document.createEvent("Event");
+
+	eventRefreshQuestions.initEvent("refreshQuestions",true,true);
+
+	document.dispatchEvent(eventRefreshQuestions);
+}

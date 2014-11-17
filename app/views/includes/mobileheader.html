@@ -89,13 +89,10 @@
 					<div class="left-inner-addon ">
 						<i class="glyphicon glyphicon-search"></i>
 						<img class="icon-loading hidden" src="/img/loading.gif" style="display: block;">
-						<input type="text" id="question" name="question" title="{{ t('main-page.header.whats') }}" class="form-control" placeholder="{{ t('main-page.header.whats') }}">
+						<input type="text" id="question" name="question" title="{{ t('main-page.header.whats') }}" class="form-control beautify-tooltip" data-placement="bottom" placeholder="{{ t('main-page.header.whats') }}"/>
 					</div>
 
-					<span id="group-ask" class="input-group-btn">
-						<button id="btn-ask" type="button" data-clipboard-text="Fucke me!" class="btn btn-info" onclick="tagging()" data-gacategory="Question" data-gaaction="First-ask" data-galabel="Asking a question but it was not confirmed yet.">
-							{{ t('main-page.header.ask') }}
-						</button>
+					<span id="group-ask" class="input-group-btn">						
 						<button class="btn btn-info" onclick="askDetailedQuestion()" type="button"><i  class="glyphicon glyphicon-list-alt"></i></button>
 					</span>
 				</div>

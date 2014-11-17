@@ -391,41 +391,7 @@ function handleListGroup(){
 	});
 }
 
-function onEditAnswerClicked(identifier, answerIdentifier){
 
-	$('#editAnswerModal').modal();
-
-	$.ajax({
-		url: "/question/" + identifier,
-		global: false,
-	})
-	.done(function( result ) {
-		openEditAnswerPopup(result, answerIdentifier);
-	});
-}
-
-function openEditAnswerPopup(result, answerIdentifier){
-	var editQuestionModal = $('.textarea', '#editAnswerModal');
-	editQuestionModal.wysiwyg();	
-
-	var solution = _.where(result.solutions, {_id: answerIdentifier});
-
-	editQuestionModal.html(_.first(solution).content);
-
-	$('.edit-question-btn-save').on('click', function(){
-
-		_.each(result.solutions, function(solution){
-			if(solution._id == answerIdentifier){
-				solution.content = $('.textarea', '#editAnswerModal').html();
-			}
-		});		
-
-		updateQuestion({
-			id : result._id,
-			solutions : result.solutions
-		}, onEditAnswerCompleted);
-	});
-}
 
 function openEditQuestionPopup(identifier){  
 	console.log(identifier);
@@ -835,8 +801,7 @@ function deleteQuestion(questionIdentifier){
 	var url = '/question/' + questionIdentifier;
 	jQuery.ajax({
 		url: url,
-		type: "DELETE",
-		data: question,
+		type: "DELETE",		
 		success: function (result, status, error) {
 
 			updateUserScore(false);
@@ -893,30 +858,7 @@ function showAnswer(id){
 	$('.answer-panel').fadeIn('slow');
 }
 
-function rateUp(question, identifier){
-	rate(question, identifier, 'up');
-}
 
-function rateDown(question, identifier){
-	rate(question, identifier, 'down');
-}
-
-function rate(question, identifier, rate){
-	var url = '/answer/' + question;
-
-	jQuery.ajax({
-		url: url,
-		global: false,
-		type: "PUT",
-		data: { answer: identifier , rate: rate },
-		success: function (data) {
-			$('#' + data._id).html(data.useful);
-			io.emit('answer-rated', { answeredBy : data.user});
-			updateCounts();
-			updateUserScore(true);
-		}
-	});
-}
 
 function onDeleteAnswerClicked(question, identifier){
 	var url = '/answer/' + question;
@@ -1063,8 +1005,6 @@ function handleDetailedQuestionPopover(){
 				return;
 			}
 
-			//getBySearch();
-
 		});
 	});
 }
@@ -1095,58 +1035,9 @@ function configureEvents(){
 			tagging();
 			$('.btn-ask').focus();
 		}
-
-		//getBySearch();
-
 	});
 
 	window.addEventListener("paste", processPasteEvent);
-}
-
-function getBySearch(){
-
-	if($('#question').val() == ""){
-		$(".sidebar").children(".active").removeClass('active');
-		$('#all-questions').parent().addClass('active');
-	}
-
-	if($.xhrPool.length){
-		$.xhrPool.abortAll();
-	}
-
-	$('i.glyphicon-search').addClass('hidden');
-	$('img.icon-loading ').removeClass('hidden');
-
-	var searchingAjax = $.ajax({
-		url: "/question/search",
-		data: buildSearchData(),
-		global: false,
-	})
-	.done(function( result ) {
-		refreshQuestionsWith(result);
-
-		$('i.glyphicon-search').removeClass('hidden');
-		$('img.icon-loading ').addClass('hidden');
-
-		var arrayOfTags = getTags();
-
-		jQuery.ajax({
-			url: '/addSearchCount',
-			type: "PUT",
-			global: false,
-		});
-
-		for (var i = 0; i < arrayOfTags.length; i++) {
-			$('.tags').children().filter(function() {
-				var c = $(this).attr('class');
-				$(this).attr('class', c.toLowerCase());
-				return $(this).hasClass(arrayOfTags[i].replace(/\s/g, "-"));
-			})
-			.addClass('searched-tag');
-		}
-	});
-
-	$.xhrPool.push(searchingAjax)
 }
 
 function requestPermission(){

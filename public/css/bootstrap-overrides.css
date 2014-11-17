@@ -37,6 +37,11 @@ body.login{
 
 .panel-user{
 	height: 30px;
+	cursor: pointer;
+}
+
+.pointer{	
+	cursor: pointer;
 }
 /*
 .navbar .notifications .glyphicon{
