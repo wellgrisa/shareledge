@@ -17,7 +17,8 @@
         "sign-out" : "Sair",
         "outstanding-questions" : "Questões pendentes.",
         "your-questions" : "Suas questões. Um número aparece quando você recebe uma resposta.",
-        "system-select" : "Selecione uma sistema"
+        "system-select" : "Selecione uma sistema",
+        "dashboard" : "Dashboard"
     },
     "sidebar" : {
       "my-questions" : "Minhas Questões",

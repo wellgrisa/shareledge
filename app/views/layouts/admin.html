@@ -3,12 +3,10 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
-  <title>{% block title %}Admin Bravi Software{% endblock %}</title>
+  <title>{% block title %}Dashboard - Knowhow{% endblock %}</title>
 
   <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-  <link href="/css/dashboard.css" rel="stylesheet" media="screen">
-
-  {% block head %}{% endblock %}
+  <link href="/css/dashboard.css" rel="stylesheet" media="screen">  
 </head>
 <body data-target="#sidebar" data-spy="scroll">
 
@@ -21,27 +19,16 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="/bs-admin/">Admin Panel - Bravi Software</a>
+        <a class="navbar-brand" href="/">Home</a>
       </div>
       <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="/logout">Logout</a></li>
-        </ul>
-        <div class="navbar-right username">
-          {{getUserName()}}
-        </div>
+        
       </div>
     </div>
   </div>
 
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-3 col-md-2 sidebar">
-        <ul class="nav nav-sidebar">
-          <li class="{{ isActive('/bs-admin/employees') }}"><a href="/bs-admin/employees">Employees</a></li>
-          <li class="{{ isActive('/bs-admin/jobs') }}"><a href="/bs-admin/jobs">Jobs</a></li>
-        </ul>
-      </div>
+    <div class="row">      
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <!-- messages -->
         {% include '../includes/messages.html' %}
