@@ -135,7 +135,7 @@ exports.dashboard = function(req, res) {
 
   var dash = { 
     outstandingQuestions : 0,
-    answeredQuestions : 0,
+    answeredQuestions : 5,
     helpedPeople : 0,
     totalTags : 0,
     tags : []
@@ -144,6 +144,8 @@ exports.dashboard = function(req, res) {
   // Outstanding questions
   Question.find({solutions : {$size : 0}}).count().exec(function (err, data){
     dash.outstandingQuestions = data;    
+		console.log('---------------// first');
+		console.log('\n---->', require('util').inspect(dash, { depth: 2, colors: true }));
   });
 
   // How many answered questions and marked as useful
@@ -153,6 +155,8 @@ exports.dashboard = function(req, res) {
     ]}).count()
   .exec(function (err, data){
     dash.answeredQuestions = data;
+		console.log('---------------// second');
+		console.log('\n---->', require('util').inspect(dash, { depth: 2, colors: true }));
   });
 
   // How many people were helped (Just questions marked as useful)
@@ -184,6 +188,9 @@ exports.dashboard = function(req, res) {
     dash.tags = data;
   });
   
+	console.log('---------------//dash');
+	console.log('\n---->', require('util').inspect(dash, { depth: 2, colors: true }));
+	
   return res.render('admin/dashboard', { 'data' : dash });
 };
 

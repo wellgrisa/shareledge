@@ -182,6 +182,8 @@ function initializeControls(){
 
 	$('body').tooltip({ selector: '.beautify-tooltip'});
 	
+	$('body').tooltip({ selector: '#group-ask', title : 'ai ai'});
+	
 	//event used to hide the popover and make its display to none.
 	$('body').on('hidden.bs.popover', function() {
 		$('.popover:not(.in)').hide().detach();
@@ -929,7 +931,7 @@ function buildQuestionPanel(width){
 	answerPanel.push('<div class="detailed-question textarea" data-ph="Your question goes here..."></div>');
 	answerPanel.push('<div class="panel-bottom-question">');
 	answerPanel.push('<div class="input-group">');
-	answerPanel.push('<input type="text" id="tags" class="tokenfield" title="Tag here" class="form-control" placeholder="Tag here">');
+	answerPanel.push('<input type="text" id="tags" class="tokenfield" title="Tag here" class="form-control" placeholder="Press tab or enter to insert a new tag">');
 	answerPanel.push('<span class="input-group-btn"><button onclick="ask(true)" class="btn btn-info" type="submit">'+ i18n.t("main-page.header.ask") + '</button></span>');
 	answerPanel.push('</div>');
 	answerPanel.push('</div>');
@@ -939,7 +941,7 @@ function buildQuestionPanel(width){
 function buildTagPanel(){
 	var answerPanel = []
 	answerPanel.push('<div class="input-group">');
-	answerPanel.push('<input type="text" class="tokenfield" name="question" title="Tag here" class="form-control" placeholder="Tag here">');
+	answerPanel.push('<input type="text" class="tokenfield" name="question" title="Tag here" class="form-control" placeholder="Press tab or enter to insert a new tag">');
 
 	answerPanel.push('<span class="input-group-btn"><button onclick="ask()" class="btn btn-info btn-ask">'+ i18n.t("main-page.question-panel.register") +'?</button></span>')
 	answerPanel.push('</div>');
