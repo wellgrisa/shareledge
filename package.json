@@ -34,5 +34,10 @@
     "swig": "~1.0.0-rc3",
     "underscore": "*",
     "view-helpers": "~0.1.4"
+  },
+  "devDependencies": {
+    "gulp-concat": "^2.4.1",
+    "gulp-jshint": "^1.9.0",
+    "gulp-uglify": "^1.0.1"
   }
 }
