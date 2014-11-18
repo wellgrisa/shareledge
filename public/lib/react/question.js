@@ -47,8 +47,10 @@ var QuestionsBox = React.createClass({
 		}
 
 		if(getQuestionTrimmed() == ""){
-			$(".sidebar").children(".active").removeClass('active');
+			$(".nav-sidebar").children(".active").removeClass('active');
 			$('#all-questions').parent().addClass('active');
+			$('i.glyphicon-search').removeClass('hidden');
+			$('img.icon-loading ').addClass('hidden');
 			this.restartData();
 			return;
 		}		
@@ -59,6 +61,8 @@ var QuestionsBox = React.createClass({
 		this.refreshQuestionsBySearch(true);
 	},
 	refreshQuestionsBySearch: function(restartData){
+		$(".nav-sidebar").children(".active").removeClass('active');
+		$('#all-questions').parent().addClass('active');
 		var searchingAjax = $.ajax({
 			url: "/question/search",
 			data: buildSearchData(this.state.page),
