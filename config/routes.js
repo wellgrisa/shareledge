@@ -4,8 +4,7 @@ config = require('../config/config');
 module.exports = function(app, passport) {
   // Home route
   var index = require('../app/controllers/index');
-  app.get('/', middlewares.ensureAuthenticated, index.index);
-	
+  app.get('/', middlewares.ensureAuthenticated, index.index);	
 
   var admin = require('../app/controllers/admin');
   app.post('/signup', admin.signup);
@@ -17,7 +16,7 @@ module.exports = function(app, passport) {
   app.get('/signout', admin.signout);
   app.get('/login', admin.login);
   app.post('/feedback', admin.feedback);
-  app.get('/dashboard', admin.dashboard);
+  app.get('/dashboard', middlewares.ensureAuthenticated, admin.dashboard);
 
   var question = require('../app/controllers/question');
   app.get('/question', question.all);
