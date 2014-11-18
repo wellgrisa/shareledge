@@ -35,7 +35,7 @@ var QuestionsBox = React.createClass({
 		document.getElementById("question").addEventListener("keyup", this.handleQuestionKeyUp);
 		$('body').delegate('.detailed-question', 'keyup', this.handleQuestionKeyUp);
 		$('#accordion').delegate('.btn-answer', 'click', this.handleQuestionAnswered);
-		this.refreshQuestions('all-questions');
+		this.refreshQuestions('outstanding-questions');
 		handleListGroup();
 	},
 	handleQuestionKeyUp: function(){		
