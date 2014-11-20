@@ -92,9 +92,8 @@ exports.tags = function(req, res) {
 };
 
 exports.getOutstandingByFilter = function(req, res){	
-	
-	//var criteria = req.query.filter.criteria;
-	var criteria = helper.getSearchFilter(req.query.searchType, req.user.filter);
+		
+	var criteria = helper.getSearchFilter(req.query, req.user.filter);
 	
 	console.log('\n---->', require('util').inspect(req.query.searchType, { depth: 2, colors: true }));
 

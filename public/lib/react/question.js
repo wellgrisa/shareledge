@@ -9,7 +9,7 @@ var QuestionsBox = React.createClass({
 	refreshQuestions :function(searchType, restartData){
 		console.log(this.state.page);
 		$.ajax({
-			url: '/questions/outstandingFilter',
+			url: '/questions/outstandingFilter' + location.search,
 			dataType: 'json',			
 			data: { searchType : searchType, page : this.state.page },
 			success: function(data) {
@@ -29,13 +29,17 @@ var QuestionsBox = React.createClass({
 		this.state.hasMore = this.state.page <= totalPages + 1;
 	},
 	componentDidMount: function() {		
+		debugger;
 		window.addEventListener('scroll', this.handleScroll);
 		document.getElementById("main-menu").addEventListener("click", this.handleMainMenuClick);
 		document.addEventListener("refreshQuestions",this.restartData);
 		document.getElementById("question").addEventListener("keyup", this.handleQuestionKeyUp);
 		$('body').delegate('.detailed-question', 'keyup', this.handleQuestionKeyUp);
 		$('#accordion').delegate('.btn-answer', 'click', this.handleQuestionAnswered);
-		this.refreshQuestions('outstanding-questions');
+		
+		var initialSearch = getParameterByName('id') ? 'search-by-id' : 'outstanding-questions';
+		
+		this.refreshQuestions(initialSearch);
 		handleListGroup();
 	},
 	handleQuestionKeyUp: function(){		

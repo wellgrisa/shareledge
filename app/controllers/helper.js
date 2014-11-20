@@ -1,4 +1,5 @@
 var SearchType = {
+	SearchById: "search-by-id",
 	MyQuestions: "my-questions",
 	MyOutstandingQuestions: "my-outstanding-questions",
 	MyAnsweredQuestions: "my-answered-questions",
@@ -7,7 +8,8 @@ var SearchType = {
 	AllQuestions: "all-questions"
 };
 
-exports.getSearchFilter = function(searchType, section){	
+exports.getSearchFilter = function(query, section){	
+	var searchType = query.searchType;
 	switch(searchType){
 		case SearchType.MyQuestions:
 			return {'user' : true, type : section };			
@@ -21,6 +23,8 @@ exports.getSearchFilter = function(searchType, section){
 			return {"useful" : {$gt : 0 } , type :section};
 		case SearchType.AllQuestions:
 			return {type :section};
+		case SearchType.SearchById:
+			return {'_id' : query.id };
 		default:
 			return {type :section};
 	}
