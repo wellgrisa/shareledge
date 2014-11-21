@@ -947,3 +947,8 @@ browsemedia="all"
 .question-container .popover.bottom .arrow, .detailed-question-popover.popover.bottom .arrow{
 	border-bottom-color: #bcbfc1;
 }
+
+.answer-user{
+	height: 23px;
+	margin-right: 5px;
+}

@@ -28,8 +28,7 @@ var QuestionsBox = React.createClass({
 	hasMoreItems: function(totalPages){
 		this.state.hasMore = this.state.page <= totalPages + 1;
 	},
-	componentDidMount: function() {		
-		debugger;
+	componentDidMount: function() {				
 		window.addEventListener('scroll', this.handleScroll);
 		document.getElementById("main-menu").addEventListener("click", this.handleMainMenuClick);
 		document.addEventListener("refreshQuestions",this.restartData);
@@ -101,7 +100,7 @@ var QuestionsBox = React.createClass({
 			}
 		}.bind(this))
 		.error(function(){
-			debugger;
+			
 		});
 		$.xhrPool.push(searchingAjax)
 	},
