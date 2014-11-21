@@ -73,14 +73,14 @@ var AnswerActions = React.createClass({
 		},
     render: function(){	
 				var answer = this.props.answer,
-//				 		picture = "'" + answer.data && answer.data.user && answer.data.user.google ? answer.data.user.google.picture :"img/unknown.png",
-//						<img data-toggle="dropdown" className="no-collapse img-responsive answer-user beautify-tooltip img-circle" src={picture} alt="" />
+				 		picture = "'" + answer.data && answer.data.user && answer.data.user.google ? answer.data.user.google.picture :"img/unknown.png",						
 						floatLeft = { float : 'left' };
 			
         return (
 					<div style={floatLeft}>
 						<span data-toggle="modal" onClick={this.onAnswerEditClicked.bind(this, answer)} data-target="#editAnswerModal" className="glyphicon glyphicon-pencil"/>
-						<span data-toggle="modal" onClick={this.onAnswerDeleteClicked.bind(this, answer)} className="glyphicon glyphicon-trash"/>						
+						<span data-toggle="modal" onClick={this.onAnswerDeleteClicked.bind(this, answer)} className="glyphicon glyphicon-trash"/>				
+						<img data-toggle="dropdown" className="no-collapse img-responsive answer-user beautify-tooltip img-circle" src={picture} alt="" />
 					</div>
         );
     }
