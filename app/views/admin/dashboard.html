@@ -2,76 +2,115 @@
 
 {% block content %}    
 
-    <h1 class="page-header">Dashboard</h1>
+<h1 class="page-header">Dashboard</h1>
 
-    <div class="row">
-        <div class="col-lg-9 col-sm-8">                    
-            <div class="panel panel-default">                
-                <div class="panel-heading">
-                    <h4>Overall data</h4>
-                </div> 
-                
-                <div class="panel-body">
-                    <div class="col-xs-12 col-md-4">            
-                        <div class="panel status panel-warning">
-                            <div class="panel-heading">
-                                <h1 class="panel-title text-center">{{ data.outstandingQuestions }}</h1>
-                            </div>
-                            <div class="panel-body text-center">                        
-                                Outstanding questions
-                            </div>
+<div class="row">
+    <div class="col-lg-9 col-sm-8">                    
+        <div class="panel panel-default">                
+            <div class="panel-heading">
+                <h4>Overall data</h4>
+            </div> 
+            
+            <div class="panel-body">
+                <div class="col-xs-12 col-md-4">            
+                    <div class="panel status panel-warning">
+                        <div class="panel-heading">
+                            <h1 class="panel-title text-center">{{ data.outstandingQuestions }}</h1>
+                        </div>
+                        <div class="panel-body text-center">                        
+                            Outstanding questions
+                        </div>
+                    </div>
+                </div>         
+                <div class="col-xs-12 col-md-4">           
+                    <div class="panel status panel-success">
+                        <div class="panel-heading">
+                            <h1 class="panel-title text-center">{{ data.answeredQuestions }}</h1>
+                        </div>
+                        <div class="panel-body text-center">                        
+                            Answered questions
                         </div>
                     </div>         
-                    <div class="col-xs-12 col-md-4">           
-                        <div class="panel status panel-success">
-                            <div class="panel-heading">
-                                <h1 class="panel-title text-center">{{ data.answeredQuestions }}</h1>
-                            </div>
-                            <div class="panel-body text-center">                        
-                                Answered questions
-                            </div>
-                        </div>         
-                    </div>
-                    <div class="col-xs-12 col-md-4">          
-                        <div class="panel status panel-info">
-                            <div class="panel-heading">
-                                <h1 class="panel-title text-center">{{ data.helpedPeople }}</h1>
-                            </div>
-                            <div class="panel-body text-center">                        
-                                Helped and happy people :)
-                            </div>
-                        </div>         
-                    </div>
+                </div>
+                <div class="col-xs-12 col-md-4">          
+                    <div class="panel status panel-info">
+                        <div class="panel-heading">
+                            <h1 class="panel-title text-center">{{ data.helpedPeople }}</h1>
+                        </div>
+                        <div class="panel-body text-center">                        
+                            Helped and happy people :)
+                        </div>
+                    </div>         
                 </div>
             </div>
-        </div>  
-        <div class="col-lg-3 col-sm-4">                    
-            <div class="panel panel-default">                
-                <div class="panel-heading">
-                    <h4>More asked tags</h4>
-                    
-                    <div class="panel-actions">
-                        <a href="index.html#" class="btn-setting"><i class="icon-settings"></i></a>
-                        <a href="index.html#" class="btn-minimize"><i class="icon-arrow-up"></i></a>
-                        <a href="index.html#" class="btn-close"><i class="icon-close"></i></a>
-                    </div>
-
-                </div>
+        </div>
+    </div>  
+    <div class="col-lg-3 col-sm-4">                    
+        <div class="panel panel-default">                
+            <div class="panel-heading">
+                <h4>More asked tags</h4>
                 
-                <div class="panel-body" style="padding-bottom: 13px;">
-                {% if data.tags.length == 0 %}                    
-                    <h6>No items to show</h6>
-
-                {% else %}
-                {% for tag in data.tags %}
-                    
-                    <h5>#{{tag._id}} ({{tag.count}})</h5>
-
-                {% endfor %}
-                {% endif %}                    
+                <div class="panel-actions">
+                    <a href="index.html#" class="btn-setting"><i class="icon-settings"></i></a>
+                    <a href="index.html#" class="btn-minimize"><i class="icon-arrow-up"></i></a>
+                    <a href="index.html#" class="btn-close"><i class="icon-close"></i></a>
                 </div>
-            </div>      
+
+            </div>
+            
+            <div class="panel-body" style="padding-bottom: 13px;">
+            {% if data.tags.length == 0 %}                    
+                <h6>No items to show</h6>
+
+            {% else %}
+            {% for tag in data.tags %}
+                
+                <h5>#{{tag._id}} ({{tag.count}})</h5>
+
+            {% endfor %}
+            {% endif %}                    
+            </div>
         </div>      
+    </div>      
+</div>
+
+<div class="row">
+    <div class="col-lg-12 col-sm-8"> 
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Ranking</h4>
+            </div>              
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th></th>
+                            <th>Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in data.users %}
+                        <tr>
+                            <td class="h2 description">
+                                {{user.position}}
+                            </td>
+                            <td class="description">
+                                <img class="img-circle img-ranking" src="{{user.photo}}" alt="">
+                                <span class="h4">{{user.name}}</span>
+                            </td>
+                            <td class="h2 description">
+                                <span class="sucess points">
+                                    {{user.points}}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>            
+        </div>
     </div>
+</div>
 
 {% endblock %}

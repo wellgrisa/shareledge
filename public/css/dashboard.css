@@ -126,3 +126,18 @@ body{
 .panel-danger > .panel-footer + .panel-collapse > .panel-body {
   border-bottom-color: #dddddd;
 }
+.img-ranking {
+  height: 50px;
+}
+td.description{
+  vertical-align: middle !important;
+}
+td.description>span {
+  margin-left: 5px;
+}
+span.points {
+  background-color: #37A7FD;
+  border-radius: 15px;
+  padding: 0 10px 0 10px;  
+  color: white;
+}

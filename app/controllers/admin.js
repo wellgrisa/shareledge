@@ -133,12 +133,16 @@ exports.feedback = function(req, res) {
 
 exports.dashboard = function(req, res) {
 
+  var param = {
+    max_leaders : isNaN(parseInt(req.query.max_leaders)) ? 10 : req.query.max_leaders
+  };
   var dash = { 
     outstandingQuestions : 0,
     answeredQuestions : 5,
     helpedPeople : 0,
     totalTags : 0,
-    tags : []
+    tags : [],
+    users : []
   };
   
   // Outstanding questions
@@ -179,11 +183,33 @@ exports.dashboard = function(req, res) {
           Question.distinct('tags').exec(function (err, data){    
             dash.totalTags = data.length;
 
-            return res.render('admin/dashboard', { 'data' : dash });
-          });        
-        });
-      });
-    });   		
-  });
+            // Users and their points
+            User.find(
+              { points : { $exists : true }, google : { $exists : true }}, // has to be connected through a Bravi Google's account
+              { points : 1, filter : 1, "google.name" : 1, "google.picture" : 1}
+            ).sort ( { points : -1} )
+             .limit(param.max_leaders) // URL Parameter
+             .exec(function (err, data) {
+
+                for (var i = 0; i < data.length; i++) {
+                  var user = data[i];                  
+                  var spaceIndex = user.google.name.indexOf(" ");
+
+                  var userToBeAdded = {
+                    name : spaceIndex > 0 ? user.google.name.substring(0, spaceIndex + 2) + '.' : user.google.name,
+                    points : user.points,
+                    photo : user.google.picture ,
+                    id : user._id,
+                    position : i + 1
+                  }
+                  dash.users.push(userToBeAdded);
+                }
+                return res.render('admin/dashboard', { 'data' : dash });
+            });   // Users and their points
+          });     //Total of tags       
+        });       // Counting the most used tags
+      });         // How many people were helped (Just questions marked as useful)
+    });           // How many answered questions and marked as useful  		
+  });             // Outstanding questions
 };
 
