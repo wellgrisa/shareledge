@@ -16,7 +16,7 @@ exports.render = function(req, res) {
         language: req.i18n.lng(),
         showTour: req.user.showTour
       });
-
+  
     } else {
       return console.log(err);
     }

@@ -3,7 +3,8 @@ var QuestionsBox = React.createClass({
 		return {
 			data: [],
 			page: 1,
-			textSearch: false
+			textSearch: false,
+			renderDashboard:false
 		};
 	},
 	refreshQuestions :function(searchType, restartData){
@@ -14,7 +15,7 @@ var QuestionsBox = React.createClass({
 			data: { searchType : searchType, page : this.state.page },
 			success: function(data) {
 				var questions = restartData ? data.records : this.state.data.concat(data.records);				
-				this.setState({data: questions});								
+				this.setState({data: questions, renderDashboard: false});								
 				this.state.page ++;
 				this.hasMoreItems(data.pagination.totalPages);
 				NProgress.done();
@@ -54,7 +55,8 @@ var QuestionsBox = React.createClass({
 			$('#all-questions').parent().addClass('active');
 			$('i.glyphicon-search').removeClass('hidden');
 			$('img.icon-loading ').addClass('hidden');
-			this.restartData();
+			$('.searched-tag').removeClass('searched-tag');
+			this.restartData();			
 			return;
 		}		
 
@@ -73,7 +75,7 @@ var QuestionsBox = React.createClass({
 		})
 		.success(function( data ) {
 			var questions = restartData ? data.records : this.state.data.concat(data.records);				
-			this.setState({data: questions});								
+			this.setState({data: questions, renderDashboard: false});								
 			this.state.page ++;
 			this.hasMoreItems(data.pagination.totalPages);
 			NProgress.done();
@@ -105,7 +107,7 @@ var QuestionsBox = React.createClass({
 		$.xhrPool.push(searchingAjax)
 	},
 	handleScroll: function(e) {    		
-		if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100 && this.state.hasMore){			
+		if (!this.state.renderDashboard && $(window).scrollTop() + $(window).height() >= $(document).height() - 100 && this.state.hasMore){			
 			if(this.state.textSearch){
 				this.refreshQuestionsBySearch(false);
 			}else{				
@@ -116,7 +118,26 @@ var QuestionsBox = React.createClass({
 	handleMainMenuClick: function(e){
 		$('#example').height(100);
 		this.state.textSearch = false;
-		this.restartData();
+		
+		if($('#main-menu li.active a').attr('id') == 'dashboard'){
+			this.handleDashboard();			
+		}else{		
+			this.restartData();
+		}
+		
+	},
+	handleDashboard : function(){
+		$.ajax({
+			url: '/jsondashboard',
+			dataType: 'json',
+			success: function(dash) {
+				this.setState({data: dash, renderDashboard: true});
+				NProgress.done();				
+			}.bind(this),
+			error: function(xhr, status, err) {
+				console.error(this.props.url, status, err.toString());
+			}.bind(this)
+		});		
 	},
 	restartData : function(){				
 		this.state.page = 1;
@@ -124,9 +145,20 @@ var QuestionsBox = React.createClass({
 	},
 	render: function() {
 		return (
-			<div onScroll={this.handleScroll} id="accordion">
-			<QuestionList questions={this.state.data} />
-			<div className="loading-modal"></div>
+			<div>
+			<If condition={!this.state.renderDashboard}>
+			
+				<div onScroll={this.handleScroll} id="accordion">
+				<QuestionList questions={this.state.data} />
+				<div className="loading-modal"></div>
+				</div>
+			
+			</If>
+			<If condition={this.state.renderDashboard}>
+			
+				<DashboardBox data={this.state.data}/>
+			
+			</If>
 			</div>
 		);
 	}

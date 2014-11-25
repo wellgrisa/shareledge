@@ -4,6 +4,7 @@ var gulp = require('gulp'),
 
 var paths = {
 	scripts: ['public/lib/**/*.js', '!public/lib/**/*.min.js', '!public/lib/**/jquery*.js'],
+	application: ['app/views/**/*.html', 'app/views/*.html'],
 	server: {
 		index: 'server.js'
 	}
@@ -23,7 +24,8 @@ gulp.task('server', function(){
 	plugins.nodemon({script: paths.server.index})
 	.on('start', function() {
 		console.clear();
-	}).on('restart', function() {
+	})
+	.on('restart', function() {
 		console.clear();
 	});
 });

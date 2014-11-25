@@ -17,6 +17,7 @@ module.exports = function(app, passport) {
   app.get('/login', admin.login);
   app.post('/feedback', admin.feedback);
   app.get('/dashboard', middlewares.ensureAuthenticated, admin.dashboard);
+	app.get('/jsondashboard', middlewares.ensureAuthenticated, admin.jsonDashboard);
 
   var question = require('../app/controllers/question');
   app.get('/question', question.all);
