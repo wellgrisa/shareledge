@@ -409,7 +409,7 @@ function onEditAnswerClicked(e){
     editQuestionModal.html(_.first(solution).content);
 
     $('.edit-question-btn-save').on('click', function(){
-
+ 
       _.each(result.solutions, function(solution){
         if(solution._id == $('.list-group-item-answer.selected').data('id')){
           solution.content = $('.textarea', '#editAnswerModal').html();

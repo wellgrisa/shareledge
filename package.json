@@ -36,8 +36,17 @@
     "view-helpers": "~0.1.4"
   },
   "devDependencies": {
+    "better-console": "^0.2.3",
+    "gulp-clean": "^0.3.1",
     "gulp-concat": "^2.4.1",
     "gulp-jshint": "^1.9.0",
-    "gulp-uglify": "^1.0.1"
+    "gulp-livereload": "^2.1.1",
+    "gulp-load-plugins": "^0.7.1",
+    "gulp-minify-css": "^0.3.11",
+    "gulp-nodemon": "^1.0.4",
+    "gulp-react": "^2.0.0",
+    "gulp-rename": "^1.2.0",
+    "gulp-uglify": "^1.0.1",
+    "gulp-watch": "^2.0.0"
   }
 }
