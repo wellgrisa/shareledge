@@ -26,6 +26,7 @@
       "my-outstanding-questions" : "My Outstanding",
       "outstanding-questions" : "All Outstanding",
       "answered-outstanding-questions" : "All Solved",
+			"new" : "New",
       "all-questions" : "All Questions"
     },
     "question-panel" : {

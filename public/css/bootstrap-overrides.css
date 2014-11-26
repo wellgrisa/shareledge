@@ -954,7 +954,8 @@ browsemedia="all"
 }
 
 span.glyphicon.big{
-	font-size: 30px;
+	font-size: 17px;
+	margin-top: 8px;
 	position: absolute;
 }
 span.glyphicon.big + span.text{

@@ -26,6 +26,7 @@
       "my-outstanding-questions" : "Minhas Pendentes",
       "outstanding-questions" : "Todas Pendentes",
       "answered-outstanding-questions" : "Todas Resolvidas",
+			"new" : "Novo",
       "all-questions" : "Todas as Questões"
     },
     "question-panel" : {
