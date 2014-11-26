@@ -70,12 +70,6 @@
 			</div>
 			{% else %}
 			<ul class="dropdown-menu">
-<!--
-				<li>
-					<a href="\dashboard"><i class="fa fa-fw fa-power-off"></i> {{ t("main-page.header.dashboard") }}</a>
-				</li>
-				<li class="divider"></li>
--->
 				<li>
 					<a href="#" data-toggle="modal" data-target="#feedbackModal"><i class="fa fa-fw fa-envelope"></i> Feedback :)</a>
 				</li>
@@ -145,7 +139,8 @@
 					</li>
 					
 					<li>
-						<a href="#" id="dashboard" href="index.html" data-gacategory="Menu" data-gaaction="All-My-Questions">
+						<a href="#" id="dashboard" data-gacategory="Menu" data-gaaction="Dashboard">
+							<span class="glyphicon big glyphicon-dashboard"></span>
 							<span class="text"> Dashboard </span>
 						</a>
 					</li>

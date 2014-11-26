@@ -22,7 +22,7 @@ var DashboardContent = React.createClass({
 		}	
 	},
   render: function() {
-		var tagsPanelStyle = {paddingBottom: '13px;'}
+		var tagsPanelStyle = {paddingBottom: '17px;'}
 		
     return (
 			<div id="dashboard-content">
@@ -30,27 +30,27 @@ var DashboardContent = React.createClass({
 						<div className="col-lg-9 col-sm-8">                    
 								<div className="panel panel-default">                
 										<div className="panel-heading">
-												<h4>Overall data</h4>
+												<h4>Overall question data</h4>
 										</div> 
 
 										<div className="panel-body">
 												<div className="col-xs-12 col-md-4">            
 														<div className="panel status panel-warning">
 																<div className="panel-heading">
-																		<h1 className="panel-title text-center">{this.props.data.outstandingQuestions}</h1>
+																		<h1 className="panel-title text-center">{this.props.data.sinceFirstRelease}</h1>
 																</div>
 																<div className="panel-body text-center">                        
-																		Outstanding questions
+																		Since Knowhow release
 																</div>
 														</div>
 												</div>         
 												<div className="col-xs-12 col-md-4">           
 														<div className="panel status panel-success">
 																<div className="panel-heading">
-																		<h1 className="panel-title text-center">{this.props.data.answeredQuestions}</h1>
+																		<h1 className="panel-title text-center">{this.props.data.lastMonthQuestions}</h1>
 																</div>
 																<div className="panel-body text-center">                        
-																		Answered questions
+																		Last month questions
 																</div>
 														</div>         
 												</div>
@@ -60,7 +60,7 @@ var DashboardContent = React.createClass({
 																		<h1 className="panel-title text-center">{this.props.data.helpedPeople}</h1>
 																</div>
 																<div className="panel-body text-center">                        
-																		Helped and happy people :)
+																		Helped people :)
 																</div>
 														</div>         
 												</div>

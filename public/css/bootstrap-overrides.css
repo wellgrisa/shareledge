@@ -952,3 +952,11 @@ browsemedia="all"
 	height: 23px;
 	margin-right: 5px;
 }
+
+span.glyphicon.big{
+	font-size: 30px;
+	position: absolute;
+}
+span.glyphicon.big + span.text{
+	margin-left: 40px;
+}
