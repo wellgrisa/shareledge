@@ -340,7 +340,7 @@ exports.deleteAnswer = function(req, res){
 
 			if(question.solutions[i]._id.toString() === new mongoose.Types.ObjectId(req.body.answer).toString()){
 				console.log('eeee');
-				question.solutions.splice(question.solutions.indexOf(question.solutions[i]));
+				question.solutions.splice(question.solutions.indexOf(question.solutions[i]), 1);
 			}
 		}
 

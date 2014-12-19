@@ -64,9 +64,12 @@ module.exports = function (passport) {
     function(accessToken, refreshToken, profile, done) {
       var googleProfile = profile._json;
 			
-//			if(!googleProfile.hd !== "bravi.com.br"){					
-//					done(new Error("Invalid host domain"));
-//			}
+			console.log('\n---->', require('util').inspect(googleProfile, { depth: 2, colors: true }));
+		
+			if(googleProfile.hd !== "bravi.com.br"){					
+					done(new Error("Invalid host domain"));
+					return;
+			}
 		
       User.findOne({ 'google.id': profile.id }, function (err, user) {
         if (user) return done(err, user);

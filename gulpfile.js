@@ -3,18 +3,18 @@ var gulp = require('gulp'),
 		plugins = require('gulp-load-plugins')();		
 
 var paths = {
-	scripts: ['public/lib/**/*.js', '!public/lib/**/*.min.js', '!public/lib/**/jquery*.js'],
+	scripts: ['public/lib/minify/*.js', 'public/lib/react/*.js'],
 	application: ['app/views/**/*.html', 'app/views/*.html'],
 	server: {
 		index: 'server.js'
 	}
 };
 
-gulp.task('default', ['server']);
+//gulp.task('default', ['server']);
 
-//gulp.task('default', ['clean'], function() {
-//	return gulp.start('minify-js', 'minify-css');
-//});
+gulp.task('default', ['clean'], function() {
+	return gulp.start('minify-js', 'minify-css');
+});
 
 gulp.task('clean', function() {
 	return gulp.src(['public/build/*'], {read: false}).pipe(plugins.clean());

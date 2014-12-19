@@ -267,6 +267,7 @@ function uploadAttachment(imagePasted, next, fileName){
 
 			if(data.ext == 'png' || data.ext == 'jpg' || data.ext == 'jpeg'){
 				element = new Image();
+				element.className = "img-responsive";
 				element.src = data.src;
 			}else{
 				var fileNameButExtension = fileName.substr(0, fileName.lastIndexOf('.')) || fileName;
@@ -350,7 +351,7 @@ function handleListGroup(){
 
 		textarea.off('drop').on('drop', drop);
 
-		textarea.keyup(function(e){
+		textarea.off('keyup').on('keyup', function(e){
 			if (e.ctrlKey && e.keyCode == 13) {
 				answer();
 			}
@@ -998,8 +999,10 @@ function handleDetailedQuestionPopover(){
 		}
 
 		detailedQuestion.focus();
-
-		detailedQuestion.keyup(function(e) {
+		
+		detailedQuestion.keyup = undefined;
+		
+		detailedQuestion.off('keyup').on('keyup', function(e) {
 			var evtobj = window.event? event : e
 
 			if (e.ctrlKey && e.keyCode == 13) {

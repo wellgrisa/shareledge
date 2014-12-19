@@ -961,3 +961,7 @@ span.glyphicon.big{
 span.glyphicon.big + span.text{
 	margin-left: 40px;
 }
+
+.btn-ask, .edit-question-btn-save{
+	z-index: 1;
+}
