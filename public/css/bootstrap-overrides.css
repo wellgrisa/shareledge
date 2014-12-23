@@ -965,3 +965,42 @@ span.glyphicon.big + span.text{
 .btn-ask, .edit-question-btn-save{
 	z-index: 1;
 }
+
+.post-it {
+background:#fefabc; 
+padding:15px; 
+font-family: 'Gloria Hallelujah', cursive; 
+font-size:15px; 
+color: #000; 
+width:200px; 
+
+-moz-transform: rotate(7deg);
+-webkit-transform: rotate(7deg);
+-o-transform: rotate(7deg);
+-ms-transform: rotate(7deg);
+transform: rotate(7deg);
+
+box-shadow: 0px 4px 6px #333;
+-moz-box-shadow: 0px 4px 6px #333;
+-webkit-box-shadow: 0px 4px 6px #333;
+
+}
+
+.closebutton {
+  display: none;
+  background-image: url(/img/deleteButton.png);
+  height: 30px;
+  position: absolute;
+  left: -15px;
+  top: -15px;
+  width: 30px;
+	cursor: pointer;
+}
+
+.post-it:hover .closebutton {
+    display: block;
+}
+
+#post-it-box{
+margin: 100px;	
+}

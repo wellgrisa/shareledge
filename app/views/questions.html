@@ -1,8 +1,8 @@
 {% extends 'layouts/default.html' %}
 {% block head %}
 <script type="text/javascript" src="/lib/react-jsx-transformer.js"></script>
-<script type="text/javascript" src="/lib/react.min.js"></script>
-<!--<script src="http://fb.me/react-with-addons-0.12.1.js"></script>-->
+<!--<script type="text/javascript" src="/lib/react.min.js"></script>-->
+<script src="http://fb.me/react-with-addons-0.12.1.js"></script>
 <link href="/css/sidebar.css" rel="stylesheet">
 <link href="/css/dashboard.css" rel="stylesheet" media="screen">  
 {% endblock %}
@@ -24,9 +24,20 @@
 	</div>	
 </div>
 
+<script type="text/jsx" src="/lib/react/postit.js"></script>
 <script type="text/jsx" src="/lib/react/dashboard.js"></script>
 <script type="text/jsx" src="/lib/react/question.js"></script>
 <script type="text/jsx" src="/lib/react/answer.js"></script>
+
+<div id="post-it-content">
+	<div class="post-it">
+		<div class="closebutton"></div>
+		<div>
+			<h1 contenteditable="true">Testando</h1>
+			<div contenteditable="true">Insira seu texto aqui</div>
+		</div>
+	</div>
+</div>
 
 {% endblock %}
 

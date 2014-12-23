@@ -4,7 +4,8 @@ var QuestionsBox = React.createClass({
 			data: [],
 			page: 1,
 			textSearch: false,
-			renderDashboard:false
+			renderDashboard:false,
+			renderPostits: false
 		};
 	},
 	refreshQuestions :function(searchType, restartData){
@@ -123,6 +124,8 @@ var QuestionsBox = React.createClass({
 		
 		if($('#main-menu li.active a').attr('id') == 'dashboard'){
 			this.handleDashboard();			
+		}else if($('#main-menu li.active a').attr('id') == 'post-it'){		
+			this.setState({data: [], renderPostits: true, renderDashboard: false});				
 		}else{		
 			this.restartData();			
 		}
@@ -160,6 +163,11 @@ var QuestionsBox = React.createClass({
 			<If condition={this.state.renderDashboard}>
 
 				<DashboardBox data={this.state.data}/>
+
+			</If>
+			<If condition={this.state.renderPostits}>
+
+				<PostItBox data={this.state.data}/>
 
 			</If>
 			</div>
