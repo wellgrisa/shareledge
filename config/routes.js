@@ -35,7 +35,13 @@ module.exports = function(app, passport) {
   app.delete('/question/:id', middlewares.ensureAuthenticated, question.delete);
   app.put('/answer/:id', middlewares.ensureAuthenticated, question.updateAnswer);
   app.delete('/answer/:id', middlewares.ensureAuthenticated, question.deleteAnswer);
-
+	
+	var note = require('../app/controllers/note');
+  app.get('/notes', note.all);
+	app.post('/notes', note.create);
+	app.put('/notes/:id', note.update);
+	app.delete('/notes/delete/:id', note.delete);
+  
   app.io.route('question-created', function(req){
     req.io.broadcast('update-counts');
     req.io.broadcast('question-created', req.data);

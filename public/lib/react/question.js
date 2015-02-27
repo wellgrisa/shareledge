@@ -121,11 +121,15 @@ var QuestionsBox = React.createClass({
 	handleMainMenuClick: function(e){
 		$('#example').height(100);
 		this.state.textSearch = false;
+				
+		if($(e.srcElement).hasClass('add-note')){
+			return;
+		}
 		
 		if($('#main-menu li.active a').attr('id') == 'dashboard'){
 			this.handleDashboard();			
 		}else if($('#main-menu li.active a').attr('id') == 'post-it'){		
-			this.setState({data: [], renderPostits: true, renderDashboard: false});				
+			this.setState({renderPostits: true, renderDashboard: false});				
 		}else{		
 			this.restartData();			
 		}
@@ -152,7 +156,7 @@ var QuestionsBox = React.createClass({
 	render: function() {
 		return (
 			<div>
-			<If condition={!this.state.renderDashboard}>
+			<If condition={!this.state.renderDashboard && !this.state.renderPostits}>
 			
 				<div onScroll={this.handleScroll} id="accordion">
 				<QuestionList questions={this.state.data} />
@@ -167,7 +171,7 @@ var QuestionsBox = React.createClass({
 			</If>
 			<If condition={this.state.renderPostits}>
 
-				<PostItBox data={this.state.data}/>
+				<PostItBox />
 
 			</If>
 			</div>

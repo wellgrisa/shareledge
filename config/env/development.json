@@ -1,5 +1,5 @@
 {
-  "db": "mongodb://localhost/NewDataBaseName",
+  "db": "mongodb://localhost/knowhow-prod",
   "app": {
     "name": "Bravi Software - Development"
   },
