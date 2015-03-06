@@ -127,7 +127,8 @@
             "system-people-care": "main-page.header.system-people-care"
         },
         "sidebar": {
-            "my-unread-questions": "main-page.sidebar.my-unread-questions"
+            "my-unread-questions": "main-page.sidebar.my-unread-questions",
+            "notes": "main-page.sidebar.notes"
         }
     }
 }

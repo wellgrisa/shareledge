@@ -27,7 +27,8 @@
       "outstanding-questions" : "Todas Pendentes",
       "answered-outstanding-questions" : "Todas Resolvidas",
 			"new" : "Novo",
-      "all-questions" : "Todas as Questões"
+      "all-questions" : "Todas as Questões",
+			"notes" : "Notas"
     },
     "question-panel" : {
       "title" : "Questões",
@@ -63,6 +64,10 @@
       "or" : "ou",
       "sign-in-bravi" : "Logar com seu e-mail da Bravi",
       "subtitle" : "Conte a todos o que você sabe!"
-    }
+    },
+		"notes" :{
+			"title" : "Título",
+			"text" : "Coloque seu texto aqui"
+		}
   }
 }

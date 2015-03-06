@@ -119,14 +119,14 @@ var Notes = React.createClass({
 		$('body').delegate('.add-post-button', 'click', this.onAddClicked);				
 	},
 	onAddClicked: function(){
-		this.props.data.push({ title : 'Title', text : 'Put your text here' });
+		this.props.data.push({ title : i18n.t('main-page.notes.title'), text : i18n.t('main-page.notes.text') });
 		if (this.isMounted()) {
 			this.setState();
 		}
 	},
   render: function() {
 		if(!this.props.data.length){
-			this.props.data.push({ title : 'Title', text : 'Put your text here' });
+			this.props.data.push({ title : i18n.t('main-page.notes.title'), text : i18n.t('main-page.notes.text') });
 		}
 		var notes = this.props.data.map(function (note) {			
 			return (

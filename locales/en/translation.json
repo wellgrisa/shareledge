@@ -27,7 +27,8 @@
       "outstanding-questions" : "All Outstanding",
       "answered-outstanding-questions" : "All Solved",
 			"new" : "New",
-      "all-questions" : "All Questions"
+      "all-questions" : "All Questions",
+			"notes" : "Notes"
     },
     "question-panel" : {
       "title" : "Questions",
@@ -63,6 +64,10 @@
       "or" : "or",
       "sign-in-bravi" : "Sign in with your Bravi account",
       "subtitle" : "Share what you know!"
-    }
+    },
+		"notes" :{
+			"title" : "Title",
+			"text" : "Put your text here"
+		}
   }
 }
