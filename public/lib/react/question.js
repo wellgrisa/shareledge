@@ -16,7 +16,7 @@ var QuestionsBox = React.createClass({
 			data: { searchType : searchType, page : this.state.page },
 			success: function(data) {
 				var questions = restartData ? data.records : this.state.data.concat(data.records);				
-				this.setState({data: questions, renderDashboard: false});								
+				this.setState({data: questions, renderDashboard: false, renderPostits: false});								
 				this.state.page ++;
 				this.hasMoreItems(data.pagination.totalPages);
 				handleListGroup();
@@ -78,7 +78,7 @@ var QuestionsBox = React.createClass({
 			
 			handleListGroup();
 			
-			this.setState({data: questions, renderDashboard: false});								
+			this.setState({data: questions, renderDashboard: false, renderPostits: false});								
 			this.state.page ++;
 			this.hasMoreItems(data.pagination.totalPages);
 			NProgress.done();
@@ -131,7 +131,7 @@ var QuestionsBox = React.createClass({
 		}else if($('#main-menu li.active a').attr('id') == 'post-it'){		
 			this.setState({renderPostits: true, renderDashboard: false});				
 		}else{		
-			this.restartData();			
+			this.restartData({renderPostits: false, renderDashboard: false});			
 		}
 		
 	},

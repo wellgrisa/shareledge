@@ -19,15 +19,41 @@ float: left;
 }
 
 .closebutton {
-/*  display: none;*/
+  display: block;
   background-image: url(/img/deleteButton.png);
-  height: 30px;
+  height: 32px;
   position: absolute;
   left: -15px;
   top: -15px;
-  width: 30px;
+  width: 32px;
 	cursor: pointer;
 	z-index: 1;
+}
+
+.post-it-icon{	
+	display: none;
+	position: absolute;
+	left: -15px;
+	top: -15px;
+	cursor: pointer;
+	z-index: 1;
+	font-size: 20px;
+	-webkit-transform: rotate(2deg);
+	transform: rotate(2deg);
+	
+	padding: .2em .6em .3em;
+	font-size: 15px;
+	font-weight: bold;
+	line-height: 1;
+	color: #fff;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	border-radius: .25em;
+}
+
+.quote-container:hover .post-it-icon {
+    display: block;
 }
 
 .post-it:hover .closebutton {
@@ -38,11 +64,21 @@ float: left;
 margin-top: 90px;	
 }
 
-.addbutton{
-	left: 15px;
+.save-post-button{	
+	left: 18px;	
+	margin-left: 2px;
 }
 
+.delete-post-button{	
+	left: 54px;
+	margin-left: 2px;
+}
 
+.created-date-post{
+	left: 90px;
+	margin-left: 2px;
+	font-size: 15px;
+}
 
 .quote-container {
   margin-bottom: 50px;

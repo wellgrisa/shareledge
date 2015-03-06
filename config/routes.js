@@ -40,7 +40,7 @@ module.exports = function(app, passport) {
   app.get('/notes', note.all);
 	app.post('/notes', note.create);
 	app.put('/notes/:id', note.update);
-	app.delete('/notes/delete/:id', note.delete);
+	app.delete('/notes/:id', note.delete);
   
   app.io.route('question-created', function(req){
     req.io.broadcast('update-counts');

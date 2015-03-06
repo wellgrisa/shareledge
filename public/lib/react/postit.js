@@ -5,14 +5,14 @@ var PostItBox = React.createClass({
 		};
 	},
 	componentDidMount: function() {				
+		document.addEventListener("refreshNotes",this.refresh);
 		this.refresh();
 	},
 	refresh :function(){		
 		$.ajax({
 			url: '/notes',
 			dataType: 'json',						
-			success: function(notes) {
-				debugger;
+			success: function(notes) {		
 				this.setState({data: notes});
 				
 				NProgress.done();
@@ -33,6 +33,22 @@ var PostItBox = React.createClass({
 });
 
 var PostItContent = React.createClass({
+	getNote: function(e){
+		var noteContainer = $(e.currentTarget).parent();
+		
+		var note = { 
+			title : noteContainer.find('.note-title span').html(),
+			text : noteContainer.find('.note-text span').html()
+		};
+		
+		var identifier = noteContainer.attr('id');
+		
+		if(identifier){
+			note.identifier = identifier;
+		}
+		
+		return note;
+	},
 	saveNote: function(e){
 		var noteContainer = $(e.currentTarget).parent();
 		
@@ -49,22 +65,45 @@ var PostItContent = React.createClass({
 			$.ajax({
 				url: url,
 				type: "PUT",
-				data: note
+				data: note,
+				success: function (result, status, error) {
+					
+				}
 			});
 		}else{
-			$.post("/notes", note);		
+			$.post("/notes", note)
+			.done(function() {
+    		dispatchRefreshNotes();
+			});		
 		}
 	},
-	onClick: function(){
-		this.props.test(this);
+	deleteNote: function(e){
+		var note = this.getNote(e);
+		$.ajax({
+			url: '/notes/' + note.identifier,
+			type: "DELETE",
+			success: function (result, status, error) {
+				dispatchRefreshNotes();
+			}
+		});
 	},
-  render: function() {				
+	refreshNotes: function(){
+	},
+  render: function() {	
+		
+		var note = this.props.note,
+				noteLastUpdate = note.updated ? new Date(note.updated).getTime() : new Date(note.created).getTime();
+		
     return (			
-			<div id={this.props.note._id} className="quote-container">
-				<If condition={this.props.note._id}>
-					<div className="closebutton"></div>
+			<div id={this.props.note._id} className="quote-container">								
+				<span className="glyphicon glyphicon-plus label-success post-it-icon add-post-button"></span>				
+				<span onClick={this.saveNote} className="glyphicon glyphicon-ok label-success post-it-icon save-post-button"></span>				
+				<If condition={this.props.note._id}>					
+					<span onClick={this.deleteNote} className="glyphicon glyphicon-trash label-success add-note post-it-icon delete-post-button"></span>
 				</If>				
-				<div onClick={this.saveNote} className="closebutton addbutton"></div>
+				<If condition={this.props.note._id}>					
+					<span className="label label-primary created-date-post post-it-icon">{getLastUpdate(noteLastUpdate)}</span>
+				</If>
 				<i className="pin"></i>
 				<div className="note yellow">					
 					<div className="note-title" dangerouslySetInnerHTML={{__html: "<span contenteditable='true'>" + this.props.note.title + "</span>"}} />
@@ -77,14 +116,18 @@ var PostItContent = React.createClass({
 
 var Notes = React.createClass({		
 	componentDidMount: function() {		
-		$('body').delegate('.add-note', 'click', this.onAddClicked);				
+		$('body').delegate('.add-post-button', 'click', this.onAddClicked);				
 	},
 	onAddClicked: function(){
 		this.props.data.push({ title : 'Title', text : 'Put your text here' });
-		this.setState();
+		if (this.isMounted()) {
+			this.setState();
+		}
 	},
-  render: function() {		
-		
+  render: function() {
+		if(!this.props.data.length){
+			this.props.data.push({ title : 'Title', text : 'Put your text here' });
+		}
 		var notes = this.props.data.map(function (note) {			
 			return (
 				<PostItContent test={this.onAddClicked} key={note._id} note={note}/>
@@ -98,3 +141,12 @@ var Notes = React.createClass({
     );
   }
 });
+
+function dispatchRefreshNotes(){
+
+	var eventRefreshNotes = document.createEvent("Event");
+
+	eventRefreshNotes.initEvent("refreshNotes",true,true);
+
+	document.dispatchEvent(eventRefreshNotes);
+}
