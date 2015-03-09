@@ -25,6 +25,11 @@ var mongoose = require('mongoose'),
 mongoose.Model.paginate = function(opts, callback) {
 	console.log('\n---->', require('util').inspect(opts, { depth: 2, colors: true }));
 	var criteria = opts.criteria || {};
+	
+	if(criteria.type && criteria.type == 'ebs'){
+		criteria.type = 'administrative';
+	}
+	
 	var populate = opts.populate || {};
 	var order = opts.orderby || { updated: -1 }; // Order by CreatedDate DESC
 	var limit = opts.limit || 15;
@@ -117,7 +122,10 @@ exports.getOutstandingByFilter = function(req, res){
 };
 
 exports.counts = function(req, res) {
-	Question.find({ type : req.user.filter }).sort('-created').populate('user solutions.user').exec(function(err, questions){
+	
+	var type = req.user.filter != 'ebs' ? req.user.filter : 'administrative';
+	
+	Question.find({ type : type }).sort('-created').populate('user solutions.user').exec(function(err, questions){
 		var result = {
 			myQuestions : 0,
 			myAnsweredQuestions : 0,
@@ -228,7 +236,10 @@ exports.getById = function(req, res){
 };
 
 exports.getByUser = function(req, res){
-	return Question.find({'user' : new mongoose.Types.ObjectId(req.user._id), 'type' : req.user.filter}).populate('user solutions.user').exec(function (err, questions){
+	
+	var type = req.user.filter != 'ebs' ? req.user.filter : 'administrative';
+	
+	return Question.find({'user' : new mongoose.Types.ObjectId(req.user._id), 'type' : type}).populate('user solutions.user').exec(function (err, questions){
 		if (!err) {
 			return res.send(questions);
 		} else {
@@ -238,7 +249,10 @@ exports.getByUser = function(req, res){
 };
 
 exports.getOutstandingQuestions = function(req, res){
-	return Question.find({$or : [{"solutions.useful": 0}, {"solutions": {$size : 0}}], type : req.user.filter}).populate('user solutions.user').exec(function (err, questions){
+	
+	var type = req.user.filter != 'ebs' ? req.user.filter : 'administrative';
+	
+	return Question.find({$or : [{"solutions.useful": 0}, {"solutions": {$size : 0}}], type : type}).populate('user solutions.user').exec(function (err, questions){
 		if (!err) {
 			return res.send(questions);
 		} else {
