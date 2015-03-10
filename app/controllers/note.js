@@ -16,7 +16,7 @@ exports.create = function (req, res) {
 
 	var note = new Note(req.body);
 
-	note.user = req.user;
+	note.user = req.user; 
 
 	note.save(function(err) {
 		if (err) {
