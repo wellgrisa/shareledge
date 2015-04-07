@@ -37,7 +37,12 @@
           </div>
 
           <br>
-          <a href="/auth/google" class="btn btn-lg btn-primary" data-gacategory="Login" data-gaaction="Gmail" data-galabel="Enter with Gmail account">{{ t('main-page.sign-up.sign-in-bravi') }}</a>
+          
+          <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+            <a href="/auth/google" class="btn btn-lg btn-primary" data-gacategory="Login" data-gaaction="Gmail" data-galabel="Enter with Gmail account">Acesso Bravi</a>
+            <a id="btn-visitor" href="#" onclick="visitorSignIn()" class="btn btn-lg btn-success">Acesso Visitante</a>
+          </div>
+
         </form>
 
     </div>

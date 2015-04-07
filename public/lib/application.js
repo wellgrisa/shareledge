@@ -75,7 +75,7 @@ function setupAjax(){
 		if(thrownError == "Not Found"){
 			window.location = "/";
 		}
-	});
+	});	
 }
 
 function initializeTags(){
@@ -1224,4 +1224,3 @@ function getParameterByName(name) {
 function onCommentClicked(){
 	this.event.stopPropagation();
 }
-
